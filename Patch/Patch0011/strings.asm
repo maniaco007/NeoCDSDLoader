@@ -108,7 +108,7 @@ FixStrAbout:
 ;         MCU: Vxx.xx         0123456789A
 ;         CPLD: Vxx.xx        0123456789A
     dc.b "SN: ",$F0," ",$F1," ",$F2,1,0,1
-	dc.b "Menu: V",$C3,"\{VERSION_MAJ}.\{VERSION_MIN}",$A0,1,0,2
+	dc.b "Menu: V",$C3,"\{VERSION_MAJ}.\{VERSION_MIN_TENS}\{VERSION_MIN_ONES}",$A0,1,0,2
 	dc.b "MCU: V",$C3,$EC,".",$ED,$A0,"         "
     dc.b 5,6,7,8,9,10,11,12,13,14,15,1,0,3
 	dc.b "CPLD: V",$C3,$EE,".",$EF,$A0,"        "
@@ -118,7 +118,7 @@ FixStrAbout:
     dc.b "GadgetUK164, Justin Gibbins,",1,0,9
     dc.b "Kaneda, Kuk, Pugsy, RetroRGB,",1,0,10
     dc.b "Sk8er000, TurfMasta,",1,0,11
-    dc.b "Traducao e Cover: Maniaco007",1,0,13
+    dc.b "Traducao/Capa: Maniaco007",1,0,13
     dc.b "Valter Custodio",$A0,1,4,15
     dc.b     "OBRIGADO POR JOGAR",0
 
@@ -345,7 +345,7 @@ FixStrNoFiles:
 FixStrNoCard:
     dc.b "Nenhum cartao inserido",0
 FixStrVersion:
-    dc.b "VER \{VERSION_MAJ}.\{VERSION_MIN}",0
+    dc.b "VER \{VERSION_MAJ}.\{VERSION_MIN_TENS}\{VERSION_MIN_ONES}",0
 
 FixStrError:
     dc.b "NEO CD SD LOADER",1,0,2

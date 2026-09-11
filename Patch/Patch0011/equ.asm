@@ -19,6 +19,11 @@
 
 VERSION_MAJ     equ 0
 VERSION_MIN     equ 12  ; NSDL0012
+; \{symbol} in strings.asm inserts a symbol's value as a single hex digit
+; character (correct for 0-9, but 10-15 come out as A-F) - split MIN into
+; two decimal digits so "Menu: V0.xx" displays properly for values >= 10.
+VERSION_MIN_TENS equ VERSION_MIN/10
+VERSION_MIN_ONES equ VERSION_MIN-(VERSION_MIN_TENS*10)
 
 SSAVER_TIMEOUT  equ 30
 
