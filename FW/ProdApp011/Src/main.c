@@ -154,7 +154,7 @@ int main(void) {
 	// Check bios flash version
 	// Check CPLD version
 	if ((ReadMem(0x7FFFE >> 1, MEMTYPE_FLASH) != 0x600D) ||	// Require flash to end with 0x600D
-	(ReadMem(0x19000 >> 1, MEMTYPE_FLASH) != 0x000B) ||		// Require menu version to be 00.11
+	(ReadMem(0x19000 >> 1, MEMTYPE_FLASH) != 0x000C) ||		// Require menu version to be 00.12
 	(JTAG_Code(JTAG_USERCODE) != 0x600D0003)) {				// Require CPLD version to be 00.03
 		// Sum Ting Wong, an update is required
 		SD_Init();
