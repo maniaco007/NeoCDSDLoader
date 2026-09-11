@@ -18,10 +18,7 @@
 ; Boston, MA 02110-1301, USA.
 
 VERSION_MAJ     equ 0
-VERSION_MIN     equ 99  ; TEMP: bumped for dev testing so the MCU always sees a version
-                        ; mismatch and auto-reflashes from whatever .wad is on the SD
-                        ; card on every boot, regardless of whether this patched menu
-                        ; itself boots correctly. Restore to 11 for a real release.
+VERSION_MIN     equ 12  ; NSDL0012
 
 SSAVER_TIMEOUT  equ 30
 

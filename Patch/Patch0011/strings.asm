@@ -118,6 +118,7 @@ FixStrAbout:
     dc.b "GadgetUK164, Justin Gibbins,",1,0,9
     dc.b "Kaneda, Kuk, Pugsy, RetroRGB,",1,0,10
     dc.b "Sk8er000, TurfMasta,",1,0,11
+    dc.b "Traducao e Cover: Maniaco007",1,0,13
     dc.b "Valter Custodio",$A0,1,4,15
     dc.b     "OBRIGADO POR JOGAR",0
 
