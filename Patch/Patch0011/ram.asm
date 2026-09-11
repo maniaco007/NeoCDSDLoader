@@ -141,9 +141,12 @@ VBLCheatActions ds.b 64 ; This must be large enough to contain all the action co
 PaletteBuffer   ds.w 16*2
 CustomBGBackdrop  ds.w 1
 LastBGGameIndex ds.b 1  ; File index of the game whose bg.bmp is currently shown, $FF = none yet
-BGSilentReload  ds.b 1  ; Non-zero while LoadGameBG is (re)loading a bg live, so the decoder
-                        ; doesn't blank the whole sprite layer like it does during the one-time
-                        ; boot load (that would flash the screen blank on every game switch)
+; Custom bg tiles/palette are double-buffered (tiles 256..535 + palette #16,
+; or tiles 536..815 + palette #17) so a live reload can be decoded fully into
+; the buffer NOT currently on screen, then switched to atomically once ready -
+; no tearing, no palette-mismatch flash while the new image streams in.
+BGActiveBuffer  ds.b 1  ; 0 or 1: which buffer SetupBGSprites currently shows
+BGDecodeBuffer  ds.b 1  ; 0 or 1: which buffer the decoder in ui_bg.asm is filling
 LastFileCursor    ds.b 1
 LastMenuShift     ds.b 1
 LastLetterCursor  ds.b 1

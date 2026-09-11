@@ -18,16 +18,22 @@
 ; Boston, MA 02110-1301, USA.
 
 ; Points the background sprite's tilemap (SPR_BG, 20x16 tiles) at either the
-; custom bg tile range (256+, filled by LoadCustomBG) or the default repeating
-; pattern, depending on CustomBGLoaded. Also (re)applies the sprite's Z/Y/X.
-; Safe to call again after the menu is already up, e.g. once a per-game bg.bmp
-; has just been loaded by LoadGameBG.
+; custom bg tile range (double-buffered, see BGActiveBuffer) or the default
+; repeating pattern, depending on CustomBGLoaded. Also (re)applies the
+; sprite's Z/Y/X. Safe to call again after the menu is already up, e.g. once
+; a per-game bg.bmp has just been loaded by LoadGameBG.
 SetupBGSprites:
 	tst.b   CustomBGLoaded
 	beq     .defaultbg
 	; Setup sprites for custom background
 	move.w  #1,REG_VRAMMOD
-	move.w  #256,d0                 ; First tile number
+	move.w  #256,d0                 ; First tile number (buffer 0)
+	move.w  #$1000,d3               ; Palette #16 (buffer 0)
+	tst.b   BGActiveBuffer
+	beq     .buf0
+	addi.w  #(20*14),d0             ; Buffer 1: tiles start right after buffer 0's 280 tiles
+	addi.w  #$0100,d3               ; Buffer 1: palette #17
+.buf0:
 	move.w  #SCB1+(SPR_BG*2*32),d2	; Tile map
 	move.w  #20,d7					; 20 sprites wide
 .setup_c_map:
@@ -38,7 +44,7 @@ SetupBGSprites:
 	move.w  d0,REG_VRAMRW	     	; Tile number
 	addq.w  #1,d0
 	nop
-	move.w  #$1000,REG_VRAMRW		; Palette #16
+	move.w  d3,REG_VRAMRW			; Palette bank for the active buffer
 	subq.w  #1,d6
 	bne     .setup_c_tiles
 	addi.w  #2*32,d2				; Next sprite
@@ -107,7 +113,6 @@ LoadGameBG:
 	move.b  d1,LastBGGameIndex
 
 	sf.b    CustomBGLoaded      ; Assume failure until LoadCustomBG proves otherwise
-	st.b    BGSilentReload      ; Live reload: don't blank the sprite layer while decoding
 
 	; Try this game's own bg.bmp first
 	move.b  LastBGGameIndex,MCUCmdParams
@@ -150,6 +155,14 @@ LoadCustomBG:
 ; message over the list every time the cursor settles would leave it stuck
 ; there (nothing currently clears it outside of the one-time boot sequence).
 LoadCustomBGSilent:
+	; Decode into whichever buffer is NOT currently on screen. SetupBGSprites
+	; only switches to it (BGActiveBuffer) once the whole decode below has
+	; succeeded, so a live reload never shows a half-drawn or wrong-palette
+	; image - the switch is an atomic flip, not a gradual overwrite.
+	moveq.l #1,d0
+	sub.b   BGActiveBuffer,d0
+	move.b  d0,BGDecodeBuffer
+
 	; Load BMP data for custom bg
     move.l  #$00020000,MSFCounter   ; Init MSF at 00:02:00 (MCU subtracts 2s)
     jsr     GetBMPSector
@@ -185,7 +198,11 @@ LoadCustomBGSilent:
 
     ; Load and convert palette (BGRA * 16)
     jsr     WaitVBL
-    lea     (PALETTES+(2*16*16)),a1     ; Palette #16
+    lea     (PALETTES+(2*16*16)),a1     ; Palette #16 (buffer 0)
+    tst.b   BGDecodeBuffer
+    beq     .pal_buf0
+    addi.l  #2*16,a1                    ; Palette #17 (buffer 1)
+.pal_buf0:
     moveq.l #16,d7
 .convertpal:
     moveq.l #0,d1
@@ -205,15 +222,17 @@ LoadCustomBGSilent:
     subq.w  #1,d7
     bne     .convertpal
     ; Copy color #0 to BACKDROP and CustomBGBackdrop for reloading
-    move.w  (PALETTES+(2*16*16)),d0
+    lea     (PALETTES+(2*16*16)),a3     ; Palette #16 (buffer 0)
+    tst.b   BGDecodeBuffer
+    beq     .pal_buf0b
+    addi.l  #2*16,a3                    ; Palette #17 (buffer 1)
+.pal_buf0b:
+    move.w  (a3),d0
     move.w  d0,BACKDROP
     move.w  d0,CustomBGBackdrop
 
-    ; Load and convert pixels
-    tst.b   BGSilentReload      ; Live reload while browsing: leave sprites on,
-    bne     .skipdisblspr       ; the update just tears in tile by tile instead
-    move.b  #1,REG_DISBLSPR     ; of flashing the whole screen blank
-.skipdisblspr:
+    ; Load and convert pixels - straight into the inactive buffer, currently
+    ; not displayed by any sprite, so no need to hide anything while this runs
     move.b  #1,REG_UPLOAD_EN
     move.b  d0,REG_UPMAPSPR
     move.b  #0,REG_TRANSAREA
@@ -222,6 +241,10 @@ LoadCustomBGSilent:
     ; Start at bottom left pixel of bottom left tile
     ; Pen and paper required !
     lea     ($E00000+(256*128)+(128*14)-4),a4
+    tst.b   BGDecodeBuffer
+    beq     .tile_buf0
+    addi.l  #(20*14*128),a4             ; Buffer 1: tiles start right after buffer 0's 280 tiles
+.tile_buf0:
 
     move.l  #14,d4      ; Height in tiles
 .fullheight:
@@ -302,11 +325,11 @@ LoadCustomBGSilent:
     bne     .fullheight
     
     st.b    CustomBGLoaded
+    move.b  BGDecodeBuffer,BGActiveBuffer   ; Flip: SetupBGSprites now shows this freshly-filled buffer
 
 CustomBGFail:
     move.b  d0,REG_UPUNMAPSPR
     move.b  #0,REG_UPLOAD_EN
-    move.b  #0,REG_DISBLSPR
     rts
     
     
