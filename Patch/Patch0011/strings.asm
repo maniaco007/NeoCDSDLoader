@@ -46,60 +46,60 @@ StrDebugSSCountdown:
     ENDIF
 
 StrIGMItems:
-    dc.b "In-Game Menu",1,1,4
+    dc.b "Menu do Jogo",1,1,4
     dc.b "Cheats",1,1,5
     dc.b "Soft DIPs",1,1,7
     ;dc.b "Save state (beta)",1,1,7
     ;dc.b "Load state (beta)",1,1,9
-    dc.b "Quit game",1,0,11
-    dc.b "Up/Down:Select A:Go B:Exit",0
+    dc.b "Sair do jogo",1,0,11
+    dc.b "Cima/Baixo:Selec. A:Ir B:Sair",0
 
 StrCheats:
     dc.b "CHEATS",1,0,11
-    dc.b "A:Toggle B:Exit",0
+    dc.b "A:Ativar B:Sair",0
 StrNoCheats
     dc.b "CHEATS",1,0,3
-    dc.b "No cheats available",1,0,4
-    dc.b "for this game :(",1,0,11
-    dc.b "B:Exit",0
+    dc.b "Nenhum cheat disponivel",1,0,4
+    dc.b "para este jogo :(",1,0,11
+    dc.b "B:Sair",0
 
 StrSDIP:
     dc.b 1,1,0,"SOFT DIPS",1,0,11
-    dc.b "L/R:Change B:Exit C:Defaults",0
+    dc.b "E/D:Mudar B:Sair C:Padrao",0
 StrNoSDIP:
     dc.b 1,1,0,"SOFT DIPS",1,0,3
-    dc.b "No soft DIP settings",1,0,4
-    dc.b "for this game :(",1,0,11
-    dc.b "B:Exit",0
+    dc.b "Nenhum soft DIP",1,0,4
+    dc.b "para este jogo :(",1,0,11
+    dc.b "B:Sair",0
 StrWITHOUT:
-    dc.b "WITHOUT ",0
+    dc.b "SEM     ",0
 StrINFINITE:
-    dc.b "INFINITE",0
+    dc.b "INFINITO",0
 
 FixStrLoadingBG:
     dc.b $AF,$01,[18]$16,$02,1,0,1
-    dc.b $14,"Loading background",$15,1,0,2
-    dc.b $14,"Please wait...    ",$15,1,0,3
+    dc.b $14,"Carregando fundo  ",$15,1,0,2
+    dc.b $14,"Aguarde...        ",$15,1,0,3
     dc.b $03,[18]$17,$04,0
 
 FixStrLoadingList:
     dc.b $AF,$01,[18]$16,$02,1,0,1
-    dc.b $14,"Loading game list ",$15,1,0,2
-    dc.b $14,"Please wait...    ",$15,1,0,3
+    dc.b $14,"Carregando jogos  ",$15,1,0,2
+    dc.b $14,"Aguarde...        ",$15,1,0,3
     dc.b $03,[18]$17,$04,0
 
 ; Special tiles for compact "START+SELECT" text in pictos tileset
 FixStrIGMShortcut:
-    dc.b $AF,$A0,$AF,$A1,$AF,$A2,$AF,$A3,$AF,$A4,$AF,$A5,":In-Game Menu",0
+    dc.b $AF,$A0,$AF,$A1,$AF,$A2,$AF,$A3,$AF,$A4,$AF,$A5,":Menu do Jogo",0
 
 FixStrMenu:
-    dc.b "Settings",1,0,1
-    dc.b "Saves menu",1,0,2
-    dc.b "Store saves",1,0,3
-    dc.b "Load saves",1,0,4
-	dc.b "Update firmware",1,0,5
-	dc.b "About",1,0,8
-    dc.b $BA,":Select    ",$BB,":Exit",0
+    dc.b "Configuracoes",1,0,1
+    dc.b "Menu de saves",1,0,2
+    dc.b "Salvar dados",1,0,3
+    dc.b "Carregar dados",1,0,4
+	dc.b "Atualizar firmware",1,0,5
+	dc.b "Sobre",1,0,8
+    dc.b $BA,":Selec.    ",$BB,":Sair",0
 
 FixStrAbout:
 ;         0123456789ABCDEF0123456789ABCDE
@@ -113,13 +113,13 @@ FixStrAbout:
     dc.b 5,6,7,8,9,10,11,12,13,14,15,1,0,3
 	dc.b "CPLD: V",$C3,$EE,".",$EF,$A0,"        "
     dc.b 21,22,23,24,25,26,27,28,29,30,31,1,0,6
-    dc.b "Thanks to:",1,0,7,$C3
+    dc.b "Agradecimentos:",1,0,7,$C3
     dc.b "Aergan, Bjorn, CeL, Elbarto,",1,0,8
     dc.b "GadgetUK164, Justin Gibbins,",1,0,9
     dc.b "Kaneda, Kuk, Pugsy, RetroRGB,",1,0,10
     dc.b "Sk8er000, TurfMasta,",1,0,11
     dc.b "Valter Custodio",$A0,1,4,15
-    dc.b     "THANK YOU FOR PLAYING",0
+    dc.b     "OBRIGADO POR JOGAR",0
 
 FixStrIcon:
     dc.b $C1,$AF,$A6,$AF,$A7,$AF,$A8,1,0,1
@@ -144,22 +144,22 @@ FixStrIcon:
 ; C:Upper/lower case
 
 FixStrStoreSaveUI:
-    dc.b "Store saves to SD card",1,0,3
-    dc.b "File name:",1,8,10
-    dc.b "Exit        Save",1,0,12
-    dc.b $BB,":Backspace",1,0,13
-    dc.b $BC,":Upper/lower case",0
+    dc.b "Salvar dados no cartao SD",1,0,3
+    dc.b "Nome do arquivo:",1,8,10
+    dc.b "Sair        Salvar",1,0,12
+    dc.b $BB,":Apagar",1,0,13
+    dc.b $BC,":Maiusc/minusc",0
 
 FixStrNoFileName:
-    dc.b "Please enter a file",1,0,1
-    dc.b "name.",0
+    dc.b "Digite um nome de",1,0,1
+    dc.b "arquivo.",0
 
 FixStrFileExists:
-    dc.b "The save file already",1,0,1
-    dc.b "exists.",1,0,2
-    dc.b "Do you want to",1,0,3
-    dc.b "overwrite it ?",1,0,5
-    dc.b $BA,":Yes  ",$BB,":No",0
+    dc.b "O arquivo de save",1,0,1
+    dc.b "ja existe.",1,0,2
+    dc.b "Deseja",1,0,3
+    dc.b "sobrescrever ?",1,0,5
+    dc.b $BA,":Sim  ",$BB,":Nao",0
 
 FileNameClear:
     dc.b "                ",1,0,1   ; This must match the max file name length
@@ -171,36 +171,36 @@ KeyboardMapLC:
     dc.b "abcdefghijklmnopqrstuvwxyz0123456789 !#%&()+-=@_",0
 
 FixStrLoadSaveUI:
-    dc.b "Load saves from SD card",1,0,1
-    dc.b $BA,":Load ",$BB,":Exit ",$BC,":Delete",0
+    dc.b "Carregar dados do cartao SD",1,0,1
+    dc.b $BA,":Carregar ",$BB,":Sair ",$BC,":Apagar",0
 
 FixStrLoadConfirm:
-    dc.b "This will overwrite",1,0,1
-    dc.b "your current saves.",1,0,2
-    dc.b "Are you sure to load",1,0,3
-    dc.b "this save file ?",1,0,5
-    dc.b $BA,":Yes  ",$BB,":No",0
+    dc.b "Isso vai sobrescrever",1,0,1
+    dc.b "seus saves atuais.",1,0,2
+    dc.b "Tem certeza que quer",1,0,3
+    dc.b "carregar este save ?",1,0,5
+    dc.b $BA,":Sim  ",$BB,":Nao",0
 
 FixStrDeleteConfirm:
-    dc.b "Are you sure you",1,0,1
-    dc.b "want to delete this",1,0,2
-    dc.b "save file ?",1,0,5
-    dc.b $BA,":Yes  ",$BB,":No",0
+    dc.b "Tem certeza que",1,0,1
+    dc.b "quer apagar este",1,0,2
+    dc.b "arquivo de save ?",1,0,5
+    dc.b $BA,":Sim  ",$BB,":Nao",0
 
 FixStrLoadOK:
-    dc.b "Saves loaded OK !",1,0,2
-	dc.b $BB,":Exit",0
+    dc.b "Save carregado !",1,0,2
+	dc.b $BB,":Sair",0
 
 FixStrSaveChkError:
-    dc.b "Loading failed:",1,0,2
-    dc.b "This save file is",1,0,3
-    dc.b "corrupt.",0
+    dc.b "Falha ao carregar:",1,0,2
+    dc.b "Este arquivo de save",1,0,3
+    dc.b "esta corrompido.",0
     
 StrMsgBoxResetConfirm:
-    dc.b "Restart console to CD",1,0,1
-    dc.b "mode with the region",1,0,2
-    dc.b "currently set ?",1,0,5
-    dc.b $BA,":Yes  ",$BB,":No",0
+    dc.b "Reiniciar console no",1,0,1
+    dc.b "modo CD com a regiao",1,0,2
+    dc.b "definida atualmente ?",1,0,5
+    dc.b $BA,":Sim  ",$BB,":Nao",0
 
 ; Settings
 ; 
@@ -218,20 +218,20 @@ StrMsgBoxResetConfirm:
 ; Startup animation:<   >
 ; Loading animation:<    >
 FixStrSettings:
-    dc.b "Settings",1,0,2
-    dc.b "Country: ",CHAR_ARROW_LEFT,"      ",CHAR_ARROW_RIGHT,1,0,3
-    dc.b "Reset country",1,0,5
+    dc.b "Configuracoes",1,0,2
+    dc.b "Regiao:  ",CHAR_ARROW_LEFT,"      ",CHAR_ARROW_RIGHT,1,0,3
+    dc.b "Resetar regiao",1,0,5
     dc.b "Debug DIP 1: ",CHAR_ARROW_LEFT,"        ",CHAR_ARROW_RIGHT,1,0,6
     dc.b "Debug DIP 2: ",CHAR_ARROW_LEFT,"        ",CHAR_ARROW_RIGHT,1,0,7
-    dc.b "Dev mode:    ",CHAR_ARROW_LEFT,"        ",CHAR_ARROW_RIGHT,1,0,9
-    dc.b "Idle LED:    ",CHAR_ARROW_LEFT,"       ",CHAR_ARROW_RIGHT,1,0,10
-    dc.b "Loading LED: ",CHAR_ARROW_LEFT,"       ",CHAR_ARROW_RIGHT,1,0,11
-    dc.b "Screen saver:",CHAR_ARROW_LEFT,"        ",CHAR_ARROW_RIGHT,1,0,12
-    dc.b "Sound effects:",CHAR_ARROW_LEFT,"        ",CHAR_ARROW_RIGHT,1,0,13
-    dc.b "Startup animation:",CHAR_ARROW_LEFT,"   ",CHAR_ARROW_RIGHT,1,0,14
-    dc.b "Loading animation:",CHAR_ARROW_LEFT,"    ",CHAR_ARROW_RIGHT,1,0,16
-    dc.b $BA,":Select/Toggle DIP",1,0,17
-    dc.b $BB,":Exit",0
+    dc.b "Modo Dev:    ",CHAR_ARROW_LEFT,"        ",CHAR_ARROW_RIGHT,1,0,9
+    dc.b "LED Ocioso:  ",CHAR_ARROW_LEFT,"       ",CHAR_ARROW_RIGHT,1,0,10
+    dc.b "LED Carreg.: ",CHAR_ARROW_LEFT,"       ",CHAR_ARROW_RIGHT,1,0,11
+    dc.b "Protetor tela:",CHAR_ARROW_LEFT,"        ",CHAR_ARROW_RIGHT,1,0,12
+    dc.b "Efeitos sonoros:",CHAR_ARROW_LEFT,"        ",CHAR_ARROW_RIGHT,1,0,13
+    dc.b "Anim. de inicio:",CHAR_ARROW_LEFT,"   ",CHAR_ARROW_RIGHT,1,0,14
+    dc.b "Anim. de carreg.:",CHAR_ARROW_LEFT,"    ",CHAR_ARROW_RIGHT,1,0,16
+    dc.b $BA,":Selec./Alternar DIP",1,0,17
+    dc.b $BB,":Sair",0
 
 FixStrRED:
     dc.b "RED    ",0
@@ -249,21 +249,21 @@ FixStrWHITE:
     dc.b "WHITE  ",0
 
 FixStrJAPAN:
-    dc.b "JAPAN ",0
+    dc.b "JAPAO ",0
 FixStrUSA:
-    dc.b "USA   ",0
+    dc.b "EUA   ",0
 FixStrEUROPE:
-    dc.b "EUROPE",0
+    dc.b "EUROPA",0
 FixStrBRAZIL:
-    dc.b "BRAZIL",0
+    dc.b "BRASIL",0
     
 FixStrBrazilWarning:
-    dc.b "WARNING:",1,0,2
-    dc.b "Some games were not",1,0,3
-    dc.b "designed to support",1,0,4
-    dc.b "the Brazil region",1,0,5
-    dc.b "setting.",1,0,7
-    dc.b "They may crash !",0
+    dc.b "AVISO:",1,0,2
+    dc.b "Alguns jogos nao foram",1,0,3
+    dc.b "projetados p/ suportar",1,0,4
+    dc.b "a config. de regiao",1,0,5
+    dc.b "Brasil.",1,0,7
+    dc.b "Podem travar !",0
 
     IFDEF 0
 FixStrROMDump:
@@ -275,34 +275,34 @@ FixStrROMDump:
     ENDIF
     
 FixStrSaveStored:
-    dc.b "The save file was",1,0,1
-    dc.b "successfully stored !",0
+    dc.b "O arquivo de save foi",1,0,1
+    dc.b "salvo com sucesso !",0
 
 FixStrSaveLoaded:
-    dc.b "The save file was",1,0,1
-    dc.b "successfully loaded !",0
+    dc.b "O arquivo de save foi",1,0,1
+    dc.b "carregado com sucesso !",0
 
 StrMsgBoxInvalidGame:
-    dc.b "INVALID GAME DATA",1,0,2
-    dc.b "Please make sure that",1,0,3
-    dc.b "it's a known good",1,0,4
-    dc.b "copy.",0
+    dc.b "DADOS DO JOGO INVALIDOS",1,0,2
+    dc.b "Verifique se e uma",1,0,3
+    dc.b "copia boa e",1,0,4
+    dc.b "conhecida.",0
 
 StrMsgBoxNoUpdate:
-    dc.b "NO UPDATE FILE",1,0,2
-    dc.b "Please make sure that",1,0,3
-    dc.b "a valid update file",1,0,4
-    dc.b "is present in the",1,0,5
-    dc.b "root of the SD card.",0
+    dc.b "SEM ARQUIVO DE UPDATE",1,0,2
+    dc.b "Verifique se um",1,0,3
+    dc.b "arquivo de update",1,0,4
+    dc.b "valido esta presente",1,0,5
+    dc.b "na raiz do cartao SD.",0
     
 StrMsgBoxExceedGames:
-    dc.b "There are too many",1,0,1
-    dc.b "games to list.",1,0,3
-    dc.b "Only \{MAX_FILES} will be",1,0,4
-    dc.b "shown.",0
+    dc.b "Existem jogos demais",1,0,1
+    dc.b "para listar.",1,0,3
+    dc.b "Apenas \{MAX_FILES} serao",1,0,4
+    dc.b "exibidos.",0
 
 FixStrBExit:
-    dc.b $BB,":Exit",0
+    dc.b $BB,":Sair",0
 
 FixStrClear:
     dc.b "            ",0
@@ -310,15 +310,15 @@ FixStrLongwordVal:
 	dc.b "",$F0,0
 
 FixStrPressTop:
-    dc.b $BA,":Load game",1,0,1
-    dc.b $BC,":Options",1,0,2
-    dc.b $BD,":CD menu",0
+    dc.b $BA,":Carregar jogo",1,0,1
+    dc.b $BC,":Opcoes",1,0,2
+    dc.b $BD,":Menu CD",0
 
 FixStrPressFront:
-    dc.b $BA,":Load game",1,0,1
-    dc.b $BB,":Open/close",1,0,2
-    dc.b $BC,":Options",1,0,3
-    dc.b $BD,":CD menu",0
+    dc.b $BA,":Carregar jogo",1,0,1
+    dc.b $BB,":Abrir/Fechar",1,0,2
+    dc.b $BC,":Opcoes",1,0,3
+    dc.b $BD,":Menu CD",0
 
 FixMapFlagJP:
     dc.b $80,$81,$82,$90,$91,$92
@@ -340,15 +340,15 @@ LetterLUT:  ; For chars 64~127
     dc.b  0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15
     dc.b 16,17,18,19,20,21,22,23,24,25,26, 0, 0, 0, 0, 0
 FixStrNoFiles:
-    dc.b "No files found",0
+    dc.b "Nenhum jogo encontrado",0
 FixStrNoCard:
-    dc.b "No card present",0
+    dc.b "Nenhum cartao inserido",0
 FixStrVersion:
     dc.b "VER \{VERSION_MAJ}.\{VERSION_MIN}",0
 
 FixStrError:
     dc.b "NEO CD SD LOADER",1,0,2
-    dc.b "Error code:",1,0,3
+    dc.b "Codigo de erro:",1,0,3
     dc.b $E0,"-",$E1,$E2,"-",$E3,$E4,1,8,11
     dc.b $E5," M",$E6,$E7," U",$E8,$E9,0
 

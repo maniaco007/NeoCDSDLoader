@@ -51,9 +51,9 @@ FixStrClearDIPs:
     dc.b "        ",0
 
 FixStrEnabled:
-    dc.b "ENABLED ",0
+    dc.b "ATIVO   ",0
 FixStrDisabled:
-    dc.b "DISABLED",0
+    dc.b "INATIVO ",0
 
 FixStrNew:
     dc.b "NEW",0
