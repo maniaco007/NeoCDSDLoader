@@ -17,7 +17,12 @@ Usage:
 If output.bmp is omitted, writes "bg.bmp" next to the input image.
 
 Options:
-    --fit {cover,contain}   How to fit the image into 320x224 (default: cover)
+    --fit {blur,cover,contain}  How to fit the image into 320x224 (default: blur)
+                            blur    = whole image visible (like contain), but the
+                                      side gaps are filled with a blurred/darkened
+                                      cover-cropped version of the same image
+                                      instead of a flat color - good default for
+                                      box art / posters that aren't 320x224-ish
                             cover   = fill the whole frame, cropping overflow
                             contain = fit the whole image, padding with --pad-color
     --pad-color RRGGBB      Padding color for --fit contain (default: 000000)
@@ -27,26 +32,28 @@ Options:
 Examples:
     python bg_maker.py cover.jpg
     python bg_maker.py cover.jpg "D:\\SD\\SomeGame\\bg.bmp"
-    python bg_maker.py screenshot.png --fit contain --pad-color 101018
+    python bg_maker.py screenshot.png --fit cover
+    python bg_maker.py poster.jpg --fit contain --pad-color 101018
 """
 import argparse
 import os
 import struct
 import sys
 
-from PIL import Image
+from PIL import Image, ImageEnhance, ImageFilter
 
 TARGET_W, TARGET_H = 320, 224
 
 
-def fit_cover(img: Image.Image) -> Image.Image:
+def fit_cover(img: Image.Image, size=(TARGET_W, TARGET_H)) -> Image.Image:
+    w, h = size
     src_w, src_h = img.size
-    scale = max(TARGET_W / src_w, TARGET_H / src_h)
+    scale = max(w / src_w, h / src_h)
     new_w, new_h = round(src_w * scale), round(src_h * scale)
     img = img.resize((new_w, new_h), Image.LANCZOS)
-    left = (new_w - TARGET_W) // 2
-    top = (new_h - TARGET_H) // 2
-    return img.crop((left, top, left + TARGET_W, top + TARGET_H))
+    left = (new_w - w) // 2
+    top = (new_h - h) // 2
+    return img.crop((left, top, left + w, top + h))
 
 
 def fit_contain(img: Image.Image, pad_color) -> Image.Image:
@@ -58,6 +65,28 @@ def fit_contain(img: Image.Image, pad_color) -> Image.Image:
     left = (TARGET_W - new_w) // 2
     top = (TARGET_H - new_h) // 2
     canvas.paste(img, (left, top))
+    return canvas
+
+
+def fit_blur(img: Image.Image) -> Image.Image:
+    # Backdrop: cover-cropped, blurred and darkened so it reads as texture,
+    # not as a second copy of the image competing with the sharp one on top.
+    backdrop = fit_cover(img, (TARGET_W, TARGET_H))
+    # Upscale a bit before blurring so the blur radius doesn't get "diluted"
+    # by the final downscale, then blur and darken.
+    backdrop = backdrop.filter(ImageFilter.GaussianBlur(radius=8))
+    backdrop = ImageEnhance.Brightness(backdrop).enhance(0.45)
+
+    # Foreground: whole image visible, fit within the frame.
+    src_w, src_h = img.size
+    scale = min(TARGET_W / src_w, TARGET_H / src_h)
+    new_w, new_h = round(src_w * scale), round(src_h * scale)
+    fg = img.resize((new_w, new_h), Image.LANCZOS)
+
+    canvas = backdrop.copy()
+    left = (TARGET_W - new_w) // 2
+    top = (TARGET_H - new_h) // 2
+    canvas.paste(fg, (left, top))
     return canvas
 
 
@@ -124,6 +153,8 @@ def convert(input_path: str, output_path: str, fit: str, pad_color: str,
 
     if fit == "cover":
         img = fit_cover(img)
+    elif fit == "blur":
+        img = fit_blur(img)
     else:
         pad_rgb = tuple(int(pad_color[i:i + 2], 16) for i in (0, 2, 4))
         img = fit_contain(img, pad_rgb)
@@ -144,7 +175,7 @@ def main():
     parser.add_argument("input", help="Source image (jpg/png/bmp/etc.)")
     parser.add_argument("output", nargs="?", default=None,
                          help="Output path (default: bg.bmp next to input)")
-    parser.add_argument("--fit", choices=["cover", "contain"], default="cover")
+    parser.add_argument("--fit", choices=["blur", "cover", "contain"], default="blur")
     parser.add_argument("--pad-color", default="000000", help="RRGGBB hex, used with --fit contain")
     parser.add_argument("--no-dither", action="store_true")
     parser.add_argument("--colors", type=int, default=16, choices=range(2, 17), metavar="[2-16]")
