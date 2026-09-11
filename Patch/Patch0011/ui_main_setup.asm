@@ -71,6 +71,14 @@ SetupMain:
     jsr     ClearFileList
     jsr     ClearMainSprites
 
+    ; Apply whatever background is already valid (default pattern, or the
+    ; still-standing custom buffer from before this screen) right away -
+    ; otherwise SPR_BG keeps showing whatever the previous screen (e.g.
+    ; Options) left behind for the whole game-list fetch below, which can
+    ; take a while. The real SetupBGSprites call further down re-applies it
+    ; in case a fresh bg.bmp gets loaded in the meantime.
+    jsr     SetupBGSprites
+
     IFDEF MAMEDEBUG
     jsr     DebugSetupMain
 	bra     .setup_interface
