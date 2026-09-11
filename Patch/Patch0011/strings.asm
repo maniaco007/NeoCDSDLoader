@@ -219,17 +219,17 @@ StrMsgBoxResetConfirm:
 ; Loading animation:<    >
 FixStrSettings:
     dc.b "Configuracoes",1,0,2
-    dc.b "Regiao:  ",CHAR_ARROW_LEFT,"      ",CHAR_ARROW_RIGHT,1,0,3
+    dc.b "Regiao:  ","      ",1,0,3
     dc.b "Resetar regiao",1,0,5
-    dc.b "Debug DIP 1: ",CHAR_ARROW_LEFT,"        ",CHAR_ARROW_RIGHT,1,0,6
-    dc.b "Debug DIP 2: ",CHAR_ARROW_LEFT,"        ",CHAR_ARROW_RIGHT,1,0,7
-    dc.b "Modo Dev:    ",CHAR_ARROW_LEFT,"        ",CHAR_ARROW_RIGHT,1,0,9
-    dc.b "LED Ocioso:  ",CHAR_ARROW_LEFT,"       ",CHAR_ARROW_RIGHT,1,0,10
-    dc.b "LED Carreg.: ",CHAR_ARROW_LEFT,"       ",CHAR_ARROW_RIGHT,1,0,11
-    dc.b "Protetor tela:",CHAR_ARROW_LEFT,"        ",CHAR_ARROW_RIGHT,1,0,12
-    dc.b "Efeitos sonoros:",CHAR_ARROW_LEFT,"        ",CHAR_ARROW_RIGHT,1,0,13
-    dc.b "Anim. de inicio:",CHAR_ARROW_LEFT,"   ",CHAR_ARROW_RIGHT,1,0,14
-    dc.b "Anim. de carreg.:",CHAR_ARROW_LEFT,"    ",CHAR_ARROW_RIGHT,1,0,16
+    dc.b "Debug DIP 1: ","        ",1,0,6
+    dc.b "Debug DIP 2: ","        ",1,0,7
+    dc.b "Modo Dev:    ","        ",1,0,9
+    dc.b "LED Ocioso:  ","       ",1,0,10
+    dc.b "LED Carreg.: ","       ",1,0,11
+    dc.b "Protetor tela:","        ",1,0,12
+    dc.b "Efeitos sonoros:","        ",1,0,13
+    dc.b "Anim. de inicio:","   ",1,0,14
+    dc.b "Anim. de carreg.:","    ",1,0,16
     dc.b $BA,":Selec./Alternar DIP",1,0,17
     dc.b $BB,":Sair",0
 
