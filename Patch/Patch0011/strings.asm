@@ -51,8 +51,8 @@ StrIGMItems:
     dc.b "Soft DIPs",1,1,7
     ;dc.b "Save state (beta)",1,1,7
     ;dc.b "Load state (beta)",1,1,9
-    dc.b "Sair do jogo",1,0,11
-    dc.b "Cima/Baixo:Selec. A:Ir B:Sair",0
+    dc.b "Sair do Jogo",1,0,11
+    dc.b "A:Acessar B:Sair",0
 
 StrCheats:
     dc.b "CHEATS",1,0,11
@@ -90,7 +90,7 @@ FixStrLoadingList:
 
 ; Special tiles for compact "START+SELECT" text in pictos tileset
 FixStrIGMShortcut:
-    dc.b $AF,$A0,$AF,$A1,$AF,$A2,$AF,$A3,$AF,$A4,$AF,$A5,":Menu do Jogo",0
+    dc.b $AF,$A0,$AF,$A1,$AF,$A2,$AF,$A3,$AF,$A4,$AF,$A5,":Menu no Jogo",0
 
 FixStrMenu:
     dc.b "Configuracoes",1,0,1
@@ -310,12 +310,12 @@ FixStrLongwordVal:
 	dc.b "",$F0,0
 
 FixStrPressTop:
-    dc.b $BA,":Carregar jogo",1,0,1
+    dc.b $BA,":Jogar",1,0,1
     dc.b $BC,":Opcoes",1,0,2
     dc.b $BD,":Menu CD",0
 
 FixStrPressFront:
-    dc.b $BA,":Carregar jogo",1,0,1
+    dc.b $BA,":Jogar",1,0,1
     dc.b $BB,":Abrir/Fechar",1,0,2
     dc.b $BC,":Opcoes",1,0,3
     dc.b $BD,":Menu CD",0

@@ -21,6 +21,7 @@ SetupSettings:
 	move.w  #$0500,FixWriteConfig	; Bank 5 has menu font
 
     jsr     ClearFixTop
+    jsr     ClearMainSprites   ; Hide leftover list-nav arrows/letters/cursor from the main screen
 
     lea     FixStrSettings,a0
 	move.w  #FIXMAP+8+(10*32),d0
