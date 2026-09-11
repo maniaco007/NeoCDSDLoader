@@ -107,6 +107,7 @@ LoadGameBG:
 	move.b  d1,LastBGGameIndex
 
 	sf.b    CustomBGLoaded      ; Assume failure until LoadCustomBG proves otherwise
+	st.b    BGSilentReload      ; Live reload: don't blank the sprite layer while decoding
 
 	; Try this game's own bg.bmp first
 	move.b  LastBGGameIndex,MCUCmdParams
@@ -209,7 +210,10 @@ LoadCustomBGSilent:
     move.w  d0,CustomBGBackdrop
 
     ; Load and convert pixels
-    move.b  #1,REG_DISBLSPR
+    tst.b   BGSilentReload      ; Live reload while browsing: leave sprites on,
+    bne     .skipdisblspr       ; the update just tears in tile by tile instead
+    move.b  #1,REG_DISBLSPR     ; of flashing the whole screen blank
+.skipdisblspr:
     move.b  #1,REG_UPLOAD_EN
     move.b  d0,REG_UPMAPSPR
     move.b  #0,REG_TRANSAREA

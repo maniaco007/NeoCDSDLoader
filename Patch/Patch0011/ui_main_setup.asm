@@ -47,6 +47,7 @@ SetupMain:
 	move.b  d0,FlagSelectStart
 	st.b    PollStatus
 	st.b    LastBGGameIndex     ; $FF, no per-game bg loaded yet
+	sf.b    BGSilentReload      ; Not a live reload, this is the one-time boot load
 
 	; RefreshFlags bits use in ui_main:
 	; 0: Redraw file list

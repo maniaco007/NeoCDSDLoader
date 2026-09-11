@@ -141,6 +141,9 @@ VBLCheatActions ds.b 64 ; This must be large enough to contain all the action co
 PaletteBuffer   ds.w 16*2
 CustomBGBackdrop  ds.w 1
 LastBGGameIndex ds.b 1  ; File index of the game whose bg.bmp is currently shown, $FF = none yet
+BGSilentReload  ds.b 1  ; Non-zero while LoadGameBG is (re)loading a bg live, so the decoder
+                        ; doesn't blank the whole sprite layer like it does during the one-time
+                        ; boot load (that would flash the screen blank on every game switch)
 LastFileCursor    ds.b 1
 LastMenuShift     ds.b 1
 LastLetterCursor  ds.b 1
