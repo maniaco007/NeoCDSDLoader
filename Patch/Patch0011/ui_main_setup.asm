@@ -46,6 +46,7 @@ SetupMain:
     move.w  d0,UITemp           ; Used as delay timer to start scrolling file names
 	move.b  d0,FlagSelectStart
 	st.b    PollStatus
+	st.b    LastBGGameIndex     ; $FF, no per-game bg loaded yet
 
 	; RefreshFlags bits use in ui_main:
 	; 0: Redraw file list
@@ -201,64 +202,7 @@ SetupMain:
     ; Wait for vblank to hide dirty things
     jsr     WaitVBL
 
-    tst.b   CustomBGLoaded
-    beq     .defaultbg
-	; Setup sprites for custom background
-	move.w  #1,REG_VRAMMOD
-	move.w  #256,d0                 ; First tile number
-	move.w  #SCB1+(SPR_BG*2*32),d2	; Tile map
-	move.w  #20,d7					; 20 sprites wide
-.setup_c_map:
-	move.w  d2,REG_VRAMADDR
-	move.w  #14,d6					; 14 tiles high
-.setup_c_tiles:
-	nop
-	move.w  d0,REG_VRAMRW	     	; Tile number
-	addq.w  #1,d0
-	nop
-	move.w  #$1000,REG_VRAMRW		; Palette #16
-	subq.w  #1,d6
-	bne     .setup_c_tiles
-	addi.w  #2*32,d2				; Next sprite
-	subq.w  #1,d7
-	bne     .setup_c_map
-	bra     .bgdone
-.defaultbg:
-	; Setup sprites for default background
-
-	move.w  #1,REG_VRAMMOD
-	lea     bg_pal_map,a0
-	move.w  #SCB1+(SPR_BG*2*32),d2	; Tile map
-	move.w  #20,d7					; 20 sprites wide
-.setup_d_map:
-	move.w  d2,REG_VRAMADDR
-	move.w  #16,d6					; 16 tiles high
-.setup_d_tiles:
-	nop
-	move.w  #$0040,REG_VRAMRW		; Tile number
-	move.b  (a0)+,d0
-	lsl.w   #8,d0
-    ori.w   #$0008,d0
-    move.w  d0,REG_VRAMRW		    ; Palette + 3bit auto-animation
-	subq.w  #1,d6
-	bne     .setup_d_tiles
-	addi.w  #2*32,d2				; Next sprite
-	subq.w  #1,d7
-	bne     .setup_d_map
-.bgdone:
-
-	move.w  #SPR_BG,d0
-	move.w  #$0FFF,d1				; No shrink
-	move.w  #20,d7					; 20 sprites wide
-	jsr     SetSprZ
-	move.w  #SPR_BG,d0
-	move.w  #((496-0)<<7)+16,d1		; Top Y, 16 tiles high
-	move.w  #20,d7					; 20 sprites wide
-	jsr     SetSprY
-	move.w  #SPR_BG,d0
-	move.w  #0,d1					; Left X
-	move.w  #20,d7					; 20 sprites wide
-	jsr     SetSprX
+    jsr     SetupBGSprites
 
 	; Setup sprites for logo
 	lea     map_logo,a0

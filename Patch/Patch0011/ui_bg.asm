@@ -17,12 +17,138 @@
 ; the Free Software Foundation, Inc., 51 Franklin Street,
 ; Boston, MA 02110-1301, USA.
 
+; Points the background sprite's tilemap (SPR_BG, 20x16 tiles) at either the
+; custom bg tile range (256+, filled by LoadCustomBG) or the default repeating
+; pattern, depending on CustomBGLoaded. Also (re)applies the sprite's Z/Y/X.
+; Safe to call again after the menu is already up, e.g. once a per-game bg.bmp
+; has just been loaded by LoadGameBG.
+SetupBGSprites:
+	tst.b   CustomBGLoaded
+	beq     .defaultbg
+	; Setup sprites for custom background
+	move.w  #1,REG_VRAMMOD
+	move.w  #256,d0                 ; First tile number
+	move.w  #SCB1+(SPR_BG*2*32),d2	; Tile map
+	move.w  #20,d7					; 20 sprites wide
+.setup_c_map:
+	move.w  d2,REG_VRAMADDR
+	move.w  #14,d6					; 14 tiles high
+.setup_c_tiles:
+	nop
+	move.w  d0,REG_VRAMRW	     	; Tile number
+	addq.w  #1,d0
+	nop
+	move.w  #$1000,REG_VRAMRW		; Palette #16
+	subq.w  #1,d6
+	bne     .setup_c_tiles
+	addi.w  #2*32,d2				; Next sprite
+	subq.w  #1,d7
+	bne     .setup_c_map
+	bra     .bgdone
+.defaultbg:
+	; Setup sprites for default background
+
+	move.w  #1,REG_VRAMMOD
+	lea     bg_pal_map,a0
+	move.w  #SCB1+(SPR_BG*2*32),d2	; Tile map
+	move.w  #20,d7					; 20 sprites wide
+.setup_d_map:
+	move.w  d2,REG_VRAMADDR
+	move.w  #16,d6					; 16 tiles high
+.setup_d_tiles:
+	nop
+	move.w  #$0040,REG_VRAMRW		; Tile number
+	move.b  (a0)+,d0
+	lsl.w   #8,d0
+    ori.w   #$0008,d0
+    move.w  d0,REG_VRAMRW		    ; Palette + 3bit auto-animation
+	subq.w  #1,d6
+	bne     .setup_d_tiles
+	addi.w  #2*32,d2				; Next sprite
+	subq.w  #1,d7
+	bne     .setup_d_map
+.bgdone:
+
+	move.w  #SPR_BG,d0
+	move.w  #$0FFF,d1				; No shrink
+	move.w  #20,d7					; 20 sprites wide
+	jsr     SetSprZ
+	move.w  #SPR_BG,d0
+	move.w  #((496-0)<<7)+16,d1		; Top Y, 16 tiles high
+	move.w  #20,d7					; 20 sprites wide
+	jsr     SetSprY
+	move.w  #SPR_BG,d0
+	move.w  #0,d1					; Left X
+	move.w  #20,d7					; 20 sprites wide
+	jsr     SetSprX
+	rts
+
+
+; Called from the main list's VBL handler once the cursor has stayed on a
+; game for a little while. Looks for that game's own bg.bmp (same format/
+; folder convention as CUSTOM_BG_FILENAME) and shows it as the menu
+; background; falls back to the root bg.bmp, then to the default pattern.
+; Does nothing if the highlighted game is already the one currently shown.
+LoadGameBG:
+	; Resolve currently highlighted game's file index (same lookup as
+	; the "Load selected game" code in ui_main_vbl.asm)
+	lea     MenuIndexList,a0
+	moveq.l #0,d0
+	move.b  FileCursor,d0
+	add.b   MenuShift,d0
+	moveq.l #0,d1
+	move.b  0(a0,d0),d1
+	lea     FileList,a0
+	lsl.w   #5,d1
+	move.b  1(a0,d1),d1        ; d1 = resolved game index (file number)
+
+	cmp.b   LastBGGameIndex,d1
+	beq     .done               ; Already showing this game's bg, nothing to do
+	move.b  d1,LastBGGameIndex
+
+	sf.b    CustomBGLoaded      ; Assume failure until LoadCustomBG proves otherwise
+
+	; Try this game's own bg.bmp first
+	move.b  LastBGGameIndex,MCUCmdParams
+	move.b  #1,MCUCmdParams+1   ; Per-game bg request flag
+	MCUCMD  MCU_CMD_SELECTGAME
+	bcs     .tryroot             ; Comm timeout, fall back
+	jsr     MCURead4Words
+	move.b  MCUReplyBuffer,d0
+	andi.b  #$F0,d0
+	beq     .tryroot             ; No bg.bmp in this game's folder
+	jsr     LoadCustomBGSilent
+	bra     .apply
+.tryroot:
+	; No per-game art, fall back to the root bg.bmp (same as at menu startup)
+	sf.b    CustomBGLoaded
+	move.b  #BG_CODE,MCUCmdParams
+	MCUCMD  MCU_CMD_SELECTGAME
+	bcs     .apply                ; Comm timeout, give up, use default pattern
+	jsr     MCURead4Words
+	move.b  MCUReplyBuffer,d0
+	andi.b  #$F0,d0
+	beq     .apply                ; No root bg.bmp either, use default pattern
+	jsr     LoadCustomBGSilent
+.apply:
+	; CustomBGLoaded now reflects whether LoadCustomBG actually succeeded;
+	; SetupBGSprites falls back to the default pattern on its own if not.
+	jsr     SetupBGSprites
+.done:
+	rts
+
+
 LoadCustomBG:
     move.w  #$2000,FixWriteConfig   ; Palette #2 bank 0
     lea     FixStrLoadingBG,a0      ; Show loading window
 	move.w  #FIXMAP+13+(10*32),d0
 	jsr     WriteFix
 
+; Same as LoadCustomBG but without the "Loading..." fix text overlay — used by
+; LoadGameBG while the file list is already on screen, where stamping that
+; message over the list every time the cursor settles would leave it stuck
+; there (nothing currently clears it outside of the one-time boot sequence).
+LoadCustomBGSilent:
 	; Load BMP data for custom bg
     move.l  #$00020000,MSFCounter   ; Init MSF at 00:02:00 (MCU subtracts 2s)
     jsr     GetBMPSector

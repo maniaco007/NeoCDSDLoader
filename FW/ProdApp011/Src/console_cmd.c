@@ -163,7 +163,10 @@ void ExecCmd() {
 		SetStatus(cmd, CMD_OK, reply_buff_ptr->byte[1]);	// Stupid, rewrite byte[1] to avoid adding special handling in SetStatus
 	} else if (cmd == MCU_CMD_UPDATE) {
 		error_code = DoUpdate();
-		SetStatus(cmd, CMD_NOK, error_code);
+		// Was unconditionally CMD_NOK before: the console-side DoUpdate (ui_update.asm)
+		// only shows a message for error_code==1 and silently does nothing for every
+		// other outcome, success included, unless the OK flag is actually set here.
+		SetStatus(cmd, error_code ? CMD_NOK : CMD_OK, error_code);
 		// Let user see error code if it isn't critical
 		// Do SetRunStock(0) if the update succeeded
 		// Do SetRunStock(1) if the update failed (firmware or CPLD may be corrupt)
@@ -251,6 +254,22 @@ void ExecCmd() {
 				error_code = 0;
 			} else
 				error_code = 1;		// File doesn't exist or access problem
+		} else if (cmd_buffer.data[2] == 1) {
+			// Per-game background image request: menu is asking for this specific
+			// game's own bg.bmp (same format as the root one) instead of selecting
+			// it for play. Used to show per-game art behind the file list.
+			f_close(&fil_data);
+			sprintf(buffer_temp, "%s/%s", file_list[game_index], CUSTOM_BG_FILENAME);
+			if (f_open(&fil_data, buffer_temp, FA_READ) == FR_OK) {
+#ifdef STANDALONE
+				CDCPrint("Found per-game bg file");
+#endif
+				prev_CD_LBA = -1;	// Make sure CD_LBA != prev_CD_LBA for kickstart
+				data_mode = MODE_DATA;
+				data_sector_size = 2048;
+				error_code = 0;
+			} else
+				error_code = 1;		// No bg.bmp in this game's folder
 		} else {
 			// Normal game selection
 			if (f_opendir(&sub_dir, file_list[game_index]) == FR_OK) {

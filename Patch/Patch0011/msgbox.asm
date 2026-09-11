@@ -27,7 +27,7 @@ MessageBoxCustom:
     tst.b   CurrentMsgBox
     bne     .abort
     st.b    CurrentMsgBox
-    movea.l a1,MsgBoxExitCall
+    move.l  a1,MsgBoxExitCall
     movea.l a0,a1
     move.w  CurrentScreen,CurrentScreenPrev    ; Save
 

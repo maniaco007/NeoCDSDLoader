@@ -140,6 +140,7 @@ FlagSelectStart ds.b 1
 VBLCheatActions ds.b 64 ; This must be large enough to contain all the action codes of all cheats for a given game
 PaletteBuffer   ds.w 16*2
 CustomBGBackdrop  ds.w 1
+LastBGGameIndex ds.b 1  ; File index of the game whose bg.bmp is currently shown, $FF = none yet
 LastFileCursor    ds.b 1
 LastMenuShift     ds.b 1
 LastLetterCursor  ds.b 1

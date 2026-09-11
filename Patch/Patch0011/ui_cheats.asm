@@ -135,7 +135,7 @@ DrawCheatList:
     move.w  2(a0),d0                ; Get data offset
     lea     CheatData,a0
     lea     0(a0,d0),a0
-    movea.l a0,CheatDataAddr        ; Store data address for this game for later
+    move.l  a0,CheatDataAddr        ; Store data address for this game for later
 
     move.b  (a0)+,d7                ; Cheats count
     move.b  d7,IGMItems

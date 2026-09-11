@@ -192,6 +192,15 @@ VBLProcMain:
     addq.b  #1,UITemp
 .scrolling:
 
+	; After the cursor has settled on a game for a bit, try loading that
+	; game's own bg.bmp as the menu background (falls back on its own)
+	cmp.b   #20,UITemp          ; ~0.33s @ 60Hz, before filename scrolling kicks in
+	blo     .nobgload
+	tst.b   LetterGameCount
+	beq     .nobgload
+	jsr     LoadGameBG
+.nobgload:
+
 	; Handle input to move letter cursor
 	TESTREPEAT CNT_LEFT
     beq     .no_left
