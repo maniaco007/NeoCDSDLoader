@@ -227,6 +227,7 @@ LoadFromCD:
 LoadGame:
     ; Select file with index in d0.b and start loading
     move.b  d0,MCUCmdParams
+    move.b  #0,MCUCmdParams+1  ; Make sure a stale per-game-bg request flag doesn't linger
     MCUCMD  MCU_CMD_SELECTGAME
     bcc     .notimeout
     jmp     DispErrorTimeout
