@@ -191,9 +191,16 @@ def convert(input_path: str, output_path: str, fit: str, pad_color: str,
 
     img = round_to_hardware_colorspace(img)
 
+    # MAXCOVERAGE (the previous default) picks poorly for photographic /
+    # gradient-heavy source art like box covers - it optimizes for distinct
+    # region coverage rather than representative color, and produced visibly
+    # worse skin tones/gradients than MEDIANCUT here. kmeans refinement
+    # nudges the chosen palette a bit further towards the image's actual
+    # color distribution.
     quantized = img.quantize(
         colors=colors,
-        method=Image.MAXCOVERAGE,
+        method=Image.MEDIANCUT,
+        kmeans=8,
         dither=Image.FLOYDSTEINBERG if dither else Image.NONE,
     )
 
