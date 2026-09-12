@@ -138,18 +138,9 @@ DrawFileList:
 	add.l   #MenuIndexList,d0
 	movea.l d0,a1
 	move.w  #FIXMAP+LIST_START_ROW+(LIST_NAME_COL*32),d2
-	moveq.l #0,d3               ; Row position within the visible page (0-based)
 .disp:
     cmp.b   LetterGameCount,d6
     beq     .done               ; Reached end of MenuIndexList
-    ; Highlight the currently selected row instead of drawing an arrow -
-    ; palette #2 (same one FixStrLoadingBG/List already use, so it's a
-    ; proven-visible color) instead of the normal palette #0 menu text.
-    move.w  #$0500,FixWriteConfig
-    cmp.b   FileCursor,d3
-    bne     .notselected
-    move.w  #$2500,FixWriteConfig
-.notselected:
     ; Get file name pointer from index
 	moveq.l #0,d0
     move.b  (a1)+,d0
@@ -180,7 +171,6 @@ DrawFileList:
 	addq.w  #1,d2				; Next FIX line
 
     addq.w  #1,d6
-    addq.w  #1,d3
 
 	subq.w  #1,d7
 	bne     .disp			    ; Max lines reached, stop

@@ -48,13 +48,31 @@ VBLProcMain:
 
 	btst.b  #2,RefreshFlags
 	beq     .norefresh_cur
-	; Selection is shown as a highlighted row (see DrawFileList), not a
-	; separate arrow tile, so a cursor move just needs a full list redraw -
-	; it repaints every row in its correct color, including the old and new
-	; selected rows.
-	move.b  FileCursor,FileCursorPrev
-	jsr     DrawFileList
+	; Erase previous cursor
+	moveq.l #0,d0
+	move.b  FileCursorPrev,d0
+	add.w   #FIXMAP+LIST_START_ROW+(LIST_CURSOR_COL*32),d0
+	move.w  d0,REG_VRAMADDR
+	nop
+	nop
+	move.w  #$0520,REG_VRAMRW	; Space, palette 0, bank 5
+	tst.b   LetterGameCount
+	beq     .norefresh_cur      ; No files in list, don't draw cursor
+	; Draw new cursor
+	moveq.l #0,d0
+	move.b  FileCursor,d0
+	move.b  d0,FileCursorPrev
+	addi.w  #FIXMAP+LIST_START_ROW+(LIST_CURSOR_COL*32),d0
+	move.w  d0,REG_VRAMADDR
+	nop
+	nop
+	move.w  #$05<<8+CHAR_ARROW_RIGHT,REG_VRAMRW	; Palette 0, bank 5
 	move.b  #0,UITemp           ; Reset timer
+	tst.b   ScrollX
+	beq     .noredraw
+	; Force redraw list to restore currently scrolling filename to start
+	jsr     DrawFileList
+.noredraw:
 	bclr.b  #2,RefreshFlags
 .norefresh_cur:
 
@@ -70,7 +88,7 @@ VBLProcMain:
 	lea     GUBuffer,a0
 	move.b  ScrollX,d1
 	add.l   d1,a0
-	move.w  #$2500,d1           ; Highlight palette - this is always the selected row
+	move.w  FixWriteConfig,d1
     move.w  d0,REG_VRAMADDR
     moveq.l #LIST_NAME_WIDTH,d7
 .write:

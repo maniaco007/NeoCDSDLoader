@@ -47,11 +47,13 @@ MAX_FILES       equ 200               ; Total max, 97 officially released games
 MAX_MENU_LIST	equ	MAX_FILES         ; Max entries for currently select letter
 ; With the logo/version footer gone from the top of the screen (see the
 ; main-menu redesign), rows 0-10 used to sit unused above the list - start
-; much higher and show a lot more of the list at once instead of wasting
-; that space. Footer sits at fix row 26, so the list must end by row 24 at
-; the latest to leave it some breathing room.
-LIST_START_ROW  equ 2                 ; Fix row (y) the list starts at
-MAX_MENU_LINES  equ 22                ; Max lines displayed at once (rows 2-23)
+; higher and show more of the list at once instead of wasting that space.
+; Row 2 overflowed into CRT overscan (first row or two got clipped off the
+; top of the picture on real hardware) - row 4 stays clear of that while
+; still reclaiming most of the space. Footer sits at fix row 26, so the
+; list must end by row 24 at the latest to leave it some breathing room.
+LIST_START_ROW  equ 4                 ; Fix row (y) the list starts at
+MAX_MENU_LINES  equ 20                ; Max lines displayed at once (rows 4-23)
 MAX_FILENAME    equ 25+1              ; Max length of file name, null included
 
 ; Cover-art box (right side of the main menu screen): fixed square, centered
