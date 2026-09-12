@@ -109,8 +109,25 @@ VBLProcMain:
     move.b  d1,d0
     lsl.w   #5,d0               ; *32
     lea     FileList,a0
-	btst.b  #1,0(a0,d0)         ; Check "long filename" flag
-	beq     .scrolling          ; No
+	lea     0(a0,d0.w),a1       ; a1 = this entry's base (flags byte, then the name)
+	btst.b  #1,(a1)             ; Check "long filename" flag
+	bne     .needfetch          ; Longer than MAX_FILENAME storage, must ask the MCU for it
+	; Short filename: FileList already holds it in full (this is only a
+	; storage-format flag, unrelated to LIST_NAME_WIDTH) - only bother
+	; scrolling if it's actually longer than what's visible on screen.
+	tst.b   LIST_NAME_WIDTH+2(a1)
+	beq     .scrolling          ; Fits entirely, nothing to reveal
+	; Copy it into GUBuffer so the rest of this code (which always renders
+	; from there) doesn't need a separate short-name code path
+	lea     2(a1),a0
+	lea     GUBuffer,a1
+	moveq.l #MAX_FILENAME-1,d7
+.shortcopy:
+	move.b  (a0)+,(a1)+
+	dbra    d7,.shortcopy
+	move.b  #0,(a1)
+	bra     .initscroll
+.needfetch:
     ; ==40: Init file name scrolling
 	; Ask MCU for full filename and store in GUBuffer
     move.b  #1,MCUCmdParams
@@ -134,6 +151,7 @@ VBLProcMain:
 	subq.w  #1,d7
 	bne     .readdata
 	move.b  #0,(a1)            ; Make sure filename is null terminated
+.initscroll:
 	; Init scrolling vars
     moveq.l #0,d0
     move.b  d0,ScrollX
@@ -147,7 +165,7 @@ VBLProcMain:
     andi.b  #7,d0
     bne     .scrolling
     ; Is next filename char null ?
-    lea     GUBuffer+MAX_FILENAME-1,a0
+    lea     GUBuffer+LIST_NAME_WIDTH,a0
     moveq.l #0,d0
     move.b  ScrollX,d0
     tst.b   0(a0,d0)
