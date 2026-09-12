@@ -63,6 +63,11 @@ UITemp          ds.b 1  ; General purpose
 ScrollTimer     ds.b 1  ; Scrolling speed timer
 ScrollX         ds.b 1  ; Scrolling shift (in chars)
 ListNameScratch ds.b LIST_NAME_WIDTH+1 ; Truncated-copy scratch for DrawFileList (cover box column)
+; Per-tile palette-bank assignment (relative 0..BG_PALETTE_COUNT-1), one
+; table per double-buffer slot, column-major tile order matching
+; SetupBGSprites' own tilemap-write traversal (see ui_bg.asm).
+TilePaletteMap0 ds.b BG_BOX_W_TILES*BG_BOX_H_TILES
+TilePaletteMap1 ds.b BG_BOX_W_TILES*BG_BOX_H_TILES
 
 DebugDIP1       ds.b 1
 DebugDIP2       ds.b 1

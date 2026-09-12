@@ -84,6 +84,16 @@ BG_BOX_Y        equ 48                ; Top edge, screen pixel Y
 ; visually on hardware, not a precise percentage - expect to retune it.
 BG_BOX_SHRINK   equ $0CCC              ; Moderate shrink test (was $0FFF = full size)
 
+; Neo Geo sprites pick their palette bank per TILE, not per pixel, so a cover
+; image can use several 16-color palettes across its 8x8 tile grid (one per
+; region of similar color) instead of a single palette for the whole box -
+; a classic trick to get more than 16 simultaneous colors out of the
+; hardware. bg_maker.py clusters tiles into this many palettes; each
+; double-buffer slot gets its own contiguous range of banks.
+BG_PALETTE_COUNT equ 8
+BG_PALETTE_BASE0 equ 16                        ; Buffer 0's palettes: banks 16..16+COUNT-1
+BG_PALETTE_BASE1 equ 16+BG_PALETTE_COUNT       ; Buffer 1's palettes: the next COUNT banks
+
 TIMEOUT_ACK     equ 193534            ; 5.167us, ~1s
 TIMEOUT_EXEC    equ 774200            ; 5.167us, ~4s
 

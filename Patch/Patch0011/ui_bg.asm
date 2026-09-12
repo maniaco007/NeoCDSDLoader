@@ -29,11 +29,13 @@ SetupBGSprites:
 	; Setup sprites for custom background
 	move.w  #1,REG_VRAMMOD
 	move.w  #256,d0                 ; First tile number (buffer 0)
-	move.w  #$1000,d3               ; Palette #16 (buffer 0)
+	move.w  #BG_PALETTE_BASE0,d4     ; Palette bank base for this buffer
+	lea     TilePaletteMap0,a3       ; Per-tile relative palette index (0..COUNT-1)
 	tst.b   BGActiveBuffer
 	beq     .buf0
 	addi.w  #(BG_BOX_W_TILES*BG_BOX_H_TILES),d0  ; Buffer 1: tiles start right after buffer 0's
-	addi.w  #$0100,d3               ; Buffer 1: palette #17
+	move.w  #BG_PALETTE_BASE1,d4
+	lea     TilePaletteMap1,a3
 .buf0:
 	move.w  #SCB1+(SPR_BG*2*32),d2	; Tile map
 	move.w  #BG_BOX_W_TILES,d7		; Box width, in tiles
@@ -45,7 +47,11 @@ SetupBGSprites:
 	move.w  d0,REG_VRAMRW	     	; Tile number
 	addq.w  #1,d0
 	nop
-	move.w  d3,REG_VRAMRW			; Palette bank for the active buffer
+	moveq.l #0,d3
+	move.b  (a3)+,d3				; This tile's relative palette index
+	add.w   d4,d3					; -> absolute bank number
+	lsl.w   #8,d3					; Bank goes in the upper byte, same as the old $XX00 shape
+	move.w  d3,REG_VRAMRW			; Palette bank for this tile
 	subq.w  #1,d6
 	bne     .setup_c_tiles
 	addi.w  #2*32,d2				; Next sprite
@@ -185,14 +191,15 @@ LoadCustomBGSilent:
     addi.l  #$E,d0          ; Add size of BMP header
     add.l   d0,a0
 
-    ; Load and convert palette (BGRA * 16)
+    ; Load and convert BG_PALETTE_COUNT palettes (BGRA * 16 each, back to
+    ; back in the file - see bg_maker.py's write_multi_palette_bmp)
     jsr     WaitVBL
-    lea     (PALETTES+(2*16*16)),a1     ; Palette #16 (buffer 0)
+    lea     (PALETTES+(2*16*BG_PALETTE_BASE0)),a1
     tst.b   BGDecodeBuffer
     beq     .pal_buf0
-    addi.l  #2*16,a1                    ; Palette #17 (buffer 1)
+    addi.l  #2*16*BG_PALETTE_COUNT,a1
 .pal_buf0:
-    moveq.l #16,d7
+    move.w  #BG_PALETTE_COUNT*16,d7   ; Exceeds moveq's range, needs a real move
 .convertpal:
     moveq.l #0,d1
     move.b  (a0)+,d0    ; B
@@ -308,7 +315,25 @@ LoadCustomBGSilent:
 
     subq.w  #1,d4           ; Done one tile row
     bne     .fullheight
-    
+
+    ; Read the tile->palette-index map bg_maker.py appends right after the
+    ; pixel data (BG_BOX_W_TILES*BG_BOX_H_TILES bytes, column-major) -
+    ; continues from the exact file-stream position (a2) pixel decoding
+    ; just left off at, same sector-boundary-crossing pattern as above.
+    lea     TilePaletteMap0,a1
+    tst.b   BGDecodeBuffer
+    beq     .tilemap_buf0
+    lea     TilePaletteMap1,a1
+.tilemap_buf0:
+    moveq.l #(BG_BOX_W_TILES*BG_BOX_H_TILES)-1,d7
+.readtilemap:
+    move.b  (a2)+,(a1)+
+    cmp.l   #CDSectorBuffer+CD_SECTOR_SIZE,a2
+    bne     .notilereload
+    jsr     GetNewBMPSector
+.notilereload:
+    dbra    d7,.readtilemap
+
     st.b    CustomBGLoaded
     move.b  BGDecodeBuffer,BGActiveBuffer   ; Flip: SetupBGSprites now shows this freshly-filled buffer
 
