@@ -149,34 +149,54 @@ def iter_tiles_column_major():
             idx += 1
 
 
-def cluster_tiles(tile_means: np.ndarray, k: int, iters: int = 25, seed: int = 0) -> np.ndarray:
+SPATIAL_WEIGHT = 0.7  # 0 = pure color clustering (can scatter same-color tiles
+                       # anywhere, giving a "patchwork" look with visible tile-
+                       # edge color jumps even across smooth gradients); higher
+                       # pulls neighboring tiles towards sharing a palette,
+                       # trading a little color precision for smoother-looking
+                       # region boundaries. Tuned by eye, not a hard science.
+
+
+def cluster_tiles(tile_means: np.ndarray, k: int, positions: np.ndarray = None,
+                   spatial_weight: float = 0.0, iters: int = 25, seed: int = 0) -> np.ndarray:
     """Simple Lloyd's-algorithm k-means (no external ML dependency) on the
-    64 per-tile mean colors, returning a (64,) array of cluster indices
-    0..k-1. k is small (<=16) and there are only 64 points, so this
+    64 per-tile mean colors - optionally blended with each tile's (col, row)
+    position (scaled to the same 0-255 range and weighted by
+    `spatial_weight`) so spatially adjacent tiles are more likely to land in
+    the same cluster, instead of clusters being scattered purely by color
+    similarity (which reads as a "checkerboard" of independently-chosen
+    palettes at every tile boundary). Returns a (64,) array of cluster
+    indices 0..k-1. k is small (<=16) and there are only 64 points, so this
     converges in a handful of iterations."""
+    features = tile_means
+    if positions is not None and spatial_weight > 0:
+        max_pos = max(positions[:, 0].max(), positions[:, 1].max(), 1)
+        pos_scaled = (positions.astype(np.float64) / max_pos) * 255.0 * spatial_weight
+        features = np.concatenate([tile_means, pos_scaled], axis=1)
+
     rng = np.random.default_rng(seed)
-    n = tile_means.shape[0]
+    n = features.shape[0]
     k = min(k, n)
     # k-means++-ish seeding: pick well-separated starting centroids instead
     # of pure random, so small k doesn't get an unlucky duplicate start.
     first = rng.integers(n)
-    centroids = [tile_means[first]]
+    centroids = [features[first]]
     for _ in range(k - 1):
-        d2 = np.min([np.sum((tile_means - c) ** 2, axis=1) for c in centroids], axis=0)
+        d2 = np.min([np.sum((features - c) ** 2, axis=1) for c in centroids], axis=0)
         probs = d2 / (d2.sum() + 1e-9)
         next_idx = rng.choice(n, p=probs)
-        centroids.append(tile_means[next_idx])
+        centroids.append(features[next_idx])
     centroids = np.stack(centroids)
 
     assignments = np.zeros(n, dtype=np.int64)
     for _ in range(iters):
-        dists = np.stack([np.sum((tile_means - c) ** 2, axis=1) for c in centroids], axis=1)
+        dists = np.stack([np.sum((features - c) ** 2, axis=1) for c in centroids], axis=1)
         new_assignments = np.argmin(dists, axis=1)
         if np.array_equal(new_assignments, assignments) and _ > 0:
             break
         assignments = new_assignments
         for c_idx in range(k):
-            members = tile_means[assignments == c_idx]
+            members = features[assignments == c_idx]
             if len(members):
                 centroids[c_idx] = members.mean(axis=0)
     return assignments
@@ -194,11 +214,13 @@ def quantize_multi_palette(img: Image.Image, k: int, colors: int, dither: bool):
     arr = np.asarray(img, dtype=np.float64)  # (H, W, 3)
 
     tile_means = np.zeros((TILE_COUNT, 3))
+    tile_positions = np.zeros((TILE_COUNT, 2))
     for idx, col, row in iter_tiles_column_major():
         block = arr[row * TILE_PX_H:(row + 1) * TILE_PX_H, col * TILE_PX_W:(col + 1) * TILE_PX_W]
         tile_means[idx] = block.reshape(-1, 3).mean(axis=0)
+        tile_positions[idx] = (col, row)
 
-    tile_cluster = cluster_tiles(tile_means, k)
+    tile_cluster = cluster_tiles(tile_means, k, positions=tile_positions, spatial_weight=SPATIAL_WEIGHT)
     actual_k = int(tile_cluster.max()) + 1
 
     index_img = np.zeros((TARGET_H, TARGET_W), dtype=np.uint8)
