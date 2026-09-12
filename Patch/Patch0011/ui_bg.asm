@@ -25,7 +25,7 @@
 ; already up, e.g. once a per-game bg.bmp has just been loaded by LoadGameBG.
 SetupBGSprites:
 	tst.b   CustomBGLoaded
-	beq     .defaultbg
+	beq     .hidebox
 	; Setup sprites for custom background
 	move.w  #1,REG_VRAMMOD
 	move.w  #256,d0                 ; First tile number (buffer 0)
@@ -52,28 +52,16 @@ SetupBGSprites:
 	subq.w  #1,d7
 	bne     .setup_c_map
 	bra     .bgdone
-.defaultbg:
-	; Setup sprites for default background
-
-	move.w  #1,REG_VRAMMOD
-	lea     bg_pal_map,a0
-	move.w  #SCB1+(SPR_BG*2*32),d2	; Tile map
+.hidebox:
+	; No cover art for this game - hide the box entirely instead of showing
+	; the old default repeating pattern (that only made sense back when this
+	; sprite was the full-screen background; as a small fixed box, "empty"
+	; reads a lot cleaner than a checkered placeholder every other game).
+	move.w  #SPR_BG,d0
+	move.w  #0,d1                  ; Height 0 = invisible
 	move.w  #BG_BOX_W_TILES,d7		; Box width, in tiles
-.setup_d_map:
-	move.w  d2,REG_VRAMADDR
-	move.w  #BG_BOX_H_TILES,d6		; Box height, in tiles
-.setup_d_tiles:
-	nop
-	move.w  #$0040,REG_VRAMRW		; Tile number
-	move.b  (a0)+,d0
-	lsl.w   #8,d0
-    ori.w   #$0008,d0
-    move.w  d0,REG_VRAMRW		    ; Palette + 3bit auto-animation
-	subq.w  #1,d6
-	bne     .setup_d_tiles
-	addi.w  #2*32,d2				; Next sprite
-	subq.w  #1,d7
-	bne     .setup_d_map
+	jsr     SetSprY
+	rts
 .bgdone:
 
 	move.w  #SPR_BG,d0

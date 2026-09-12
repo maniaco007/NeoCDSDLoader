@@ -100,7 +100,7 @@ DrawFileList:
 
     ; Erase previously drawn list
 	move.w  #32,REG_VRAMMOD         ; Line by line
-	move.w  #FIXMAP+11+(LIST_NAME_COL*32),d0
+	move.w  #FIXMAP+LIST_START_ROW+(LIST_NAME_COL*32),d0
 	move.w  #MAX_MENU_LINES,d7
 .cl_line:
 	move.w  d0,REG_VRAMADDR
@@ -124,7 +124,7 @@ DrawFileList:
 	bne     .cardpresent
     lea     FixStrNoCard,a0
 .cardpresent:
-	move.w  #FIXMAP+12+(LIST_NAME_COL*32),d0
+	move.w  #FIXMAP+LIST_START_ROW+1+(LIST_NAME_COL*32),d0
 	jsr     WriteFix
 	bset.b  #2,RefreshFlags     ; Force update to hide cursor
 	rts
@@ -137,7 +137,7 @@ DrawFileList:
 	move.b  d0,d6
 	add.l   #MenuIndexList,d0
 	movea.l d0,a1
-	move.w  #FIXMAP+11+(LIST_NAME_COL*32),d2
+	move.w  #FIXMAP+LIST_START_ROW+(LIST_NAME_COL*32),d2
 	moveq.l #0,d3               ; Row position within the visible page (0-based)
 .disp:
     cmp.b   LetterGameCount,d6

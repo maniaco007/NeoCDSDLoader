@@ -64,7 +64,7 @@ VBLProcMain:
 	moveq.l #0,d0
 	move.l  d0,d1
 	move.b  FileCursor,d0
-	addi.w  #FIXMAP+11+(LIST_NAME_COL*32),d0
+	addi.w  #FIXMAP+LIST_START_ROW+(LIST_NAME_COL*32),d0
 	; Display LIST_NAME_WIDTH chars starting from (GUBuffer+ScrollX)
 	move.w  #32,REG_VRAMMOD
 	lea     GUBuffer,a0

@@ -45,7 +45,13 @@ SAVE_DATA2      equ MEMCARD+9         ; See doc.odt for format (3, 5, 7 location
 
 MAX_FILES       equ 200               ; Total max, 97 officially released games
 MAX_MENU_LIST	equ	MAX_FILES         ; Max entries for currently select letter
-MAX_MENU_LINES  equ 15                ; Max lines displayed at once
+; With the logo/version footer gone from the top of the screen (see the
+; main-menu redesign), rows 0-10 used to sit unused above the list - start
+; much higher and show a lot more of the list at once instead of wasting
+; that space. Footer sits at fix row 26, so the list must end by row 24 at
+; the latest to leave it some breathing room.
+LIST_START_ROW  equ 2                 ; Fix row (y) the list starts at
+MAX_MENU_LINES  equ 22                ; Max lines displayed at once (rows 2-23)
 MAX_FILENAME    equ 25+1              ; Max length of file name, null included
 
 ; Cover-art box (right side of the main menu screen): fixed square, centered
