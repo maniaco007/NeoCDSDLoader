@@ -61,10 +61,11 @@ MAX_FILENAME    equ 25+1              ; Max length of file name, null included
 ; from the MCU); this is just how many chars of it are actually drawn per
 ; row so the list column doesn't run under the cover box.
 LIST_NAME_WIDTH equ 18                ; Visible chars per row (name scrolls to reveal the rest)
-; Shifted 1 column left from the original 1/2 - the rightmost character of
-; each row was getting clipped by CRT horizontal overscan.
-LIST_CURSOR_COL equ 0                 ; Fix column (x) for the cursor arrow
-LIST_NAME_COL   equ 1                 ; Fix column (x) for the file name text
+; Shifted 1 column right from the original 1/2 - the leftmost character of
+; each row was getting clipped by CRT horizontal overscan (moving it left
+; instead, tried previously, made that worse).
+LIST_CURSOR_COL equ 2                 ; Fix column (x) for the cursor arrow
+LIST_NAME_COL   equ 3                 ; Fix column (x) for the file name text
 
 ; Cover-art box geometry, in 16px sprite tiles / screen pixels (320x224
 ; visible). Box is BG_BOX_W_TILES x BG_BOX_H_TILES, on the right-hand side

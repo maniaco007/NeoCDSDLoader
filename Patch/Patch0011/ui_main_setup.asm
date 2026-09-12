@@ -231,7 +231,7 @@ SetupMain:
 	; region flag (right, bottom rows) - the header logo/instructions and
 	; the old START+SELECT/version footer are gone; this replaces them.
 	move.w  #$0500,FixWriteConfig
-	move.w  #FIXMAP+26+(LIST_NAME_COL*32),d0
+	move.w  #FIXMAP+27+(LIST_NAME_COL*32),d0	; One row lower than the flag - flag position unchanged
 	IF TARGET==1
     lea     FixStrFooterActionsFront,a0
 	ELSE

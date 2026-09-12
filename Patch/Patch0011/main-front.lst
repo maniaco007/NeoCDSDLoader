@@ -1,4 +1,4 @@
- AS V1.42 Beta [Bld 311] - Source File main.asm - Page 1 - 9/11/2026 23:43:16
+ AS V1.42 Beta [Bld 311] - Source File main.asm - Page 1 - 9/11/2026 23:52:16
 
 
        1/       0 :                     ; Copyright (C) 2020 Sean Gonsalves
@@ -61,7 +61,7 @@
 (1)   24/       0 : =$3                 DIPSW_ID0       equ 3   ; Multiplayer ID
 (1)   25/       0 : =$4                 DIPSW_ID1       equ 4   ; Multiplayer ID
 (1)   26/       0 : =$5                 DIPSW_MULTI     equ 5   ; Multiplayer enable
- AS V1.42 Beta [Bld 311] - Source File main.asm(defs.asm) - Page 2 - 9/11/2026 23:43:16
+ AS V1.42 Beta [Bld 311] - Source File main.asm(defs.asm) - Page 2 - 9/11/2026 23:52:16
 
 
 (1)   27/       0 : =$6                 DIPSW_FREEPLAY  equ 6   ; Freeplay enable
@@ -124,7 +124,7 @@
 (1)   84/       0 : =$3A001B            REG_CRTFIX      equ $3A001B   ; Use game fix tileset
 (1)   85/       0 : =$3A000F            REG_PALBANK1    equ $3A000F   ; Use palette bank 1
 (1)   86/       0 : =$3A001F            REG_PALBANK0    equ $3A001F   ; Use palette bank 0 (default)
- AS V1.42 Beta [Bld 311] - Source File main.asm(defs.asm) - Page 3 - 9/11/2026 23:43:16
+ AS V1.42 Beta [Bld 311] - Source File main.asm(defs.asm) - Page 3 - 9/11/2026 23:52:16
 
 
 (1)   87/       0 :                     
@@ -187,7 +187,7 @@
 (1)  144/       0 : =$10FD97            BIOS_P1CHANGE   equ $10FD97
 (1)  145/       0 : =$10FD98            BIOS_P1REPEAT   equ $10FD98
 (1)  146/       0 : =$10FD99            BIOS_P1TIMER    equ $10FD99
- AS V1.42 Beta [Bld 311] - Source File main.asm(defs.asm) - Page 4 - 9/11/2026 23:43:16
+ AS V1.42 Beta [Bld 311] - Source File main.asm(defs.asm) - Page 4 - 9/11/2026 23:52:16
 
 
 (1)  147/       0 :                     
@@ -250,7 +250,7 @@
 (1)  204/       0 : =$3                 CNT_SELECT2     equ 3
 (1)  205/       0 :                     
       35/       0 :                     	INCLUDE "equ.asm"
- AS V1.42 Beta [Bld 311] - Source File main.asm(equ.asm) - Page 5 - 9/11/2026 23:43:16
+ AS V1.42 Beta [Bld 311] - Source File main.asm(equ.asm) - Page 5 - 9/11/2026 23:52:16
 
 
 (1)    1/       0 :                     ; Copyright (C) 2020 Sean Gonsalves
@@ -313,148 +313,149 @@
 (1)   58/       0 :                     
 (1)   59/       0 :                     ; Cover-art box (right side of the main menu screen): fixed square, centered
 (1)   60/       0 :                     ; vertically. Independent from MAX_FILENAME above (that's the storage format
- AS V1.42 Beta [Bld 311] - Source File main.asm(equ.asm) - Page 6 - 9/11/2026 23:43:16
+ AS V1.42 Beta [Bld 311] - Source File main.asm(equ.asm) - Page 6 - 9/11/2026 23:52:16
 
 
 (1)   61/       0 :                     ; from the MCU); this is just how many chars of it are actually drawn per
 (1)   62/       0 :                     ; row so the list column doesn't run under the cover box.
 (1)   63/       0 : =$12                LIST_NAME_WIDTH equ 18                ; Visible chars per row (name scrolls to reveal the rest)
-(1)   64/       0 :                     ; Shifted 1 column left from the original 1/2 - the rightmost character of
-(1)   65/       0 :                     ; each row was getting clipped by CRT horizontal overscan.
-(1)   66/       0 : =$0                 LIST_CURSOR_COL equ 0                 ; Fix column (x) for the cursor arrow
-(1)   67/       0 : =$1                 LIST_NAME_COL   equ 1                 ; Fix column (x) for the file name text
-(1)   68/       0 :                     
-(1)   69/       0 :                     ; Cover-art box geometry, in 16px sprite tiles / screen pixels (320x224
-(1)   70/       0 :                     ; visible). Box is BG_BOX_W_TILES x BG_BOX_H_TILES, on the right-hand side
-(1)   71/       0 :                     ; of the screen, above the footer text (~Y208, fix row 26) with a clear
-(1)   72/       0 :                     ; gap - Y72 only left 8px (one fix row) of clearance and was overlapping
-(1)   73/       0 :                     ; the footer text on real hardware.
-(1)   74/       0 : =$8                 BG_BOX_W_TILES  equ 8                 ; 128px wide
-(1)   75/       0 : =$8                 BG_BOX_H_TILES  equ 8                 ; 128px tall
-(1)   76/       0 : =$B0                BG_BOX_X        equ 176               ; Left edge, screen pixel X
-(1)   77/       0 : =$30                BG_BOX_Y        equ 48                ; Top edge, screen pixel Y
-(1)   78/       0 :                     
-(1)   79/       0 : =$2F3FE             TIMEOUT_ACK     equ 193534            ; 5.167us, ~1s
-(1)   80/       0 : =$BD038             TIMEOUT_EXEC    equ 774200            ; 5.167us, ~4s
-(1)   81/       0 :                     
-(1)   82/       0 : =$5                 CHAR_BOX        equ 5
-(1)   83/       0 : =$6                 CHAR_BOX_CHECKED equ 6
-(1)   84/       0 : =$10                CHAR_ARROW_LEFT equ 16
-(1)   85/       0 : =$11                CHAR_ARROW_RIGHT equ 17
-(1)   86/       0 : =$12                CHAR_ARROW_UP   equ 18
-(1)   87/       0 : =$13                CHAR_ARROW_DOWN equ 19
-(1)   88/       0 :                     
-(1)   89/       0 : =$18                MSGBOX_WIDTH    equ 24
-(1)   90/       0 : =$E                 MSGBOX_HEIGHT   equ 14
-(1)   91/       0 :                     
-(1)   92/       0 : =$1E                IGM_WIDTH    equ 30
-(1)   93/       0 : =$E                 IGM_HEIGHT   equ 14
-(1)   94/       0 :                     
-(1)   95/       0 : =$8                 MAX_CHEAT_LINES equ 8
-(1)   96/       0 : =$18                MAX_CHEAT_DESC  equ 24      ; This must match the value in the Python converter script
-(1)   97/       0 :                     
-(1)   98/       0 : =$0                 MCU_CMD_TEST        equ 0
-(1)   99/       0 : =$1                 MCU_CMD_GETID       equ 1
-(1)  100/       0 : =$2                 MCU_CMD_GETSTATUS   equ 2
-(1)  101/       0 : =$3                 MCU_CMD_UPDATE      equ 3
-(1)  102/       0 : =$4                 MCU_CMD_RESET       equ 4
-(1)  103/       0 : =$5                 MCU_CMD_INITSD      equ 5
-(1)  104/       0 : =$6                 MCU_CMD_GETGAMES    equ 6
-(1)  105/       0 : =$7                 MCU_CMD_SELECTGAME  equ 7
-(1)  106/       0 : =$8                 MCU_CMD_LOADSECT    equ 8
-(1)  107/       0 : =$9                 MCU_CMD_CDDA        equ 9
-(1)  108/       0 : =$A                 MCU_CMD_DUMPROM    	equ 10
-(1)  109/       0 : =$B                 MCU_CMD_GETSAVES    equ 11
-(1)  110/       0 : =$C                 MCU_CMD_STORESAVE   equ 12
-(1)  111/       0 : =$D                 MCU_CMD_LOADSAVE    equ 13
-(1)  112/       0 :                     
-(1)  113/       0 : =$0                 SCREEN_IDLE     equ 0
-(1)  114/       0 : =$1                 SCREEN_MAIN     equ 1
-(1)  115/       0 :                     ;SCREEN_ROMDUMP  equ 2          ; Unused
-(1)  116/       0 :                     ;SCREEN_COMMTEST equ 3          ; Unused
-(1)  117/       0 :                     ;SCREEN_ID       equ 4          ; Unused
-(1)  118/       0 :                     ;SCREEN_DEBUGSD  equ 5          ; Unused
-(1)  119/       0 :                     ;SCREEN_DEBUGISO equ 6          ; Unused
-(1)  120/       0 : =$7                 SCREEN_MENU     equ 7
- AS V1.42 Beta [Bld 311] - Source File main.asm(equ.asm) - Page 7 - 9/11/2026 23:43:16
+(1)   64/       0 :                     ; Shifted 1 column right from the original 1/2 - the leftmost character of
+(1)   65/       0 :                     ; each row was getting clipped by CRT horizontal overscan (moving it left
+(1)   66/       0 :                     ; instead, tried previously, made that worse).
+(1)   67/       0 : =$2                 LIST_CURSOR_COL equ 2                 ; Fix column (x) for the cursor arrow
+(1)   68/       0 : =$3                 LIST_NAME_COL   equ 3                 ; Fix column (x) for the file name text
+(1)   69/       0 :                     
+(1)   70/       0 :                     ; Cover-art box geometry, in 16px sprite tiles / screen pixels (320x224
+(1)   71/       0 :                     ; visible). Box is BG_BOX_W_TILES x BG_BOX_H_TILES, on the right-hand side
+(1)   72/       0 :                     ; of the screen, above the footer text (~Y208, fix row 26) with a clear
+(1)   73/       0 :                     ; gap - Y72 only left 8px (one fix row) of clearance and was overlapping
+(1)   74/       0 :                     ; the footer text on real hardware.
+(1)   75/       0 : =$8                 BG_BOX_W_TILES  equ 8                 ; 128px wide
+(1)   76/       0 : =$8                 BG_BOX_H_TILES  equ 8                 ; 128px tall
+(1)   77/       0 : =$B0                BG_BOX_X        equ 176               ; Left edge, screen pixel X
+(1)   78/       0 : =$30                BG_BOX_Y        equ 48                ; Top edge, screen pixel Y
+(1)   79/       0 :                     
+(1)   80/       0 : =$2F3FE             TIMEOUT_ACK     equ 193534            ; 5.167us, ~1s
+(1)   81/       0 : =$BD038             TIMEOUT_EXEC    equ 774200            ; 5.167us, ~4s
+(1)   82/       0 :                     
+(1)   83/       0 : =$5                 CHAR_BOX        equ 5
+(1)   84/       0 : =$6                 CHAR_BOX_CHECKED equ 6
+(1)   85/       0 : =$10                CHAR_ARROW_LEFT equ 16
+(1)   86/       0 : =$11                CHAR_ARROW_RIGHT equ 17
+(1)   87/       0 : =$12                CHAR_ARROW_UP   equ 18
+(1)   88/       0 : =$13                CHAR_ARROW_DOWN equ 19
+(1)   89/       0 :                     
+(1)   90/       0 : =$18                MSGBOX_WIDTH    equ 24
+(1)   91/       0 : =$E                 MSGBOX_HEIGHT   equ 14
+(1)   92/       0 :                     
+(1)   93/       0 : =$1E                IGM_WIDTH    equ 30
+(1)   94/       0 : =$E                 IGM_HEIGHT   equ 14
+(1)   95/       0 :                     
+(1)   96/       0 : =$8                 MAX_CHEAT_LINES equ 8
+(1)   97/       0 : =$18                MAX_CHEAT_DESC  equ 24      ; This must match the value in the Python converter script
+(1)   98/       0 :                     
+(1)   99/       0 : =$0                 MCU_CMD_TEST        equ 0
+(1)  100/       0 : =$1                 MCU_CMD_GETID       equ 1
+(1)  101/       0 : =$2                 MCU_CMD_GETSTATUS   equ 2
+(1)  102/       0 : =$3                 MCU_CMD_UPDATE      equ 3
+(1)  103/       0 : =$4                 MCU_CMD_RESET       equ 4
+(1)  104/       0 : =$5                 MCU_CMD_INITSD      equ 5
+(1)  105/       0 : =$6                 MCU_CMD_GETGAMES    equ 6
+(1)  106/       0 : =$7                 MCU_CMD_SELECTGAME  equ 7
+(1)  107/       0 : =$8                 MCU_CMD_LOADSECT    equ 8
+(1)  108/       0 : =$9                 MCU_CMD_CDDA        equ 9
+(1)  109/       0 : =$A                 MCU_CMD_DUMPROM    	equ 10
+(1)  110/       0 : =$B                 MCU_CMD_GETSAVES    equ 11
+(1)  111/       0 : =$C                 MCU_CMD_STORESAVE   equ 12
+(1)  112/       0 : =$D                 MCU_CMD_LOADSAVE    equ 13
+(1)  113/       0 :                     
+(1)  114/       0 : =$0                 SCREEN_IDLE     equ 0
+(1)  115/       0 : =$1                 SCREEN_MAIN     equ 1
+(1)  116/       0 :                     ;SCREEN_ROMDUMP  equ 2          ; Unused
+(1)  117/       0 :                     ;SCREEN_COMMTEST equ 3          ; Unused
+(1)  118/       0 :                     ;SCREEN_ID       equ 4          ; Unused
+(1)  119/       0 :                     ;SCREEN_DEBUGSD  equ 5          ; Unused
+(1)  120/       0 :                     ;SCREEN_DEBUGISO equ 6          ; Unused
+ AS V1.42 Beta [Bld 311] - Source File main.asm(equ.asm) - Page 7 - 9/11/2026 23:52:16
 
 
-(1)  121/       0 : =$8                 SCREEN_STORE_SAVE equ 8
-(1)  122/       0 : =$9                 SCREEN_LOAD_SAVE equ 9
-(1)  123/       0 : =$A                 SCREEN_SETTINGS equ 10
-(1)  124/       0 :                     ; ID 11 used for debug, see ui.asm
-(1)  125/       0 : =$C                 SCREEN_ABOUT    equ 12
-(1)  126/       0 : =$D                 SCREEN_SSAVER   equ 13
-(1)  127/       0 : =$F                 SCREEN_MSGBOX   equ 15
-(1)  128/       0 :                     
-(1)  129/       0 : =$58                TILE_CURSOR  	equ     $58		; Tile number for the letter cursor
-(1)  130/       0 :                     
-(1)  131/       0 : =$1                 SPR_BG			equ		1       ; Sprite numbers
-(1)  132/       0 : =$15                SPR_LOGO		equ		21
-(1)  133/       0 : =$20                SPR_LETTERS		equ		32
-(1)  134/       0 : =$3C                SPR_LETTER_CUR	equ     60
-(1)  135/       0 : =$3E                SPR_ARROW_L 	equ     62
-(1)  136/       0 : =$3F                SPR_ARROW_R 	equ     63
-(1)  137/       0 :                     
-(1)  138/       0 : =$41                SFX_MOVE        equ     $41
-(1)  139/       0 : =$42                SFX_POS         equ     $42
-(1)  140/       0 : =$43                SFX_NEG         equ     $43
-(1)  141/       0 : =$44                SFX_VAL         equ     $44
-(1)  142/       0 : =$45                SFX_EXIT        equ     $45
-(1)  143/       0 :                     
-(1)  144/       0 :                     ; These should all be the same for all BIOS versions
-(1)  145/       0 : =$10F6B6            CDLoadBusy          equ $10F6B6
-(1)  146/       0 : =$10F656            CDValidFlag         equ $10F656
-(1)  147/       0 : =$110004            FirstPRGSector      equ $110004
-(1)  148/       0 : =$11C80C            ProgressBarCodePtr  equ $11C80C
-(1)  149/       0 : =$7688              SectorCounter       equ $7688
-(1)  150/       0 : =$7DE2              SectorLoadCounter   equ $7DE2
-(1)  151/       0 : =$7EDB              BankCounter         equ $7EDB   ; BIOS_UPBANK
-(1)  152/       0 : =$7EDE              FirstLoadBank       equ $7EDE
-(1)  153/       0 : =$7EE2              SectorReqDest		equ $7EE2
-(1)  154/       0 : =$7EF4              SectorLoadDest      equ $7EF4   ; BIOS_UPDEST
-(1)  155/       0 : =$7EF8              SectorLoadBuffer    equ $7EF8   ; BIOS_UPSRC
-(1)  156/       0 : =$7EFC              SectorLoadSize      equ $7EFC   ; BIOS_UPSIZE
-(1)  157/       0 :                     
-(1)  158/       0 :                     ENDIAN_CHG_L MACRO reg      ; DD CC BB AA
-(1)  159/       0 :                         rol.w   #8,reg          ; DD CC AA BB
-(1)  160/       0 :                         swap.l  reg             ; AA BB DD CC
-(1)  161/       0 :                         rol.w   #8,reg          ; AA BB CC DD
-(1)  162/       0 :                         ENDM
-(1)  163/       0 :                     
-(1)  164/       0 :                     MCUCMD MACRO cmd
-(1)  165/       0 :                         move.b  #cmd,d3
-(1)  166/       0 :                         jsr     MCUCommand
-(1)  167/       0 :                         ENDM
-(1)  168/       0 :                     
-(1)  169/       0 :                     TESTCHANGE MACRO btn
-(1)  170/       0 :                         move.b  BIOS_P1CHANGE,d0
-(1)  171/       0 :                         or.b    BIOS_P2CHANGE,d0
-(1)  172/       0 :                         andi.b  #(2^btn),d0
-(1)  173/       0 :                         ENDM
-(1)  174/       0 :                     
-(1)  175/       0 :                     TESTREPEAT MACRO btn
-(1)  176/       0 :                         move.b  BIOS_P1REPEAT,d0
-(1)  177/       0 :                         or.b    BIOS_P2REPEAT,d0
-(1)  178/       0 :                         andi.b  #(2^btn),d0
-(1)  179/       0 :                         ENDM
-(1)  180/       0 :                     
- AS V1.42 Beta [Bld 311] - Source File main.asm(equ.asm) - Page 8 - 9/11/2026 23:43:16
+(1)  121/       0 : =$7                 SCREEN_MENU     equ 7
+(1)  122/       0 : =$8                 SCREEN_STORE_SAVE equ 8
+(1)  123/       0 : =$9                 SCREEN_LOAD_SAVE equ 9
+(1)  124/       0 : =$A                 SCREEN_SETTINGS equ 10
+(1)  125/       0 :                     ; ID 11 used for debug, see ui.asm
+(1)  126/       0 : =$C                 SCREEN_ABOUT    equ 12
+(1)  127/       0 : =$D                 SCREEN_SSAVER   equ 13
+(1)  128/       0 : =$F                 SCREEN_MSGBOX   equ 15
+(1)  129/       0 :                     
+(1)  130/       0 : =$58                TILE_CURSOR  	equ     $58		; Tile number for the letter cursor
+(1)  131/       0 :                     
+(1)  132/       0 : =$1                 SPR_BG			equ		1       ; Sprite numbers
+(1)  133/       0 : =$15                SPR_LOGO		equ		21
+(1)  134/       0 : =$20                SPR_LETTERS		equ		32
+(1)  135/       0 : =$3C                SPR_LETTER_CUR	equ     60
+(1)  136/       0 : =$3E                SPR_ARROW_L 	equ     62
+(1)  137/       0 : =$3F                SPR_ARROW_R 	equ     63
+(1)  138/       0 :                     
+(1)  139/       0 : =$41                SFX_MOVE        equ     $41
+(1)  140/       0 : =$42                SFX_POS         equ     $42
+(1)  141/       0 : =$43                SFX_NEG         equ     $43
+(1)  142/       0 : =$44                SFX_VAL         equ     $44
+(1)  143/       0 : =$45                SFX_EXIT        equ     $45
+(1)  144/       0 :                     
+(1)  145/       0 :                     ; These should all be the same for all BIOS versions
+(1)  146/       0 : =$10F6B6            CDLoadBusy          equ $10F6B6
+(1)  147/       0 : =$10F656            CDValidFlag         equ $10F656
+(1)  148/       0 : =$110004            FirstPRGSector      equ $110004
+(1)  149/       0 : =$11C80C            ProgressBarCodePtr  equ $11C80C
+(1)  150/       0 : =$7688              SectorCounter       equ $7688
+(1)  151/       0 : =$7DE2              SectorLoadCounter   equ $7DE2
+(1)  152/       0 : =$7EDB              BankCounter         equ $7EDB   ; BIOS_UPBANK
+(1)  153/       0 : =$7EDE              FirstLoadBank       equ $7EDE
+(1)  154/       0 : =$7EE2              SectorReqDest		equ $7EE2
+(1)  155/       0 : =$7EF4              SectorLoadDest      equ $7EF4   ; BIOS_UPDEST
+(1)  156/       0 : =$7EF8              SectorLoadBuffer    equ $7EF8   ; BIOS_UPSRC
+(1)  157/       0 : =$7EFC              SectorLoadSize      equ $7EFC   ; BIOS_UPSIZE
+(1)  158/       0 :                     
+(1)  159/       0 :                     ENDIAN_CHG_L MACRO reg      ; DD CC BB AA
+(1)  160/       0 :                         rol.w   #8,reg          ; DD CC AA BB
+(1)  161/       0 :                         swap.l  reg             ; AA BB DD CC
+(1)  162/       0 :                         rol.w   #8,reg          ; AA BB CC DD
+(1)  163/       0 :                         ENDM
+(1)  164/       0 :                     
+(1)  165/       0 :                     MCUCMD MACRO cmd
+(1)  166/       0 :                         move.b  #cmd,d3
+(1)  167/       0 :                         jsr     MCUCommand
+(1)  168/       0 :                         ENDM
+(1)  169/       0 :                     
+(1)  170/       0 :                     TESTCHANGE MACRO btn
+(1)  171/       0 :                         move.b  BIOS_P1CHANGE,d0
+(1)  172/       0 :                         or.b    BIOS_P2CHANGE,d0
+(1)  173/       0 :                         andi.b  #(2^btn),d0
+(1)  174/       0 :                         ENDM
+(1)  175/       0 :                     
+(1)  176/       0 :                     TESTREPEAT MACRO btn
+(1)  177/       0 :                         move.b  BIOS_P1REPEAT,d0
+(1)  178/       0 :                         or.b    BIOS_P2REPEAT,d0
+(1)  179/       0 :                         andi.b  #(2^btn),d0
+(1)  180/       0 :                         ENDM
+ AS V1.42 Beta [Bld 311] - Source File main.asm(equ.asm) - Page 8 - 9/11/2026 23:52:16
 
 
-(1)  181/       0 :                     FIXPOS FUNCTION x,y,(FIXMAP+y+(x*32))
-(1)  182/       0 :                     
-(1)  183/       0 :                     DIIRQ MACRO
-(1)  184/       0 :                         move.b  d0,REG_DIPSW
-(1)  185/       0 :                     	move.w  sr,-(a7)
-(1)  186/       0 :                     	ori.w   #$0700,sr
-(1)  187/       0 :                     	ENDM
-(1)  188/       0 :                     
-(1)  189/       0 :                     ENIRQ MACRO
-(1)  190/       0 :                     	move.w  #7,REG_IRQACK
-(1)  191/       0 :                     	move.w  (a7)+,sr
-(1)  192/       0 :                     	ENDM
-(1)  193/       0 :                     
+(1)  181/       0 :                     
+(1)  182/       0 :                     FIXPOS FUNCTION x,y,(FIXMAP+y+(x*32))
+(1)  183/       0 :                     
+(1)  184/       0 :                     DIIRQ MACRO
+(1)  185/       0 :                         move.b  d0,REG_DIPSW
+(1)  186/       0 :                     	move.w  sr,-(a7)
+(1)  187/       0 :                     	ori.w   #$0700,sr
+(1)  188/       0 :                     	ENDM
+(1)  189/       0 :                     
+(1)  190/       0 :                     ENIRQ MACRO
+(1)  191/       0 :                     	move.w  #7,REG_IRQACK
+(1)  192/       0 :                     	move.w  (a7)+,sr
+(1)  193/       0 :                     	ENDM
+(1)  194/       0 :                     
       36/       0 :                     	INCLUDE "ram.asm"
 (1)    1/       0 :                     ; Copyright (C) 2020 Sean Gonsalves
 (1)    2/       0 :                     ;
@@ -501,10 +502,10 @@
 (1)   43/       0 :                     
 (1)   44/       0 :                     	PADDING ON
 (1)   45/       0 :                     
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ram.asm) - Page 9 - 9/11/2026 23:52:16
+
+
 (1)   46/       0 :                     ; ---- Starting here, values are in work RAM, so they'll get overwritten by the game ! ----
- AS V1.42 Beta [Bld 311] - Source File main.asm(ram.asm) - Page 9 - 9/11/2026 23:43:16
-
-
 (1)   47/  10D000 :                     	ORG $10D000
 (1)   48/  10D000 :                     FileCursor		ds.b 1 	; File cursor position
 (1)   49/  10D001 :                     FileCursorPrev	ds.b 1 	;
@@ -564,10 +565,10 @@
 (1)   99/  10D08D :                     
 (1)  100/  10D08D :                     RAMEndA:
 (1)  101/  10D08D : =>FALSE                 IF RAMEndA > $110000
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ram.asm) - Page 10 - 9/11/2026 23:52:16
+
+
 (1)  102/  10D08D :                             FATAL "\aRAM A allocation is too large !"
- AS V1.42 Beta [Bld 311] - Source File main.asm(ram.asm) - Page 10 - 9/11/2026 23:43:16
-
-
 (1)  103/  10D08D : [101]                   ENDIF
 (1)  104/  10D08D :                     
 (1)  105/  10D08D :                     ; ---- Starting here, values are in system RAM, so they should be kept intact when a game runs ----
@@ -627,10 +628,10 @@
 (1)  157/  11C295 :                     CardEvent       ds.b 1  ; Becomes non-zero when the card was removed or inserted 
 (1)  158/  11C296 :                     LoadAnimSlowdown  ds.b 1
 (1)  159/  11C297 :                     <padding>
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ram.asm) - Page 11 - 9/11/2026 23:52:16
+
+
 (1)  159/  11C298 :                     VBLVectorCopy   ds.l 1	; Backup of the game's VBL vector, used for the IGM
- AS V1.42 Beta [Bld 311] - Source File main.asm(ram.asm) - Page 11 - 9/11/2026 23:43:16
-
-
 (1)  160/  11C29C :                     ;    ALIGN 2
 (1)  161/  11C29C :                     ;SSBuffer        ds.b 256   ; This MUST be word-aligned
 (1)  162/  11C29C :                     ;CurDataBlock    ds.w 1
@@ -690,10 +691,10 @@
 (1)   28/  C0041A :                     
 (1)   29/  C00426 :                         ORG $C00426
 (1)   30/  C00426 : 4EF9 00C1 E960      	jmp     ErrGeneric
+ AS V1.42 Beta [Bld 311] - Source File main.asm(vectors.asm) - Page 12 - 9/11/2026 23:52:16
+
+
 (1)   31/  C0042C :                     
- AS V1.42 Beta [Bld 311] - Source File main.asm(vectors.asm) - Page 12 - 9/11/2026 23:43:16
-
-
 (1)   32/  C0042C :                         ORG $C0042C
 (1)   33/  C0042C : 4EF9 00C1 E980      	jmp     ErrUninit
 (1)   34/  C00432 :                     
@@ -753,10 +754,10 @@
 (1)   49/  C0C244 : 4E71                	nop
 (1)   50/  C0C246 : 4E71                	nop
 (1)   51/  C0C248 : 4E71                	nop
+ AS V1.42 Beta [Bld 311] - Source File main.asm(patchesfront.asm) - Page 13 - 9/11/2026 23:52:16
+
+
 (1)   52/  C0C24A : 4E71                	nop
- AS V1.42 Beta [Bld 311] - Source File main.asm(patchesfront.asm) - Page 13 - 9/11/2026 23:43:16
-
-
 (1)   53/  C0C264 :                     	ORG $C0C264					; Avoid using DMA copy in UploadSPRDMAWords
 (1)   54/  C0C264 : 4E71                	nop
 (1)   55/  C0C266 : 4E71                	nop
@@ -816,10 +817,10 @@
 (1)  109/  C0D2EA : 4E71                	nop
 (1)  110/  C0D2EC :                     
 (1)  111/  C0D32C :                     	ORG $C0D32C
+ AS V1.42 Beta [Bld 311] - Source File main.asm(patchesfront.asm) - Page 14 - 9/11/2026 23:52:16
+
+
 (1)  112/  C0D32C : 4E71                	nop                         ; Disable getting nationality from jumpers
- AS V1.42 Beta [Bld 311] - Source File main.asm(patchesfront.asm) - Page 14 - 9/11/2026 23:43:16
-
-
 (1)  113/  C0D32E : 4E71                	nop
 (1)  114/  C0D330 :                     
 (1)  115/  C0D3DC :                     	ORG $C0D3DC
@@ -879,10 +880,10 @@
 (1)  169/  C0F2CA : 4E71                	nop
 (1)  170/  C0F2CC :                     
 (1)  171/  C0F2F2 :                     	ORG $C0F2F2
+ AS V1.42 Beta [Bld 311] - Source File main.asm(patchesfront.asm) - Page 15 - 9/11/2026 23:52:16
+
+
 (1)  172/  C0F2F2 : 4E71                	nop							; Disable "WAIT A MOMENT" message (again)
- AS V1.42 Beta [Bld 311] - Source File main.asm(patchesfront.asm) - Page 15 - 9/11/2026 23:43:16
-
-
 (1)  173/  C0F2F4 : 4E71                	nop
 (1)  174/  C0F2F6 :                     
 (1)  175/  C0F316 :                     	ORG $C0F316
@@ -942,10 +943,10 @@
 (1)  229/  C0FD8C :                         ;ORG $C0FF98                ; TESTING: Called in LoadPRGSectorsPatch
 (1)  230/  C0FD8C :                         ;jmp     LoadPRGVectorTable  ; Avoid using DMA in LoadPRGSectors - Double Dragon needs this
 (1)  231/  C0FD8C :                     
+ AS V1.42 Beta [Bld 311] - Source File main.asm(patchesfront.asm) - Page 16 - 9/11/2026 23:52:16
+
+
 (1)  232/  C0FF3A :                         ORG $C0FF3A ;C0FF0E
- AS V1.42 Beta [Bld 311] - Source File main.asm(patchesfront.asm) - Page 16 - 9/11/2026 23:43:16
-
-
 (1)  233/  C0FF3A : 4EF9 00C1 91E0          jmp     LoadPRGSectorsPatch ; Direct copy
 (1)  234/  C10148 :                         ORG $C10148 ;C100F6
 (1)  235/  C10148 : 4EF9 00C1 9266          jmp     LoadSPRSectorsPatch ; Direct copy
@@ -1005,10 +1006,10 @@
 (1)  289/  C20BDC :                     
 (1)  290/  C20BDC : =>UNDEFINED             IFDEF DEBUGBUILD
 (1)  291/  C20BDC :                     	ORG $C20C10   				; Define palette #3 during loading screen for debug text
+ AS V1.42 Beta [Bld 311] - Source File main.asm(patchesfront.asm) - Page 17 - 9/11/2026 23:52:16
+
+
 (1)  292/  C20BDC :                     	dc.w BLACK, WHITE, BLACK
- AS V1.42 Beta [Bld 311] - Source File main.asm(patchesfront.asm) - Page 17 - 9/11/2026 23:43:16
-
-
 (1)  293/  C20BDC : [290]                   ENDIF
 (1)  294/  C20BDC :                         
 (1)  295/  C16EF0 :                         ORG $C16EF0
@@ -1068,10 +1069,10 @@
 (1)  349/  C20B40 :                     
 (1)  350/  C30000 :                     	ORG $C30000
 (1)  351/  C30000 :                     	BINCLUDE "z80\z80.bin"
+ AS V1.42 Beta [Bld 311] - Source File main.asm(patchesfront.asm) - Page 18 - 9/11/2026 23:52:16
+
+
 (1)  352/  C31000 :                     
- AS V1.42 Beta [Bld 311] - Source File main.asm(patchesfront.asm) - Page 18 - 9/11/2026 23:43:16
-
-
 (1)  353/  C5D0B0 :                     	ORG $C3FEB0+$1D200
 (1)  354/  C5D0B0 :                     	BINCLUDE "sfx\sfx.bin"
 (1)  355/  C5F1B0 :                     
@@ -1131,10 +1132,10 @@
       56/  C74DB0 :                         ; Approx 30kB of free space starting at $C19000
       57/  C19000 :                     	ORG $C19000
       58/  C19000 : 000C                	dc.w VERSION_MAJ<<8+VERSION_MIN    ; DO NOT MOVE ! MCU uses this to check correct version of menu is flashed
+ AS V1.42 Beta [Bld 311] - Source File main.asm - Page 19 - 9/11/2026 23:52:16
+
+
       59/  C19002 :                     
- AS V1.42 Beta [Bld 311] - Source File main.asm - Page 19 - 9/11/2026 23:43:16
-
-
       60/  C19002 :                     PUPPETStuff:
       61/  C19002 :                         ; Copied from original routine
       62/  C19002 : 33FC 0000 00FF 0000 	move.w  #0,$FF0000
@@ -1194,10 +1195,10 @@
      114/  C190E4 :                     
      115/  C190E4 :                     
      116/  C190E4 :                     GetMCUStatus:
+ AS V1.42 Beta [Bld 311] - Source File main.asm - Page 20 - 9/11/2026 23:52:16
+
+
      117/  C190E4 : 7800                    moveq.l #0,d4
- AS V1.42 Beta [Bld 311] - Source File main.asm - Page 20 - 9/11/2026 23:43:16
-
-
      118/  C190E6 : 13C4 0011 C194          move.b  d4,MCUCmdParams
      119/  C190EC : 4A39 0011 C1B7          tst.b   SetMCUConfig
      120/  C190F2 : 6722                    beq     .noset
@@ -1257,10 +1258,10 @@
      172/  C19184 : 0200 0003               andi.b  #3,d0
      173/  C19188 : 13C0 0011 C18C          move.b  d0,SettingCountry
      174/  C1918E : 4E75                    rts
+ AS V1.42 Beta [Bld 311] - Source File main.asm - Page 21 - 9/11/2026 23:52:16
+
+
      175/  C19190 :                         
- AS V1.42 Beta [Bld 311] - Source File main.asm - Page 21 - 9/11/2026 23:43:16
-
-
      176/  C19190 :                     CountryNoBrazil:
      177/  C19190 : 1039 0010 FD83      	move.b  BIOS_COUNTRY_CODE,d0
      178/  C19196 : B03C 0003           	cmp.b   #3,d0
@@ -1320,10 +1321,10 @@
 (1)   32/  C191F4 : 4EB9 00C1 CBF0          jsr     LoadPRGSectorFromSD
 (1)   33/  C191FA : 42AD 7732               clr.l   $7732(a5)
 (1)   34/  C191FE : 203C 0000 0800          move.l  #2048,d0                    ; Second sector
+ AS V1.42 Beta [Bld 311] - Source File main.asm(loading.asm) - Page 22 - 9/11/2026 23:52:16
+
+
 (1)   35/  C19204 :                     
- AS V1.42 Beta [Bld 311] - Source File main.asm(loading.asm) - Page 22 - 9/11/2026 23:43:16
-
-
 (1)   36/  C19204 :                     .notfirst:
 (1)   37/  C19204 : 2B40 7EF4               move.l  d0,SectorLoadDest(a5)
 (1)   38/  C19208 :                     
@@ -1383,10 +1384,10 @@
 (1)   87/  C192B6 : 4EB9 00C1 91C8      	jsr     InitLoad
 (1)   88/  C192BC :                         
 (1)   89/  C192BC :                     .loadPCMsectors:
+ AS V1.42 Beta [Bld 311] - Source File main.asm(loading.asm) - Page 23 - 9/11/2026 23:52:16
+
+
 (1)   90/  C192BC : 4EB9 00C1 CD16          jsr     LoadPCMSectorFromSD
- AS V1.42 Beta [Bld 311] - Source File main.asm(loading.asm) - Page 23 - 9/11/2026 23:43:16
-
-
 (1)   91/  C192C2 : 4EB9 00C1 92D6          jsr     UpdateLoadAnim
 (1)   92/  C192C8 : 4A6D 7688               tst.w   SectorCounter(a5)
 (1)   93/  C192CC : 66EE                    bne.s   .loadPCMsectors
@@ -1446,10 +1447,10 @@
 (1)  146/  C19358 :                     .copy1:
 (1)  147/  C19358 : 32D8                    move.w  (a0)+,(a1)+
 (1)  148/  C1935A : 5347                    subq.w  #1,d7
+ AS V1.42 Beta [Bld 311] - Source File main.asm(loading.asm) - Page 24 - 9/11/2026 23:52:16
+
+
 (1)  149/  C1935C : 66FA                    bne     .copy1
- AS V1.42 Beta [Bld 311] - Source File main.asm(loading.asm) - Page 24 - 9/11/2026 23:43:16
-
-
 (1)  150/  C1935E : 2018                    move.l  (a0)+,d0            ; Just inc a0
 (1)  151/  C19360 : 2019                    move.l  (a1)+,d0            ; Just inc a1
 (1)  152/  C19362 : 3E3C 03CA               move.w  #1940/2,d7
@@ -1509,10 +1510,10 @@
 (1)  206/  C193E4 :                     	jsr     DebugDispMSF
 (1)  207/  C193E4 :                         movem.l (sp)+,a1
 (1)  208/  C193E4 : [200]               	ENDIF
+ AS V1.42 Beta [Bld 311] - Source File main.asm(loading.asm) - Page 25 - 9/11/2026 23:52:16
+
+
 (1)  209/  C193E4 :                     
- AS V1.42 Beta [Bld 311] - Source File main.asm(loading.asm) - Page 25 - 9/11/2026 23:43:16
-
-
 (1)  210/  C193E4 : 2039 0010 F6C8          move.l  $10F6C8,d0          ; Requested MSF
 (1)  211/  C193EA : 23C0 0011 C182          move.l  d0,MSFCounter
 (1)  212/  C193F0 :                     
@@ -1572,10 +1573,10 @@
 (1)  261/  C194A2 :                     .invalid:
 (1)  262/  C194A2 : 4E75                    rts
 (1)  263/  C194A4 :                     
+ AS V1.42 Beta [Bld 311] - Source File main.asm(loading.asm) - Page 26 - 9/11/2026 23:52:16
+
+
      201/  C194A4 :                     	INCLUDE "ui.asm"
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui.asm) - Page 26 - 9/11/2026 23:43:16
-
-
 (1)    1/  C194A4 :                     ; Copyright (C) 2020 Sean Gonsalves
 (1)    2/  C194A4 :                     ;
 (1)    3/  C194A4 :                     ; This file is part of Neo CD SD Loader.
@@ -1635,10 +1636,10 @@
 (1)   57/  C19512 : 3039 0010 D05E          move.w  SSaverTimer,d0
 (1)   58/  C19518 : 5240                    addq.w  #1,d0
 (1)   59/  C1951A : B07C 0708               cmp.w   #SSAVER_TIMEOUT*60,d0
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui.asm) - Page 27 - 9/11/2026 23:52:16
+
+
 (1)   60/  C1951E : 6518                    blo     .no_ss
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui.asm) - Page 27 - 9/11/2026 23:43:16
-
-
 (1)   61/  C19520 :                         ; If screen saver activates while a msgbox is shown, close it first to restore the correct CurrentScreen value
 (1)   62/  C19520 : 4A39 0010 D046          tst.b   CurrentMsgBox
 (1)   63/  C19526 : 6706                    beq     .no_msgbox
@@ -1684,7 +1685,7 @@
 (1)  100/  C19580 :                     
 (1)  101/  C19580 :                         ; Erase previously drawn list
 (1)  102/  C19580 : 33FC 0020 003C 0004 	move.w  #32,REG_VRAMMOD         ; Line by line
-(1)  103/  C19588 : 303C 7024           	move.w  #FIXMAP+LIST_START_ROW+(LIST_NAME_COL*32),d0
+(1)  103/  C19588 : 303C 7064           	move.w  #FIXMAP+LIST_START_ROW+(LIST_NAME_COL*32),d0
 (1)  104/  C1958C : 3E3C 0014           	move.w  #MAX_MENU_LINES,d7
 (1)  105/  C19590 :                     .cl_line:
 (1)  106/  C19590 : 33C0 003C 0000      	move.w  d0,REG_VRAMADDR
@@ -1698,10 +1699,10 @@
 (1)  114/  C195AA : 5347                	subq.w  #1,d7
 (1)  115/  C195AC : 66E2                	bne     .cl_line
 (1)  116/  C195AE :                     
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui.asm) - Page 28 - 9/11/2026 23:52:16
+
+
 (1)  117/  C195AE : 08B9 0000 0010 D003 	bclr.b  #0,RefreshFlags
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui.asm) - Page 28 - 9/11/2026 23:43:16
-
-
 (1)  118/  C195B6 :                     
 (1)  119/  C195B6 :                         ; Does new list have entries ?
 (1)  120/  C195B6 : 4A39 0010 D006      	tst.b   LetterGameCount
@@ -1711,7 +1712,7 @@
 (1)  124/  C195CC : 6606                	bne     .cardpresent
 (1)  125/  C195CE : 41F9 00C1 F5C4          lea     FixStrNoCard,a0
 (1)  126/  C195D4 :                     .cardpresent:
-(1)  127/  C195D4 : 303C 7025           	move.w  #FIXMAP+LIST_START_ROW+1+(LIST_NAME_COL*32),d0
+(1)  127/  C195D4 : 303C 7065           	move.w  #FIXMAP+LIST_START_ROW+1+(LIST_NAME_COL*32),d0
 (1)  128/  C195D8 : 4EB9 00C1 E528      	jsr     WriteFix
 (1)  129/  C195DE : 08F9 0002 0010 D003 	bset.b  #2,RefreshFlags     ; Force update to hide cursor
 (1)  130/  C195E6 : 4E75                	rts
@@ -1724,7 +1725,7 @@
 (1)  137/  C195F2 : 1C00                	move.b  d0,d6
 (1)  138/  C195F4 : D0BC 0011 E220      	add.l   #MenuIndexList,d0
 (1)  139/  C195FA : 2240                	movea.l d0,a1
-(1)  140/  C195FC : 343C 7024           	move.w  #FIXMAP+LIST_START_ROW+(LIST_NAME_COL*32),d2
+(1)  140/  C195FC : 343C 7064           	move.w  #FIXMAP+LIST_START_ROW+(LIST_NAME_COL*32),d2
 (1)  141/  C19600 :                     .disp:
 (1)  142/  C19600 : BC39 0010 D006          cmp.b   LetterGameCount,d6
 (1)  143/  C19606 : 6740                    beq     .done               ; Reached end of MenuIndexList
@@ -1761,10 +1762,10 @@
 (1)  174/  C19644 :                     
 (1)  175/  C19644 : 5347                	subq.w  #1,d7
 (1)  176/  C19646 : 66B8                	bne     .disp			    ; Max lines reached, stop
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui.asm) - Page 29 - 9/11/2026 23:52:16
+
+
 (1)  177/  C19648 :                     .done:
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui.asm) - Page 29 - 9/11/2026 23:43:16
-
-
 (1)  178/  C19648 :                     
 (1)  179/  C19648 : 4E75                	rts
 (1)  180/  C1964A :                     	
@@ -1824,10 +1825,10 @@
 (1)  228/  C196F6 : 0C39 0013 0010 D000     cmp.b   #MAX_MENU_LINES-1,FileCursor		; Max lines at once
 (1)  229/  C196FE : 6710                    beq     .scrolldown
 (1)  230/  C19700 :                         ; Move cursor
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui.asm) - Page 30 - 9/11/2026 23:52:16
+
+
 (1)  231/  C19700 : 5239 0010 D000          addq.b  #1,FileCursor
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui.asm) - Page 30 - 9/11/2026 23:43:16
-
-
 (1)  232/  C19706 : 08F9 0002 0010 D003 	bset.b  #2,RefreshFlags
 (1)  233/  C1970E : 600E                    bra     .no_down
 (1)  234/  C19710 :                     .scrolldown:
@@ -1887,10 +1888,10 @@
 (2)   23/  C19760 :                     MessageBox:
 (2)   24/  C19760 : 7000                    moveq.l #0,d0
 (2)   25/  C19762 : 2240                    move.l  d0,a1
+ AS V1.42 Beta [Bld 311] - Source File main.asm(msgbox.asm) - Page 31 - 9/11/2026 23:52:16
+
+
 (2)   26/  C19764 :                     MessageBoxCustom:
- AS V1.42 Beta [Bld 311] - Source File main.asm(msgbox.asm) - Page 31 - 9/11/2026 23:43:16
-
-
 (2)   27/  C19764 : 4A39 0010 D046          tst.b   CurrentMsgBox
 (2)   28/  C1976A : 6600 009E               bne     .abort
 (2)   29/  C1976E : 50F9 0010 D046          st.b    CurrentMsgBox
@@ -1950,10 +1951,10 @@
 (2)   82/  C19826 : 4EF9 00C0 0402          jmp     $C00402     ; Reset
 (2)   83/  C1982C :                     .noloading:
 (2)   84/  C1982C : 4EB9 00C1 9834          jsr     MessageBoxClose
+ AS V1.42 Beta [Bld 311] - Source File main.asm(msgbox.asm) - Page 32 - 9/11/2026 23:52:16
+
+
 (2)   85/  C19832 :                     .no_push:
- AS V1.42 Beta [Bld 311] - Source File main.asm(msgbox.asm) - Page 32 - 9/11/2026 23:43:16
-
-
 (2)   86/  C19832 : 4E75                    rts
 (2)   87/  C19834 :                     
 (2)   88/  C19834 :                     MessageBoxClose:
@@ -2013,10 +2014,10 @@
 (2)  131/  C198E6 : 0017 0017 0017 0017     dc.w [MSGBOX_WIDTH-2]$017
            C198EE : 0017 0017 0017 0017
            C198F6 : 0017 0017 0017 0017
+ AS V1.42 Beta [Bld 311] - Source File main.asm(msgbox.asm) - Page 33 - 9/11/2026 23:52:16
+
+
            C198FE : 0017 0017 0017 0017
- AS V1.42 Beta [Bld 311] - Source File main.asm(msgbox.asm) - Page 33 - 9/11/2026 23:43:16
-
-
            C19906 : 0017 0017 0017 0017
            C1990E : 0017 0017         
 (2)  132/  C19912 : 0004                    dc.w $004
@@ -2076,10 +2077,10 @@
 (2)   10/  C199B2 :                     ; This program is distributed in the hope that it will be useful,
 (2)   11/  C199B2 :                     ; but WITHOUT ANY WARRANTY; without even the implied warranty of
 (2)   12/  C199B2 :                     ; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_bg.asm) - Page 34 - 9/11/2026 23:52:16
+
+
 (2)   13/  C199B2 :                     ; GNU General Public License for more details.
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_bg.asm) - Page 34 - 9/11/2026 23:43:16
-
-
 (2)   14/  C199B2 :                     ;
 (2)   15/  C199B2 :                     ; You should have received a copy of the GNU General Public License
 (2)   16/  C199B2 :                     ; along with this program; see the file COPYING.  If not, write to
@@ -2139,10 +2140,10 @@
 (2)   70/  C19A2C : 4EB9 00C1 E3DA      	jsr     SetSprZ
 (2)   71/  C19A32 : 303C 0001           	move.w  #SPR_BG,d0
 (2)   72/  C19A36 : 323C E008           	move.w  #((496-BG_BOX_Y)<<7)+BG_BOX_H_TILES,d1	; Box top Y, centered vertically
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_bg.asm) - Page 35 - 9/11/2026 23:52:16
+
+
 (2)   73/  C19A3A : 3E3C 0008           	move.w  #BG_BOX_W_TILES,d7		; Box width, in tiles
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_bg.asm) - Page 35 - 9/11/2026 23:43:16
-
-
 (2)   74/  C19A3E : 4EB9 00C1 E3F6      	jsr     SetSprY
 (2)   75/  C19A44 : 303C 0001           	move.w  #SPR_BG,d0
 (2)   76/  C19A48 : 323C 00B0           	move.w  #BG_BOX_X,d1			; Box left X, right-hand column
@@ -2202,10 +2203,10 @@
 (2)  125/  C19AF0 : 0200 00F0           	andi.b  #$F0,d0
 (2)  126/  C19AF4 : 6706                	beq     .apply                ; No root bg.bmp either, use default pattern
 (2)  127/  C19AF6 : 4EB9 00C1 9B1C      	jsr     LoadCustomBGSilent
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_bg.asm) - Page 36 - 9/11/2026 23:52:16
+
+
 (2)  128/  C19AFC :                     .apply:
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_bg.asm) - Page 36 - 9/11/2026 23:43:16
-
-
 (2)  129/  C19AFC :                     	; CustomBGLoaded now reflects whether LoadCustomBG actually succeeded;
 (2)  130/  C19AFC :                     	; SetupBGSprites falls back to the default pattern on its own if not.
 (2)  131/  C19AFC : 4EB9 00C1 99B2      	jsr     SetupBGSprites
@@ -2265,10 +2266,10 @@
 (2)  181/  C19B86 : D5C8                    add.l   a0,a2
 (2)  182/  C19B88 :                         ; Get size of the DIB header from $0E in a0
 (2)  183/  C19B88 : 2028 000E               move.l  $E(a0),d0       ; DD CC BB AA
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_bg.asm) - Page 37 - 9/11/2026 23:52:16
+
+
 (2)  184/  C19B8C : (MACRO)[9]              ENDIAN_CHG_L d0         ; AA BB CC DD
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_bg.asm) - Page 37 - 9/11/2026 23:43:16
-
-
 (2)  184/  C19B8C : E158                    rol.w   #8,D0          ; DD CC AA BB
 (2)  184/  C19B8E : 4840                    swap.l  D0             ; AA BB DD CC
 (2)  184/  C19B90 : E158                    rol.w   #8,D0          ; AA BB CC DD
@@ -2328,10 +2329,10 @@
 (2)  238/  C19C1A :                     
 (2)  239/  C19C1A : 2A3C 0000 0010          move.l  #16,d5      ; Pixel rows per tile
 (2)  240/  C19C20 :                     .tileheight:
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_bg.asm) - Page 38 - 9/11/2026 23:52:16
+
+
 (2)  241/  C19C20 : 224B                    move.l  a3,a1       ; Restore base address
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_bg.asm) - Page 38 - 9/11/2026 23:43:16
-
-
 (2)  242/  C19C22 : 97FC 0000 0004          subi.l  #4,a3       ; -1 row (go to pixel row above)
 (2)  243/  C19C28 :                     
 (2)  244/  C19C28 : 7C08                    moveq.l #BG_BOX_W_TILES,d6      ; Width in tiles
@@ -2391,10 +2392,10 @@
 (2)  298/  C19C92 : 66D4                    bne     .rowb
 (2)  299/  C19C94 : 2342 FFC0               move.l  d2,-64(a1)      ; Right column
 (2)  300/  C19C98 :                     
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_bg.asm) - Page 39 - 9/11/2026 23:52:16
+
+
 (2)  301/  C19C98 : 43E9 0400               lea     128*BG_BOX_H_TILES(a1),a1   ; Next tile to the right
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_bg.asm) - Page 39 - 9/11/2026 23:43:16
-
-
 (2)  302/  C19C9C :                     
 (2)  303/  C19C9C : 5346                    subq.w  #1,d6           ; Done one tile pixel row
 (2)  304/  C19C9E : 668A                    bne     .sixteenpixelsrow
@@ -2454,10 +2455,10 @@
 (2)    4/  C19D30 :                     ;
 (2)    5/  C19D30 :                     ; This program is free software; you can redistribute it and/or modify
 (2)    6/  C19D30 :                     ; it under the terms of the GNU General Public License as published by
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_ssaver.asm) - Page 40 - 9/11/2026 23:52:16
+
+
 (2)    7/  C19D30 :                     ; the Free Software Foundation; either version 2, or (at your option)
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_ssaver.asm) - Page 40 - 9/11/2026 23:43:16
-
-
 (2)    8/  C19D30 :                     ; any later version.
 (2)    9/  C19D30 :                     ;
 (2)   10/  C19D30 :                     ; This program is distributed in the hope that it will be useful,
@@ -2517,10 +2518,10 @@
 (2)   63/  C19DB2 : 0281 0000 00FF          andi.l  #$FF,d1
 (2)   64/  C19DB8 : 41F9 0010 D060      	lea     ssaver_vars,a0
 (2)   65/  C19DBE : 43F9 00C0 4200      	lea     $C04200,a1              ; RND_DATA
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_ssaver.asm) - Page 41 - 9/11/2026 23:52:16
+
+
 (2)   66/  C19DC4 : 303C 0980           	move.w  #38<<6,d0               ; Initial X
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_ssaver.asm) - Page 41 - 9/11/2026 23:43:16
-
-
 (2)   67/  C19DC8 : 3E3C 0004               move.w  #4,d7
 (2)   68/  C19DCC :                     .setvars:
 (2)   69/  C19DCC : 30C0                	move.w  d0,(a0)+                ; X
@@ -2580,10 +2581,10 @@
 (2)  123/  C19E48 :                     	
 (2)  124/  C19E48 :                     	; Animate
 (2)  125/  C19E48 : 41F9 0010 D060      	lea     ssaver_vars,a0
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_ssaver.asm) - Page 42 - 9/11/2026 23:52:16
+
+
 (2)  126/  C19E4E : 3E3C 0004               move.w  #4,d7
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_ssaver.asm) - Page 42 - 9/11/2026 23:43:16
-
-
 (2)  127/  C19E52 :                     .anim:
 (2)  128/  C19E52 : 3010                    move.w  0(a0),d0                ; X
 (2)  129/  C19E54 : 3228 0002               move.w  2(a0),d1                ; Y
@@ -2643,10 +2644,10 @@
 (2)   10/  C19EBC :                     ; This program is distributed in the hope that it will be useful,
 (2)   11/  C19EBC :                     ; but WITHOUT ANY WARRANTY; without even the implied warranty of
 (2)   12/  C19EBC :                     ; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_setup.asm) - Page 43 - 9/11/2026 23:52:16
+
+
 (2)   13/  C19EBC :                     ; GNU General Public License for more details.
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_setup.asm) - Page 43 - 9/11/2026 23:43:16
-
-
 (2)   14/  C19EBC :                     ;
 (2)   15/  C19EBC :                     ; You should have received a copy of the GNU General Public License
 (2)   16/  C19EBC :                     ; along with this program; see the file COPYING.  If not, write to
@@ -2706,10 +2707,10 @@
 (2)   70/  C19F6E :                     
 (2)   71/  C19F6E : 4EB9 00C1 E35E          jsr     ClearFileList
 (2)   72/  C19F74 : 4EB9 00C1 964A          jsr     ClearMainSprites
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_setup.asm) - Page 44 - 9/11/2026 23:52:16
+
+
 (2)   73/  C19F7A :                     
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_setup.asm) - Page 44 - 9/11/2026 23:43:16
-
-
 (2)   74/  C19F7A :                         ; Apply whatever background is already valid (default pattern, or the
 (2)   75/  C19F7A :                         ; still-standing custom buffer from before this screen) right away -
 (2)   76/  C19F7A :                         ; otherwise SPR_BG keeps showing whatever the previous screen (e.g.
@@ -2769,10 +2770,10 @@
 (2)  126/  C1A00A : 6408                    bcc     .notimeoutc
 (2)  127/  C1A00C : 4EB9 00C1 9914          jsr     DispErrorTimeout
 (2)  128/  C1A012 : 607A                    bra     .setup_interface
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_setup.asm) - Page 45 - 9/11/2026 23:52:16
+
+
 (2)  129/  C1A014 :                     .notimeoutc:
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_setup.asm) - Page 45 - 9/11/2026 23:43:16
-
-
 (2)  130/  C1A014 : 4EB9 00C1 C872          jsr     MCURead4Words
 (2)  131/  C1A01A : 4EB9 00C1 C8B2          jsr     CheckACK
 (2)  132/  C1A020 : 656C                    bcs     .setup_interface
@@ -2832,10 +2833,10 @@
 (2)  186/  C1A09C : 4A47                    tst.w   d7
 (2)  187/  C1A09E : 6744                    beq     .noactive           ; Skip if no files
 (2)  188/  C1A0A0 : 41F9 0011 C900          lea     FileList,a0
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_setup.asm) - Page 46 - 9/11/2026 23:52:16
+
+
 (2)  189/  C1A0A6 : 43F9 00C1 F56D          lea     LetterLUT,a1
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_setup.asm) - Page 46 - 9/11/2026 23:43:16
-
-
 (2)  190/  C1A0AC : 2439 0010 D00A          move.l  ActiveLetters,d2
 (2)  191/  C1A0B2 : 7000                    moveq.l #0,d0
 (2)  192/  C1A0B4 :                     .setupactive
@@ -2883,7 +2884,7 @@
 (2)  231/  C1A11C :                     	; region flag (right, bottom rows) - the header logo/instructions and
 (2)  232/  C1A11C :                     	; the old START+SELECT/version footer are gone; this replaces them.
 (2)  233/  C1A11C : 33FC 0500 0011 C18A 	move.w  #$0500,FixWriteConfig
-(2)  234/  C1A124 : 303C 703A           	move.w  #FIXMAP+26+(LIST_NAME_COL*32),d0
+(2)  234/  C1A124 : 303C 707B           	move.w  #FIXMAP+27+(LIST_NAME_COL*32),d0	; One row lower than the flag - flag position unchanged
 (2)  235/  C1A128 : =>TRUE              	IF TARGET==1
 (2)  236/  C1A128 : 41F9 00C1 F50B          lea     FixStrFooterActionsFront,a0
 (2)  237/  C1A12E : =>FALSE             	ELSE
@@ -2895,10 +2896,10 @@
 (2)  243/  C1A134 : 41F9 00C1 A23E      	lea     FlagLUT,a0
 (2)  244/  C1A13A : 7000                	moveq.l #0,d0
 (2)  245/  C1A13C : 1039 0011 C18C      	move.b  SettingCountry,d0
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_setup.asm) - Page 47 - 9/11/2026 23:52:16
+
+
 (2)  246/  C1A142 : D040                	add.w   d0,d0
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_setup.asm) - Page 47 - 9/11/2026 23:43:16
-
-
 (2)  247/  C1A144 : D040                	add.w   d0,d0
 (2)  248/  C1A146 : 2070 0000           	movea.l (a0,d0),a0
 (2)  249/  C1A14A : 303C 1500           	move.w  #$1500,d0
@@ -2958,10 +2959,10 @@
 (2)  303/  C1A1E0 :                     .fill:
 (2)  304/  C1A1E0 : 10C0                	move.b  d0,(a0)+
 (2)  305/  C1A1E2 : 5240                	addq.w  #1,d0
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_setup.asm) - Page 48 - 9/11/2026 23:52:16
+
+
 (2)  306/  C1A1E4 : 5346                	subq.w  #1,d6
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_setup.asm) - Page 48 - 9/11/2026 23:43:16
-
-
 (2)  307/  C1A1E6 : 66F8                	bne     .fill
 (2)  308/  C1A1E8 :                     .done:
 (2)  309/  C1A1E8 :                     
@@ -3021,10 +3022,10 @@
 (2)   13/  C1A24E :                     ; GNU General Public License for more details.
 (2)   14/  C1A24E :                     ;
 (2)   15/  C1A24E :                     ; You should have received a copy of the GNU General Public License
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_vbl.asm) - Page 49 - 9/11/2026 23:52:16
+
+
 (2)   16/  C1A24E :                     ; along with this program; see the file COPYING.  If not, write to
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_vbl.asm) - Page 49 - 9/11/2026 23:43:16
-
-
 (2)   17/  C1A24E :                     ; the Free Software Foundation, Inc., 51 Franklin Street,
 (2)   18/  C1A24E :                     ; Boston, MA 02110-1301, USA.
 (2)   19/  C1A24E :                     
@@ -3062,7 +3063,7 @@
 (2)   51/  C1A28C :                     	; Erase previous cursor
 (2)   52/  C1A28C : 7000                	moveq.l #0,d0
 (2)   53/  C1A28E : 1039 0010 D001      	move.b  FileCursorPrev,d0
-(2)   54/  C1A294 : D07C 7004           	add.w   #FIXMAP+LIST_START_ROW+(LIST_CURSOR_COL*32),d0
+(2)   54/  C1A294 : D07C 7044           	add.w   #FIXMAP+LIST_START_ROW+(LIST_CURSOR_COL*32),d0
 (2)   55/  C1A298 : 33C0 003C 0000      	move.w  d0,REG_VRAMADDR
 (2)   56/  C1A29E : 4E71                	nop
 (2)   57/  C1A2A0 : 4E71                	nop
@@ -3073,7 +3074,7 @@
 (2)   62/  C1A2B2 : 7000                	moveq.l #0,d0
 (2)   63/  C1A2B4 : 1039 0010 D000      	move.b  FileCursor,d0
 (2)   64/  C1A2BA : 13C0 0010 D001      	move.b  d0,FileCursorPrev
-(2)   65/  C1A2C0 : 0640 7004           	addi.w  #FIXMAP+LIST_START_ROW+(LIST_CURSOR_COL*32),d0
+(2)   65/  C1A2C0 : 0640 7044           	addi.w  #FIXMAP+LIST_START_ROW+(LIST_CURSOR_COL*32),d0
 (2)   66/  C1A2C4 : 33C0 003C 0000      	move.w  d0,REG_VRAMADDR
 (2)   67/  C1A2CA : 4E71                	nop
 (2)   68/  C1A2CC : 4E71                	nop
@@ -3084,10 +3085,10 @@
 (2)   73/  C1A2E6 :                     	; Force redraw list to restore currently scrolling filename to start
 (2)   74/  C1A2E6 : 4EB9 00C1 9578      	jsr     DrawFileList
 (2)   75/  C1A2EC :                     .noredraw:
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_vbl.asm) - Page 50 - 9/11/2026 23:52:16
+
+
 (2)   76/  C1A2EC : 08B9 0002 0010 D003 	bclr.b  #2,RefreshFlags
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_vbl.asm) - Page 50 - 9/11/2026 23:43:16
-
-
 (2)   77/  C1A2F4 :                     .norefresh_cur:
 (2)   78/  C1A2F4 :                     
 (2)   79/  C1A2F4 : 0839 0003 0010 D003 	btst.b  #3,RefreshFlags
@@ -3096,7 +3097,7 @@
 (2)   82/  C1A2FE : 7000                	moveq.l #0,d0
 (2)   83/  C1A300 : 2200                	move.l  d0,d1
 (2)   84/  C1A302 : 1039 0010 D000      	move.b  FileCursor,d0
-(2)   85/  C1A308 : 0640 7024           	addi.w  #FIXMAP+LIST_START_ROW+(LIST_NAME_COL*32),d0
+(2)   85/  C1A308 : 0640 7064           	addi.w  #FIXMAP+LIST_START_ROW+(LIST_NAME_COL*32),d0
 (2)   86/  C1A30C :                     	; Display LIST_NAME_WIDTH chars starting from (GUBuffer+ScrollX)
 (2)   87/  C1A30C : 33FC 0020 003C 0004 	move.w  #32,REG_VRAMMOD
 (2)   88/  C1A314 : 41F9 0011 E2E8      	lea     GUBuffer,a0
@@ -3147,10 +3148,10 @@
 (2)  133/  C1A3AE :                     	; Short filename: FileList already holds it in full (this is only a
 (2)  134/  C1A3AE :                     	; storage-format flag, unrelated to LIST_NAME_WIDTH) - only bother
 (2)  135/  C1A3AE :                     	; scrolling if it's actually longer than what's visible on screen.
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_vbl.asm) - Page 51 - 9/11/2026 23:52:16
+
+
 (2)  136/  C1A3AE : 4A29 0014           	tst.b   LIST_NAME_WIDTH+2(a1)
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_vbl.asm) - Page 51 - 9/11/2026 23:43:16
-
-
 (2)  137/  C1A3B2 : 6700 00BC           	beq     .scrolling          ; Fits entirely, nothing to reveal
 (2)  138/  C1A3B6 :                     	; Copy it into GUBuffer so the rest of this code (which always renders
 (2)  139/  C1A3B6 :                     	; from there) doesn't need a separate short-name code path
@@ -3210,10 +3211,10 @@
 (2)  191/  C1A458 : 5200                    addq.b  #1,d0
 (2)  192/  C1A45A : 08F9 0003 0010 D003     bset.b  #3,RefreshFlags
 (2)  193/  C1A462 : 13C0 0010 D012          move.b  d0,ScrollX
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_vbl.asm) - Page 52 - 9/11/2026 23:52:16
+
+
 (2)  194/  C1A468 : 6006                    bra     .scrolling
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_vbl.asm) - Page 52 - 9/11/2026 23:43:16
-
-
 (2)  195/  C1A46A :                     .noscroll:
 (2)  196/  C1A46A : 5239 0010 D010          addq.b  #1,UITemp
 (2)  197/  C1A470 :                     .scrolling:
@@ -3273,10 +3274,10 @@
 (2)  245/  C1A50C :                     
 (2)  246/  C1A50C :                         ; Handle input for selection of game from list
 (2)  247/  C1A50C : 4EB9 00C1 9670          jsr     FileListNav
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_vbl.asm) - Page 53 - 9/11/2026 23:52:16
+
+
 (2)  248/  C1A512 :                     
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_vbl.asm) - Page 53 - 9/11/2026 23:43:16
-
-
 (2)  249/  C1A512 : (MACRO)[15]         	TESTCHANGE CNT_A
 (2)  249/  C1A512 : 1039 0010 FD97          move.b  BIOS_P1CHANGE,d0
 (2)  249/  C1A518 : 8039 0010 FD9D          or.b    BIOS_P2CHANGE,d0
@@ -3336,10 +3337,10 @@
 (2)  293/  C1A5BE :                     .no_d:
 (2)  294/  C1A5BE :                     
 (2)  295/  C1A5BE : 0839 0007 0010 F6B9 	btst   	#7,$10F6B9			; "GameStartState"
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_vbl.asm) - Page 54 - 9/11/2026 23:52:16
+
+
 (2)  296/  C1A5C6 : 6706                	beq     .idle
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_vbl.asm) - Page 54 - 9/11/2026 23:43:16
-
-
 (2)  297/  C1A5C8 : 4EF9 00C0 F248      	jmp     StartGameCD
 (2)  298/  C1A5CE :                     
 (2)  299/  C1A5CE :                     .idle:
@@ -3399,10 +3400,10 @@
 (2)  353/  C1A636 : B845                	cmp.w   d5,d4
 (2)  354/  C1A638 : 6302                	bls     .noclamp
 (2)  355/  C1A63A : 3805                	move.w  d5,d4
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_vbl.asm) - Page 55 - 9/11/2026 23:52:16
+
+
 (2)  356/  C1A63C :                     .noclamp:
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_main_vbl.asm) - Page 55 - 9/11/2026 23:43:16
-
-
 (2)  357/  C1A63C : 13C4 0010 D002      	move.b  d4,MenuShift
 (2)  358/  C1A642 : 3006                	move.w  d6,d0
 (2)  359/  C1A644 : 9044                	sub.w   d4,d0
@@ -3462,10 +3463,10 @@
 (2)   15/  C1A6B8 :                     ; You should have received a copy of the GNU General Public License
 (2)   16/  C1A6B8 :                     ; along with this program; see the file COPYING.  If not, write to
 (2)   17/  C1A6B8 :                     ; the Free Software Foundation, Inc., 51 Franklin Street,
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_menu.asm) - Page 56 - 9/11/2026 23:52:16
+
+
 (2)   18/  C1A6B8 :                     ; Boston, MA 02110-1301, USA.
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_menu.asm) - Page 56 - 9/11/2026 23:43:16
-
-
 (2)   19/  C1A6B8 :                     
 (2)   20/  C1A6B8 :                     SetupMenu:
 (2)   21/  C1A6B8 : 4EB9 00C1 E32A          jsr     ClearFixTop
@@ -3525,10 +3526,10 @@
 (2)   72/  C1A788 :                         ; Move cursor
 (2)   73/  C1A788 : 103C 0041               move.b  #SFX_MOVE,d0
 (2)   74/  C1A78C : 4EB9 00C1 9568          jsr     PlaySFX
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_menu.asm) - Page 57 - 9/11/2026 23:52:16
+
+
 (2)   75/  C1A792 : 5339 0010 D000          subq.b  #1,FileCursor
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_menu.asm) - Page 57 - 9/11/2026 23:43:16
-
-
 (2)   76/  C1A798 : 08F9 0002 0010 D003 	bset.b  #2,RefreshFlags
 (2)   77/  C1A7A0 : 4E71                    bra     .no_up
 (2)   78/  C1A7A2 :                     .no_up:
@@ -3588,10 +3589,10 @@
 (1)  271/  C1A848 :                     	INCLUDE "ui_storesaves.asm"
 (2)    1/  C1A848 :                     ; Copyright (C) 2020 Sean Gonsalves
 (2)    2/  C1A848 :                     ;
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_storesaves.asm) - Page 58 - 9/11/2026 23:52:16
+
+
 (2)    3/  C1A848 :                     ; This file is part of Neo CD SD Loader.
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_storesaves.asm) - Page 58 - 9/11/2026 23:43:16
-
-
 (2)    4/  C1A848 :                     ;
 (2)    5/  C1A848 :                     ; This program is free software; you can redistribute it and/or modify
 (2)    6/  C1A848 :                     ; it under the terms of the GNU General Public License as published by
@@ -3651,10 +3652,10 @@
 (2)   60/  C1A8C0 :                     
 (2)   61/  C1A8C0 : 0839 0000 0010 D003 	btst.b  #0,RefreshFlags
 (2)   62/  C1A8C8 : 6720                	beq     .norefresh_kbd
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_storesaves.asm) - Page 59 - 9/11/2026 23:52:16
+
+
 (2)   63/  C1A8CA :                     	; Redraw keyboard
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_storesaves.asm) - Page 59 - 9/11/2026 23:43:16
-
-
 (2)   64/  C1A8CA : 303C 712F           	move.w  #FIXMAP+15+(9*32),d0
 (2)   65/  C1A8CE : 1239 0010 D010      	move.b  UITemp,d1
 (2)   66/  C1A8D4 : 4EB9 00C1 ABD0      	jsr     DrawKeyboard
@@ -3714,10 +3715,10 @@
 (2)  117/  C1A9B0 : 1039 0010 FD98          move.b  BIOS_P1REPEAT,d0
 (2)  117/  C1A9B6 : 8039 0010 FD9E          or.b    BIOS_P2REPEAT,d0
 (2)  117/  C1A9BC : 0200 0001               andi.b  #(2^CNT_UP),d0
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_storesaves.asm) - Page 60 - 9/11/2026 23:52:16
+
+
 (2)  118/  C1A9C0 : 6728                    beq     .no_up
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_storesaves.asm) - Page 60 - 9/11/2026 23:43:16
-
-
 (2)  119/  C1A9C2 : 08F9 0001 0010 D003     bset.b  #1,RefreshFlags     ; Request cursor refresh
 (2)  120/  C1A9CA : 4A39 0010 D000          tst.b   FileCursor
 (2)  121/  C1A9D0 : 6612                    bne     .no_zero
@@ -3777,10 +3778,10 @@
 (2)  166/  C1AAAA : 601A                    bra     .no_right
 (2)  167/  C1AAAC :                     .no_last3:
 (2)  168/  C1AAAC : 0C39 000B 0010 D007     cmp.b   #11,LetterCursor
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_storesaves.asm) - Page 61 - 9/11/2026 23:52:16
+
+
 (2)  169/  C1AAB4 : 660A                    bne     .no_last4
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_storesaves.asm) - Page 61 - 9/11/2026 23:43:16
-
-
 (2)  170/  C1AAB6 : 13FC 0000 0010 D007     move.b  #0,LetterCursor
 (2)  171/  C1AABE : 6006                    bra     .no_right
 (2)  172/  C1AAC0 :                     .no_last4:
@@ -3840,10 +3841,10 @@
 (2)  223/  C1AB70 : (MACRO)[30]         	TESTCHANGE CNT_B
 (2)  223/  C1AB70 : 1039 0010 FD97          move.b  BIOS_P1CHANGE,d0
 (2)  223/  C1AB76 : 8039 0010 FD9D          or.b    BIOS_P2CHANGE,d0
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_storesaves.asm) - Page 62 - 9/11/2026 23:52:16
+
+
 (2)  223/  C1AB7C : 0200 0020               andi.b  #(2^CNT_B),d0
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_storesaves.asm) - Page 62 - 9/11/2026 23:43:16
-
-
 (2)  224/  C1AB80 : 672A                    beq     .no_b
 (2)  225/  C1AB82 :                         ; Is file name already empty ?
 (2)  226/  C1AB82 : 4A39 0010 D05D          tst.b   FileNameCursor
@@ -3903,10 +3904,10 @@
 (2)  277/  C1AC2A : 60CE                    bra     .row
 (2)  278/  C1AC2C :                     .done:
 (2)  279/  C1AC2C : 33FC 0500 0011 C18A 	move.w  #$0500,FixWriteConfig
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_storesaves.asm) - Page 63 - 9/11/2026 23:52:16
+
+
 (2)  280/  C1AC34 : 4E75                    rts
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_storesaves.asm) - Page 63 - 9/11/2026 23:43:16
-
-
 (2)  281/  C1AC36 :                     
 (2)  282/  C1AC36 :                     ; d0.w: x pos
 (2)  283/  C1AC36 :                     ; d1.w: y pos
@@ -3966,10 +3967,10 @@
 (2)   36/  C1AC92 :                     	lea     SaveDebugList,a0
 (2)   37/  C1AC92 :                     	lea     FileList,a1
 (2)   38/  C1AC92 :                     	move.w  #DEBUGSAVECOUNT*FileEntry_LEN,d7
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_loadsaves.asm) - Page 64 - 9/11/2026 23:52:16
+
+
 (2)   39/  C1AC92 :                     .debug_save_list:
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_loadsaves.asm) - Page 64 - 9/11/2026 23:43:16
-
-
 (2)   40/  C1AC92 :                     	move.b  (a0)+,(a1)+
 (2)   41/  C1AC92 :                     	subq.w  #1,d7
 (2)   42/  C1AC92 :                     	bne     .debug_save_list
@@ -4029,10 +4030,10 @@
 (2)   94/  C1AD12 :                     
 (2)   95/  C1AD12 :                     .setup_interface:
 (2)   96/  C1AD12 : 3E39 0010 D004          move.w  TotalFileCount,d7
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_loadsaves.asm) - Page 65 - 9/11/2026 23:52:16
+
+
 (2)   97/  C1AD18 : 13C7 0010 D006          move.b  d7,LetterGameCount  ; For DrawFileList
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_loadsaves.asm) - Page 65 - 9/11/2026 23:43:16
-
-
 (2)   98/  C1AD1E :                     
 (2)   99/  C1AD1E :                         ; Just fill MenuIndexList with inc indexes for DrawFileList
 (2)  100/  C1AD1E : 41F9 0011 E220      	lea     MenuIndexList,a0
@@ -4092,10 +4093,10 @@
 (2)  151/  C1ADCE : 0200 0010               andi.b  #(2^CNT_A),d0
 (2)  152/  C1ADD2 : 6712                    beq     .no_a
 (2)  153/  C1ADD4 :                         ; Ask user for confirmation
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_loadsaves.asm) - Page 66 - 9/11/2026 23:52:16
+
+
 (2)  154/  C1ADD4 : 41F9 00C1 EFF2          lea     FixStrLoadConfirm,a0
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_loadsaves.asm) - Page 66 - 9/11/2026 23:43:16
-
-
 (2)  155/  C1ADDA : 43F9 00C1 AE2E          lea     ExitLoadConfirm,a1
 (2)  156/  C1ADE0 : 4EF9 00C1 9764          jmp     MessageBoxCustom
 (2)  157/  C1ADE6 :                     .no_a:
@@ -4155,10 +4156,10 @@
 (2)    1/  C1AE92 :                     ; Copyright (C) 2020 Sean Gonsalves
 (2)    2/  C1AE92 :                     ;
 (2)    3/  C1AE92 :                     ; This file is part of Neo CD SD Loader.
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_settings.asm) - Page 67 - 9/11/2026 23:52:16
+
+
 (2)    4/  C1AE92 :                     ;
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_settings.asm) - Page 67 - 9/11/2026 23:43:16
-
-
 (2)    5/  C1AE92 :                     ; This program is free software; you can redistribute it and/or modify
 (2)    6/  C1AE92 :                     ; it under the terms of the GNU General Public License as published by
 (2)    7/  C1AE92 :                     ; the Free Software Foundation; either version 2, or (at your option)
@@ -4218,10 +4219,10 @@
            C1AF0C : 00               
 (2)   58/  C1AF0D :                     
 (2)   59/  C1AF0D :                     FixStrNew:
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_settings.asm) - Page 68 - 9/11/2026 23:52:16
+
+
 (2)   60/  C1AF0D : 4E45 5700               dc.b "NEW",0
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_settings.asm) - Page 68 - 9/11/2026 23:43:16
-
-
 (2)   61/  C1AF11 :                     FixStrOld:
 (2)   62/  C1AF11 : 4F4C 4400               dc.b "OLD",0
 (2)   63/  C1AF15 :                     
@@ -4281,10 +4282,10 @@
 (2)  116/  C1AFBE : 7000                    moveq.l #0,d0
 (2)  117/  C1AFC0 : 1039 0011 C18C      	move.b  SettingCountry,d0
 (2)  118/  C1AFC6 : 0200 0003           	andi.b  #3,d0
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_settings.asm) - Page 69 - 9/11/2026 23:52:16
+
+
 (2)  119/  C1AFCA : 13C0 0011 C18C      	move.b  d0,SettingCountry
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_settings.asm) - Page 69 - 9/11/2026 23:43:16
-
-
 (2)  120/  C1AFD0 : 41F9 00C1 B2B2          lea     CountryList,a0
 (2)  121/  C1AFD6 : E548                    lsl.w   #2,d0
 (2)  122/  C1AFD8 : 2070 0000               move.l  0(a0,d0),a0
@@ -4344,10 +4345,10 @@
 (2)  175/  C1B0A6 : 41F9 00C1 AEFB      	lea     FixStrEnabled,a0
 (2)  176/  C1B0AC :                     .disabledb:
 (2)  177/  C1B0AC : 303C 7313           	move.w  #FIXMAP+19+(24*32),d0
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_settings.asm) - Page 70 - 9/11/2026 23:52:16
+
+
 (2)  178/  C1B0B0 : 4EB9 00C1 E528      	jsr     WriteFix
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_settings.asm) - Page 70 - 9/11/2026 23:43:16
-
-
 (2)  179/  C1B0B6 : 08B9 0004 0010 D003 	bclr.b  #4,RefreshFlags
 (2)  180/  C1B0BE :                     .norefresh_ssaver:
 (2)  181/  C1B0BE :                     
@@ -4407,10 +4408,10 @@
 (2)  235/  C1B184 : 41F9 00C1 AF15      	lea     FixStrFast,a0
 (2)  236/  C1B18A : 1039 0011 C192      	move.b  SettingLoadAnim,d0
 (2)  237/  C1B190 : 0200 0001           	andi.b  #1,d0
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_settings.asm) - Page 71 - 9/11/2026 23:52:16
+
+
 (2)  238/  C1B194 : 6706                	beq     .fast
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_settings.asm) - Page 71 - 9/11/2026 23:43:16
-
-
 (2)  239/  C1B196 : 41F9 00C1 AF1A      	lea     FixStrSlow,a0
 (2)  240/  C1B19C :                     .fast:
 (2)  241/  C1B19C : 303C 73B6           	move.w  #FIXMAP+22+(29*32),d0
@@ -4470,10 +4471,10 @@
 (2)  286/  C1B254 : 4EB9 00C1 9568          jsr     PlaySFX
 (2)  287/  C1B25A : 08F9 0002 0010 D003 	bset.b  #2,RefreshFlags
 (2)  288/  C1B262 :                     .no_down:
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_settings.asm) - Page 72 - 9/11/2026 23:52:16
+
+
 (2)  289/  C1B262 :                     
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_settings.asm) - Page 72 - 9/11/2026 23:43:16
-
-
 (2)  290/  C1B262 : (MACRO)[41]         	TESTCHANGE CNT_LEFT
 (2)  290/  C1B262 : 1039 0010 FD97          move.b  BIOS_P1CHANGE,d0
 (2)  290/  C1B268 : 8039 0010 FD9D          or.b    BIOS_P2CHANGE,d0
@@ -4533,10 +4534,10 @@
            C1B2FA : 00C1 B3F2         
 (2)  336/  C1B2FE : 0003 0000               dc.w 3, 0
 (2)  337/  C1B302 : 00C1 B444 00C1 B45E     dc.l NavProcDDIPL, NavProcDDIPR, NavProcDDIPA
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_settings.asm) - Page 73 - 9/11/2026 23:52:16
+
+
            C1B30A : 00C1 B478         
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_settings.asm) - Page 73 - 9/11/2026 23:43:16
-
-
 (2)  338/  C1B30E : 0004 0001               dc.w 4, 1
 (2)  339/  C1B312 : 00C1 B444 00C1 B45E     dc.l NavProcDDIPL, NavProcDDIPR, NavProcDDIPA
            C1B31A : 00C1 B478         
@@ -4596,10 +4597,10 @@
 (2)  386/  C1B3D8 :                     NavProcCountryR:
 (2)  387/  C1B3D8 :                         ; Next country
 (2)  388/  C1B3D8 : 103C 0041               move.b  #SFX_MOVE,d0
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_settings.asm) - Page 74 - 9/11/2026 23:52:16
+
+
 (2)  389/  C1B3DC : 4EB9 00C1 9568          jsr     PlaySFX
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_settings.asm) - Page 74 - 9/11/2026 23:43:16
-
-
 (2)  390/  C1B3E2 : 5239 0011 C18C          addq.b  #1,SettingCountry
 (2)  391/  C1B3E8 : 08F9 0001 0010 D003 	bset.b  #1,RefreshFlags
 (2)  392/  C1B3F0 : 4E75                	rts
@@ -4659,10 +4660,10 @@
 (2)  445/  C1B496 : E029                    lsr.b   d0,d1
 (2)  446/  C1B498 : B310                    eor.b   d1,(a0)
 (2)  447/  C1B49A : 08F9 0000 0010 D003 	bset.b  #0,RefreshFlags
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_settings.asm) - Page 75 - 9/11/2026 23:52:16
+
+
 (2)  448/  C1B4A2 : 4E75                	rts
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_settings.asm) - Page 75 - 9/11/2026 23:43:16
-
-
 (2)  449/  C1B4A4 :                     
 (2)  450/  C1B4A4 :                     NavProcDevModeLR:
 (2)  451/  C1B4A4 :                         ; Toggle developer mode on/off
@@ -4722,10 +4723,10 @@
 (2)  505/  C1B548 : 08F9 0007 0010 D003 	bset.b  #7,RefreshFlags
 (2)  506/  C1B550 : 4E75                	rts
 (2)  507/  C1B552 :                     
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_settings.asm) - Page 76 - 9/11/2026 23:52:16
+
+
 (2)  508/  C1B552 :                     NavProcLoadLR:
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_settings.asm) - Page 76 - 9/11/2026 23:43:16
-
-
 (2)  509/  C1B552 :                         ; Choose between slowed down or normal loading animations
 (2)  510/  C1B552 : 103C 0041               move.b  #SFX_MOVE,d0
 (2)  511/  C1B556 : 4EB9 00C1 9568          jsr     PlaySFX
@@ -4785,10 +4786,10 @@
 (2)   49/  C1B56E :                     	rts
 (2)   50/  C1B56E :                     	
 (2)   51/  C1B56E :                     VBLProcDebugLoading:
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_debug.asm) - Page 77 - 9/11/2026 23:52:16
+
+
 (2)   52/  C1B56E :                         ; Just refresh counters
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_debug.asm) - Page 77 - 9/11/2026 23:43:16
-
-
 (2)   53/  C1B56E :                     	lea     FixValueList,a0
 (2)   54/  C1B56E :                     	move.l  DBGTotal,(a0)+
 (2)   55/  C1B56E :                     	move.l  DBGPass,(a0)+
@@ -4848,10 +4849,10 @@
 (2)  109/  C1B56E :                     .zero:
 (2)  110/  C1B56E :                         subq.l  #1,d7
 (2)  111/  C1B56E :                         bne     .check
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_debug.asm) - Page 78 - 9/11/2026 23:52:16
+
+
 (2)  112/  C1B56E :                     	addq.l  #1,DBGPass
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_debug.asm) - Page 78 - 9/11/2026 23:43:16
-
-
 (2)  113/  C1B56E :                     	bra     .done
 (2)  114/  C1B56E :                     .wrong:
 (2)  115/  C1B56E :                         move.l  a0,DBGLast
@@ -4911,10 +4912,10 @@
 (2)  169/  C1B56E :                     
 (2)  170/  C1B56E :                     SetupDebugISOList:
 (2)  171/  C1B56E :                     	move.w  #SCREEN_DEBUGISO,CurrentScreen
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_debug.asm) - Page 79 - 9/11/2026 23:52:16
+
+
 (2)  172/  C1B56E :                     
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_debug.asm) - Page 79 - 9/11/2026 23:43:16
-
-
 (2)  173/  C1B56E :                         jsr     ClearFix
 (2)  174/  C1B56E :                     
 (2)  175/  C1B56E :                     	move.w  #$0500,FixWriteConfig	; Bank 5 has menu font
@@ -4974,10 +4975,10 @@
 (2)  229/  C1B56E :                         jsr     MCURead4Words
 (2)  230/  C1B56E :                         ; Check that command was processed ok
 (2)  231/  C1B56E :                         move.b  MCUReplyBuffer,d0
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_debug.asm) - Page 80 - 9/11/2026 23:52:16
+
+
 (2)  232/  C1B56E :                         andi.b  #$F0,d0
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_debug.asm) - Page 80 - 9/11/2026 23:43:16
-
-
 (2)  233/  C1B56E :                         cmp.b   #$F0,d0
 (2)  234/  C1B56E :                         beq     .cmdok
 (2)  235/  C1B56E :                         ; Not ok, show error text and abort
@@ -5037,10 +5038,10 @@
 (2)  289/  C1B56E :                     
 (2)  290/  C1B56E :                     	move.w  d0,CPLDREG_EXEC
 (2)  291/  C1B56E :                         jsr     MCUWaitExec
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_debug.asm) - Page 81 - 9/11/2026 23:52:16
+
+
 (2)  292/  C1B56E :                         tst.b   d0
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_debug.asm) - Page 81 - 9/11/2026 23:43:16
-
-
 (2)  293/  C1B56E :                         bne     .timeout
 (2)  294/  C1B56E :                     
 (2)  295/  C1B56E :                         move.w  CPLDREG_DATA,d1     ; Read what the MCU replied
@@ -5100,10 +5101,10 @@
 (2)  349/  C1B56E :                     	   ERROR ":("
 (2)  350/  C1B56E :                         ELSE
 (2)  351/  C1B56E :                     	jmp     StartGameCD
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_debug.asm) - Page 82 - 9/11/2026 23:52:16
+
+
 (2)  352/  C1B56E : [348]               	ENDIF
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_debug.asm) - Page 82 - 9/11/2026 23:43:16
-
-
 (2)  353/  C1B56E :                     .idle:
 (2)  354/  C1B56E :                     
 (2)  355/  C1B56E :                         rts
@@ -5163,10 +5164,10 @@
 (2)   10/  C1B5AE :                     ; This program is distributed in the hope that it will be useful,
 (2)   11/  C1B5AE :                     ; but WITHOUT ANY WARRANTY; without even the implied warranty of
 (2)   12/  C1B5AE :                     ; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_about.asm) - Page 83 - 9/11/2026 23:52:16
+
+
 (2)   13/  C1B5AE :                     ; GNU General Public License for more details.
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_about.asm) - Page 83 - 9/11/2026 23:43:16
-
-
 (2)   14/  C1B5AE :                     ;
 (2)   15/  C1B5AE :                     ; You should have received a copy of the GNU General Public License
 (2)   16/  C1B5AE :                     ; along with this program; see the file COPYING.  If not, write to
@@ -5226,10 +5227,10 @@
 (2)   68/  C1B638 :                     
 (2)   69/  C1B638 : 41F9 00C1 EE54          lea     FixStrIcon,a0
 (2)   70/  C1B63E : 303C 7414           	move.w  #FIXMAP+20+(32*32),d0
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_about.asm) - Page 84 - 9/11/2026 23:52:16
+
+
 (2)   71/  C1B642 : 4EB9 00C1 E528      	jsr     WriteFix
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_about.asm) - Page 84 - 9/11/2026 23:43:16
-
-
 (2)   72/  C1B648 :                     
 (2)   73/  C1B648 : 4A39 0010 D010      	tst.b   UITemp
 (2)   74/  C1B64E : 6706                	beq     .noerror
@@ -5289,10 +5290,10 @@
 (2)   37/  C1B6C4 : 4EB9 00C1 E4BC          jsr     CopyPalette
 (2)   38/  C1B6CA :                     
 (2)   39/  C1B6CA :                         ; Save first half of fix bank #0 to RAM buffer
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_igm.asm) - Page 85 - 9/11/2026 23:52:16
+
+
 (2)   40/  C1B6CA : 13FC 0001 00FF 0115     move.b  #1,REG_DISBLFIX
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_igm.asm) - Page 85 - 9/11/2026 23:43:16
-
-
 (2)   41/  C1B6D2 : 13FC 0001 00FF 016F     move.b  #1,REG_UPLOAD_EN
 (2)   42/  C1B6DA : 13C0 00FF 0129          move.b  d0,REG_UPMAPFIX
 (2)   43/  C1B6E0 : 13FC 0005 00FF 0105     move.b  #5,REG_TRANSAREA
@@ -5352,10 +5353,10 @@
 (2)   94/  C1B78A : 33FC F000 0011 C18A     move.w  #$F000,FixWriteConfig   ; Palette #15 bank 0
 (2)   95/  C1B792 :                     
 (2)   96/  C1B792 :                         ; Draw game name
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_igm.asm) - Page 86 - 9/11/2026 23:52:16
+
+
 (2)   97/  C1B792 : 33FC 0020 003C 0004 	move.w  #32,REG_VRAMMOD
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_igm.asm) - Page 86 - 9/11/2026 23:43:16
-
-
 (2)   98/  C1B79A : 41F9 00C1 BC14          lea     SoftDIPsPtrs,a0
 (2)   99/  C1B7A0 : 7000                    moveq.l #0,d0
 (2)  100/  C1B7A2 : 1039 0010 FD83          move.b  BIOS_COUNTRY_CODE,d0
@@ -5415,10 +5416,10 @@
 (2)  152/  C1B842 : 7000                    moveq.l #0,d0
 (2)  153/  C1B844 : 1039 0011 C1C1          move.b  IGMMode,d0
 (2)  154/  C1B84A : E588                    lsl.l   #2,d0
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_igm.asm) - Page 87 - 9/11/2026 23:52:16
+
+
 (2)  155/  C1B84C : 41F9 00C1 BC08          lea     JT_IGMVBLProcs,a0
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_igm.asm) - Page 87 - 9/11/2026 23:43:16
-
-
 (2)  156/  C1B852 : 2070 0000               move.l  0(a0,d0),a0
 (2)  157/  C1B856 : 4E90                    jsr     (a0)
 (2)  158/  C1B858 :                     
@@ -5478,10 +5479,10 @@
 (2)  203/  C1B8FA : 4EB9 00C1 B978          jsr     CloseIGM
 (2)  204/  C1B900 :                     .no_b:
 (2)  205/  C1B900 : 4E75                    rts
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_igm.asm) - Page 88 - 9/11/2026 23:52:16
+
+
 (2)  206/  C1B902 :                     
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_igm.asm) - Page 88 - 9/11/2026 23:43:16
-
-
 (2)  207/  C1B902 :                     
 (2)  208/  C1B902 :                     DrawIGMCursor:
 (2)  209/  C1B902 : (MACRO)[51]         	DIIRQ
@@ -5541,10 +5542,10 @@
 (2)  257/  C1B9BE :                     .copy:
 (2)  258/  C1B9BE : 1018                	move.b  (a0)+,d0        ; Read AA BB, store 00 AA 00 BB
 (2)  259/  C1B9C0 : 32C0                    move.w  d0,(a1)+        ; 00 AA
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_igm.asm) - Page 89 - 9/11/2026 23:52:16
+
+
 (2)  260/  C1B9C2 : 1018                	move.b  (a0)+,d0
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_igm.asm) - Page 89 - 9/11/2026 23:43:16
-
-
 (2)  261/  C1B9C4 : 32C0                	move.w  d0,(a1)+	    ; 00 BB
 (2)  262/  C1B9C6 : 5347                	subq.w  #1,d7
 (2)  263/  C1B9C8 : 66F4                    bne     .copy
@@ -5604,10 +5605,10 @@
 (2)  312/  C1BA84 : (MACRO)[55]         	DIIRQ
 (2)  312/  C1BA84 : 13C0 0030 0001          move.b  d0,REG_DIPSW
 (2)  312/  C1BA8A : 40E7                        move.w  sr,-(a7)
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_igm.asm) - Page 90 - 9/11/2026 23:52:16
+
+
 (2)  312/  C1BA8C : 007C 0700                   ori.w   #$0700,sr
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_igm.asm) - Page 90 - 9/11/2026 23:43:16
-
-
 (2)  313/  C1BA90 : 33FC 0020 003C 0004     move.w  #32,REG_VRAMMOD
 (2)  314/  C1BA98 : 3239 0011 C18A          move.w  FixWriteConfig,d1
 (2)  315/  C1BA9E : 343C 70AA               move.w  #FIXMAP+10+(5*32),d2
@@ -5667,10 +5668,10 @@
 (2)  359/  C1BB46 : 0020 0020 0020 0020     dc.w [IGM_WIDTH-3]$020
            C1BB4E : 0020 0020 0020 0020
            C1BB56 : 0020 0020 0020 0020
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_igm.asm) - Page 91 - 9/11/2026 23:52:16
+
+
            C1BB5E : 0020 0020 0020 0020
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_igm.asm) - Page 91 - 9/11/2026 23:43:16
-
-
            C1BB66 : 0020 0020 0020 0020
            C1BB6E : 0020 0020 0020 0020
            C1BB76 : 0020 0020 0020   
@@ -5730,10 +5731,10 @@
 (1)  278/  C1BC24 :                         INCLUDE "ui_cheats.asm"
 (2)    1/  C1BC24 :                     ; Copyright (C) 2020 Sean Gonsalves
 (2)    2/  C1BC24 :                     ;
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_cheats.asm) - Page 92 - 9/11/2026 23:52:16
+
+
 (2)    3/  C1BC24 :                     ; This file is part of Neo CD SD Loader.
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_cheats.asm) - Page 92 - 9/11/2026 23:43:16
-
-
 (2)    4/  C1BC24 :                     ;
 (2)    5/  C1BC24 :                     ; This program is free software; you can redistribute it and/or modify
 (2)    6/  C1BC24 :                     ; it under the terms of the GNU General Public License as published by
@@ -5793,10 +5794,10 @@
 (2)   52/  C1BCA2 : 4A39 0011 C1BD          tst.b   IGMCursor
 (2)   53/  C1BCA8 : 670E                    beq     .top
 (2)   54/  C1BCAA :                         ; Move cursor
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_cheats.asm) - Page 93 - 9/11/2026 23:52:16
+
+
 (2)   55/  C1BCAA : 5339 0011 C1BD          subq.b  #1,IGMCursor
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_cheats.asm) - Page 93 - 9/11/2026 23:43:16
-
-
 (2)   56/  C1BCB0 : 4EB9 00C1 BD7A          jsr     DrawCheatList
 (2)   57/  C1BCB6 : 6014                    bra     .no_up
 (2)   58/  C1BCB8 :                     .top:
@@ -5856,10 +5857,10 @@
 (2)  106/  C1BD62 : 670E                    beq     .close
 (2)  107/  C1BD64 : 4AB9 0011 C202      	tst.l   CheatsBitmap	; No cheats enabled
 (2)  108/  C1BD6A : 6706                    beq     .close
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_cheats.asm) - Page 94 - 9/11/2026 23:52:16
+
+
 (2)  109/  C1BD6C : 4EB9 00C1 D462          jsr     InstallCheats
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_cheats.asm) - Page 94 - 9/11/2026 23:43:16
-
-
 (2)  110/  C1BD72 :                     .close:
 (2)  111/  C1BD72 : 4EB9 00C1 B978          jsr     CloseIGM
 (2)  112/  C1BD78 :                     .no_b:
@@ -5919,10 +5920,10 @@
 (2)  166/  C1BDFA : 33C2 003C 0000          move.w  d2,REG_VRAMADDR
 (2)  167/  C1BE00 : 303C E000           	move.w  #$E000,d0      ; Palette #14
 (2)  168/  C1BE04 :                     
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_cheats.asm) - Page 95 - 9/11/2026 23:52:16
+
+
 (2)  169/  C1BE04 : 103C 0020               move.b  #' ',d0
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_cheats.asm) - Page 95 - 9/11/2026 23:43:16
-
-
 (2)  170/  C1BE08 : B805                    cmp.b   d5,d4
 (2)  171/  C1BE0A : 6604                    bne     .nocur
 (2)  172/  C1BE0C : 103C 0011               move.b  #CHAR_ARROW_RIGHT,d0
@@ -5982,10 +5983,10 @@
 (2)   11/  C1BE84 :                     ; but WITHOUT ANY WARRANTY; without even the implied warranty of
 (2)   12/  C1BE84 :                     ; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 (2)   13/  C1BE84 :                     ; GNU General Public License for more details.
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_sdips.asm) - Page 96 - 9/11/2026 23:52:16
+
+
 (2)   14/  C1BE84 :                     ;
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_sdips.asm) - Page 96 - 9/11/2026 23:43:16
-
-
 (2)   15/  C1BE84 :                     ; You should have received a copy of the GNU General Public License
 (2)   16/  C1BE84 :                     ; along with this program; see the file COPYING.  If not, write to
 (2)   17/  C1BE84 :                     ; the Free Software Foundation, Inc., 51 Franklin Street,
@@ -6045,10 +6046,10 @@
 (2)   58/  C1BF2A : B03C 0007               cmp.b   #7,d0          ; Just went from 8 to 7
 (2)   59/  C1BF2E : 660C                    bne     .done_up
 (2)   60/  C1BF30 :                         ; Go to first page
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_sdips.asm) - Page 97 - 9/11/2026 23:52:16
+
+
 (2)   61/  C1BF30 : 4EB9 00C1 BA84          jsr     ClearIGM
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_sdips.asm) - Page 97 - 9/11/2026 23:43:16
-
-
 (2)   62/  C1BF36 : 4EB9 00C1 C0C0          jsr     DrawSDIP       ; Refresh display
 (2)   63/  C1BF3C :                     .done_up:
 (2)   64/  C1BF3C : 4EB9 00C1 C054          jsr     DrawSDIPCursor
@@ -6108,10 +6109,10 @@
 (2)  109/  C1BFF2 : (MACRO)[70]             TESTCHANGE CNT_C
 (2)  109/  C1BFF2 : 1039 0010 FD97          move.b  BIOS_P1CHANGE,d0
 (2)  109/  C1BFF8 : 8039 0010 FD9D          or.b    BIOS_P2CHANGE,d0
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_sdips.asm) - Page 98 - 9/11/2026 23:52:16
+
+
 (2)  109/  C1BFFE : 0200 0040               andi.b  #(2^CNT_C),d0
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_sdips.asm) - Page 98 - 9/11/2026 23:43:16
-
-
 (2)  110/  C1C002 : 672C                    beq     .no_c
 (2)  111/  C1C004 :                         ; Copy default settings to BIOS_GAME_DIP
 (2)  112/  C1C004 : 2079 0011 C1C2          move.l  SDIPAddr,a0
@@ -6171,10 +6172,10 @@
 (2)  163/  C1C09C : 123C 0011               move.b  #CHAR_ARROW_RIGHT,d1
 (2)  164/  C1C0A0 : 13F9 0011 C1BD 0011     move.b  IGMCursor,PrevIGMCursor
            C1C0A8 : C1BE               
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_sdips.asm) - Page 99 - 9/11/2026 23:52:16
+
+
 (2)  165/  C1C0AA : 4E71                    nop
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_sdips.asm) - Page 99 - 9/11/2026 23:43:16
-
-
 (2)  166/  C1C0AC : 4E71                    nop
 (2)  167/  C1C0AE : 33C1 003C 0002          move.w  d1,REG_VRAMRW
 (2)  168/  C1C0B4 : (MACRO)[72]             ENIRQ
@@ -6234,10 +6235,10 @@
 (2)  217/  C1C14E :                     
 (2)  218/  C1C14E : 5242                    addq.w  #1,d2         ; Next line
 (2)  219/  C1C150 : 5307                    subq.b  #1,d7
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_sdips.asm) - Page 100 - 9/11/2026 23:52:16
+
+
 (2)  220/  C1C152 : 66A4                    bne     .drawlp
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_sdips.asm) - Page 100 - 9/11/2026 23:43:16
-
-
 (2)  221/  C1C154 :                     
 (2)  222/  C1C154 :                     .done:
 (2)  223/  C1C154 : (MACRO)[74]             ENIRQ
@@ -6297,10 +6298,10 @@
 (2)  275/  C1C1D4 : 48E7 0080               movem.l a0,-(sp)
 (2)  276/  C1C1D8 : 41F9 00C1 EBFB      	lea     StrINFINITE,a0
 (2)  277/  C1C1DE : 3001                    move.w  d1,d0
+ AS V1.42 Beta [Bld 311] - Source File main.asm(ui_sdips.asm) - Page 101 - 9/11/2026 23:52:16
+
+
 (2)  278/  C1C1E0 : 4EB9 00C1 E528      	jsr     WriteFix
- AS V1.42 Beta [Bld 311] - Source File main.asm(ui_sdips.asm) - Page 101 - 9/11/2026 23:43:16
-
-
 (2)  279/  C1C1E6 : 4CDF 0100               movem.l (sp)+,a0
 (2)  280/  C1C1EA : 4E75                	rts
 (2)  281/  C1C1EC :                     
@@ -6360,10 +6361,10 @@
 (1)   18/  C1C244 :                     ; Boston, MA 02110-1301, USA.
 (1)   19/  C1C244 :                     
 (1)   20/  C1C244 :                     ;SAVE_DATA1: xxaAFSNN
+ AS V1.42 Beta [Bld 311] - Source File main.asm(settings.asm) - Page 102 - 9/11/2026 23:52:16
+
+
 (1)   21/  C1C244 :                     ;x: Unused
- AS V1.42 Beta [Bld 311] - Source File main.asm(settings.asm) - Page 102 - 9/11/2026 23:43:16
-
-
 (1)   22/  C1C244 :                     ;a: Loading animation slow/fast
 (1)   23/  C1C244 :                     ;A: Default boot animation on/off
 (1)   24/  C1C244 :                     ;F: Sound effects on/off
@@ -6423,10 +6424,10 @@
 (1)   78/  C1C2E0 : 0201 0001               andi.b  #1,d1
 (1)   79/  C1C2E4 : 13C1 0011 C18D          move.b  d1,SettingSSaver
 (1)   80/  C1C2EA : E208                    lsr.b   #1,d0               ; xxxxxaAF
+ AS V1.42 Beta [Bld 311] - Source File main.asm(settings.asm) - Page 103 - 9/11/2026 23:52:16
+
+
 (1)   81/  C1C2EC : 1200                    move.b  d0,d1
- AS V1.42 Beta [Bld 311] - Source File main.asm(settings.asm) - Page 103 - 9/11/2026 23:43:16
-
-
 (1)   82/  C1C2EE : 0201 0001               andi.b  #1,d1
 (1)   83/  C1C2F2 : 13C1 0011 C190          move.b  d1,SettingSFX
 (1)   84/  C1C2F8 : E208                    lsr.b   #1,d0               ; xxxxxxaA
@@ -6486,10 +6487,10 @@
 (1)   27/  C1C35C :                     
 (1)   28/  C1C35C :                     
 (1)   29/  C1C35C :                     ; d0: If non-zero, force save even if file exists
+ AS V1.42 Beta [Bld 311] - Source File main.asm(saves.asm) - Page 104 - 9/11/2026 23:52:16
+
+
 (1)   30/  C1C35C :                     StoreSaves:
- AS V1.42 Beta [Bld 311] - Source File main.asm(saves.asm) - Page 104 - 9/11/2026 23:43:16
-
-
 (1)   31/  C1C35C :                         ; Tell MCU to create file
 (1)   32/  C1C35C : 41F9 0011 C194          lea     MCUCmdParams,a0
 (1)   33/  C1C362 : 10BC 0001               move.b  #1,(a0)                 ; Subcommand 1: Open file
@@ -6549,10 +6550,10 @@
 (1)   85/  C1C3FA : 10FC 0010               move.b  #((8192+2)/2)>>8,(a0)+  ; Entire save data is 8kB + 2 checksum bytes (in words)
 (1)   86/  C1C3FE : 10BC 0001               move.b  #((8192+2)/2)&255,(a0)
 (1)   87/  C1C402 : (MACRO)[76]             MCUCMD  MCU_CMD_STORESAVE
+ AS V1.42 Beta [Bld 311] - Source File main.asm(saves.asm) - Page 105 - 9/11/2026 23:52:16
+
+
 (1)   87/  C1C402 : 163C 000C               move.b  #MCU_CMD_STORESAVE,d3
- AS V1.42 Beta [Bld 311] - Source File main.asm(saves.asm) - Page 105 - 9/11/2026 23:43:16
-
-
 (1)   87/  C1C406 : 4EB9 00C1 C76E          jsr     MCUCommand
 (1)   88/  C1C40C : 659A                    bcs     .storefailtimeout
 (1)   89/  C1C40E :                         ; Read 4 words from the MCU (see doc)
@@ -6612,10 +6613,10 @@
 (1)  138/  C1C4BE : 6708                    beq     .no_a
 (1)  139/  C1C4C0 : 50C0                    st.b    d0                 ; Force save
 (1)  140/  C1C4C2 : 4EB9 00C1 C35C          jsr     StoreSaves
+ AS V1.42 Beta [Bld 311] - Source File main.asm(saves.asm) - Page 106 - 9/11/2026 23:52:16
+
+
 (1)  141/  C1C4C8 :                     .no_a:
- AS V1.42 Beta [Bld 311] - Source File main.asm(saves.asm) - Page 106 - 9/11/2026 23:43:16
-
-
 (1)  142/  C1C4C8 : 4E75                    rts
 (1)  143/  C1C4CA :                     
 (1)  144/  C1C4CA :                     
@@ -6675,10 +6676,10 @@
 (1)  196/  C1C546 : 3010                	move.w  (a0),d0
 (1)  197/  C1C548 : B046                	cmp.w   d6,d0
 (1)  198/  C1C54A : 6716                	beq     .csum_ok
+ AS V1.42 Beta [Bld 311] - Source File main.asm(saves.asm) - Page 107 - 9/11/2026 23:52:16
+
+
 (1)  199/  C1C54C :                     	; Checksum mismatch
- AS V1.42 Beta [Bld 311] - Source File main.asm(saves.asm) - Page 107 - 9/11/2026 23:43:16
-
-
 (1)  200/  C1C54C : 103C 0043               move.b  #SFX_NEG,d0
 (1)  201/  C1C550 : 4EB9 00C1 9568          jsr     PlaySFX
 (1)  202/  C1C556 : 41F9 00C1 F0BA          lea     FixStrSaveChkError,a0
@@ -6738,10 +6739,10 @@
 (1)   19/  C1C5BE :                     
 (1)   20/  C1C5BE :                     RunDMADirect:
 (1)   21/  C1C5BE :                         ; Using DMA copy causes corruption - Do a CPU copy instead
+ AS V1.42 Beta [Bld 311] - Source File main.asm(copy.asm) - Page 108 - 9/11/2026 23:52:16
+
+
 (1)   22/  C1C5BE :                     
- AS V1.42 Beta [Bld 311] - Source File main.asm(copy.asm) - Page 108 - 9/11/2026 23:43:16
-
-
 (1)   23/  C1C5BE : D0AD 7EF4           	add.l   SectorLoadDest(a5),d0
 (1)   24/  C1C5C2 : 2240                	movea.l d0,a1
 (1)   25/  C1C5C4 : 206D 7EF8           	move.l  SectorLoadBuffer(a5),a0
@@ -6801,10 +6802,10 @@
 (1)   63/  C1C614 :                     	swap    d0                  ; d0.w=QQQQ
 (1)   64/  C1C614 :                     
 (1)   65/  C1C614 :                     	subq.w  #1,d0               ; Dangerous ! Can wrap if size < 48
+ AS V1.42 Beta [Bld 311] - Source File main.asm(copy.asm) - Page 109 - 9/11/2026 23:52:16
+
+
 (1)   66/  C1C614 :                     	subq.w  #1,d1
- AS V1.42 Beta [Bld 311] - Source File main.asm(copy.asm) - Page 109 - 9/11/2026 23:43:16
-
-
 (1)   67/  C1C614 :                     	bmi     .multipleof48
 (1)   68/  C1C614 :                     .subloop:
 (1)   69/  C1C614 :                     	; Do sub-48 copy
@@ -6864,10 +6865,10 @@
 (1)  123/  C1C696 :                     
 (1)  124/  C1C696 :                     DMAClearPCMDRAM:
 (1)  125/  C1C696 : 48E7 81C0               movem.l d0/d7/a0-a1,-(sp)
+ AS V1.42 Beta [Bld 311] - Source File main.asm(copy.asm) - Page 110 - 9/11/2026 23:52:16
+
+
 (1)  126/  C1C69A : 13FC 0001 00FF 016F     move.b  #1,REG_UPLOAD_EN
- AS V1.42 Beta [Bld 311] - Source File main.asm(copy.asm) - Page 110 - 9/11/2026 23:43:16
-
-
 (1)  127/  C1C6A2 : 13C0 00FF 0123          move.b  d0,REG_UPMAPPCM
 (1)  128/  C1C6A8 : 13FC 0001 00FF 0105     move.b  #1,REG_TRANSAREA
 (1)  129/  C1C6B0 :                     
@@ -6927,10 +6928,10 @@
 (1)  164/  C1C726 : 1018                	move.b  (a0)+,d0			; 8
 (1)  165/  C1C728 : 32C0                	move.w  d0,(a1)+			; 8
 (1)  164/  C1C72A : 1018                	move.b  (a0)+,d0			; 8
+ AS V1.42 Beta [Bld 311] - Source File main.asm(copy.asm) - Page 111 - 9/11/2026 23:52:16
+
+
 (1)  165/  C1C72C : 32C0                	move.w  d0,(a1)+			; 8
- AS V1.42 Beta [Bld 311] - Source File main.asm(copy.asm) - Page 111 - 9/11/2026 23:43:16
-
-
 (1)  164/  C1C72E : 1018                	move.b  (a0)+,d0			; 8
 (1)  165/  C1C730 : 32C0                	move.w  d0,(a1)+			; 8
 (1)  164/  C1C732 : 1018                	move.b  (a0)+,d0			; 8
@@ -6990,10 +6991,10 @@
 (1)   23/  C1C76E :                     MCUCommand:
 (1)   24/  C1C76E : 2F04                    move.l  d4,-(sp)           ; Preserve d4
 (1)   25/  C1C770 : 13C0 0030 0001          move.b  d0,REG_DIPSW
+ AS V1.42 Beta [Bld 311] - Source File main.asm(mcu.asm) - Page 112 - 9/11/2026 23:52:16
+
+
 (1)   26/  C1C776 : 4239 0011 C1B6          clr.b   PollStatus         ; Stop periodic status polling until command is ack'd
- AS V1.42 Beta [Bld 311] - Source File main.asm(mcu.asm) - Page 112 - 9/11/2026 23:43:16
-
-
 (1)   27/  C1C77C : 13C3 0011 C193          move.b  d3,LastMCUCmd
 (1)   28/  C1C782 : 33C3 00C1 E000      	move.w  d3,CPLDREG_DATA    ; Write to MCU, lower byte of CPLDREG_DATA
 (1)   29/  C1C788 : 4EB9 00C1 C7D6          jsr     MCUWaitAck
@@ -7053,10 +7054,10 @@
 (1)   83/  C1C81C : 0240 0002               andi.w  #$0002,d0          ; 8
 (1)   84/  C1C820 : 6712                    beq     .done              ; 8
 (1)   85/  C1C822 : 5387                    subq.l  #1,d7              ; 8
+ AS V1.42 Beta [Bld 311] - Source File main.asm(mcu.asm) - Page 113 - 9/11/2026 23:52:16
+
+
 (1)   86/  C1C824 : 66EA                    bne     .wait              ; 10 = 62, 5.167us
- AS V1.42 Beta [Bld 311] - Source File main.asm(mcu.asm) - Page 113 - 9/11/2026 23:43:16
-
-
 (1)   87/  C1C826 : 13FC 0002 0011 C1B5     move.b  #2,TimeOutStage
 (1)   88/  C1C82E : 003C 0001               ori.b   #1,CCR             ; Timeout occured
 (1)   89/  C1C832 : 4E75                    rts
@@ -7116,10 +7117,10 @@
 (1)  143/  C1C8B2 :                     ; Uses d0
 (1)  144/  C1C8B2 :                     CheckACK:
 (1)  145/  C1C8B2 : 1039 0011 C100          move.b  MCUReplyBuffer,d0
+ AS V1.42 Beta [Bld 311] - Source File main.asm(mcu.asm) - Page 114 - 9/11/2026 23:52:16
+
+
 (1)  146/  C1C8B8 : 0200 00F0               andi.b  #$F0,d0
- AS V1.42 Beta [Bld 311] - Source File main.asm(mcu.asm) - Page 114 - 9/11/2026 23:43:16
-
-
 (1)  147/  C1C8BC : B03C 00F0               cmp.b   #$F0,d0
 (1)  148/  C1C8C0 : 670A                    beq     .ack
 (1)  149/  C1C8C2 : 4EB9 00C1 9922      	jsr     DispError          ; Error occured, show error text and return
@@ -7179,10 +7180,10 @@
 (1)   47/  C1C928 : 1080                    move.b  d0,(a0)
 (1)   48/  C1C92A : 0C00 0060               cmpi.b  #$60,d0
 (1)   49/  C1C92E : 6500 0010               bcs.w   .incdone
+ AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 115 - 9/11/2026 23:52:16
+
+
 (1)   50/  C1C932 : 4210                    clr.b   (a0)                ; Clear Seconds
- AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 115 - 9/11/2026 23:43:16
-
-
 (1)   51/  C1C934 : 5388                    subq.l  #1,a0               ; Do Minutes
 (1)   52/  C1C936 : 1010                    move.b  (a0),d0
 (1)   53/  C1C938 : 44FC 0000               move.w  #0,ccr
@@ -7242,10 +7243,10 @@
 (1)  104/  C1C9B4 : 2E2D 7EFC               move.l  SectorLoadSize(a5),d7
 (1)  105/  C1C9B8 : 13C0 0030 0001      	move.b  d0,REG_DIPSW
 (1)  106/  C1C9BE : 46FC 2700           	move.w  #$2700,sr		   ; Disable all interrupts
+ AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 116 - 9/11/2026 23:52:16
+
+
 (1)  107/  C1C9C2 :                     .readsector:
- AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 116 - 9/11/2026 23:43:16
-
-
 (1)  108/  C1C9C2 : 2010                	move.l  (a0),d0            ; AA BB CC DD
 (1)  109/  C1C9C4 :                     
 (1)  110/  C1C9C4 :                         REPT 4
@@ -7305,10 +7306,10 @@
 (1)  132/  C1CA0E :                     
 (1)  133/  C1CA0E : 13C0 0030 0001      	move.b  d0,REG_DIPSW
 (1)  134/  C1CA14 : 46FC 2000           	move.w  #$2000,sr		   ; Enable all interrupts
+ AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 117 - 9/11/2026 23:52:16
+
+
 (1)  135/  C1CA18 : 4E75                	rts
- AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 117 - 9/11/2026 23:43:16
-
-
 (1)  136/  C1CA1A :                     
 (1)  137/  C1CA1A :                     
 (1)  138/  C1CA1A :                     GetCDSectorRawTail:
@@ -7368,10 +7369,10 @@
 (1)  151/  C1CA6E : E198                	rol.l   #8,d0
 (1)  152/  C1CA70 : 4A41                	tst.w   d1
 (1)  153/  C1CA72 : 6704                	beq     .a
+ AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 118 - 9/11/2026 23:52:16
+
+
 (1)  154/  C1CA74 : 5341                	subq.w  #1,d1
- AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 118 - 9/11/2026 23:43:16
-
-
 (1)  155/  C1CA76 : 6006                	bra     .b
 (1)  156/  C1CA78 :                     .a:
 (1)  157/  C1CA78 : 12C0                    move.b  d0,(a1)+
@@ -7431,10 +7432,10 @@
 (1)  171/  C1CABA :                     .a:
 (1)  172/  C1CABA : 12C0                    move.b  d0,(a1)+
 (1)  173/  C1CABC : 5387                	subq.l  #1,d7
+ AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 119 - 9/11/2026 23:52:16
+
+
 (1)  174/  C1CABE : 670C                	beq     .done
- AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 119 - 9/11/2026 23:43:16
-
-
 (1)  175/  C1CAC0 :                     .b:
 (1)  177/  C1CAC0 :                     
 (1)  178/  C1CAC0 :                     .wait:                         ; Wait for CPLDREG_STAT bit 2 (REFILL_PENDING) to be reset
@@ -7494,10 +7495,10 @@
 (1)  232/  C1CB30 : 5387                	subq.l  #1,d7
 (1)  233/  C1CB32 : 6710                	beq     .done
 (1)  234/  C1CB34 : 4843                	swap    d3                 ; 4  AA BB CC DD
+ AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 120 - 9/11/2026 23:52:16
+
+
 (1)  235/  C1CB36 : 32C3                	move.w  d3,(a1)+           ; 8  xx DD
- AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 120 - 9/11/2026 23:43:16
-
-
 (1)  236/  C1CB38 : 5387                	subq.l  #1,d7
 (1)  237/  C1CB3A : 6708                	beq     .done
 (1)  238/  C1CB3C :                     
@@ -7557,10 +7558,10 @@
 (1)  292/  C1CB72 :                     	beq     .copy4
 (1)  293/  C1CB72 :                     	subq.w  #1,d1
 (1)  294/  C1CB72 :                     	bra     .skip4
+ AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 121 - 9/11/2026 23:52:16
+
+
 (1)  295/  C1CB72 :                     .copy4:
- AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 121 - 9/11/2026 23:43:16
-
-
 (1)  296/  C1CB72 :                     	move.w  d3,(a1)+           ; 8  xx DD
 (1)  297/  C1CB72 :                     .skip4:
 (1)  298/  C1CB72 :                         ENDM
@@ -7620,10 +7621,10 @@
 (1)  281/  C1CBC2 :                     .skip2:
 (1)  282/  C1CBC2 : 4840                	swap    d0                 ; 4  DD AA BB CC
 (1)  283/  C1CBC4 : 4A41                	tst.w   d1
+ AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 122 - 9/11/2026 23:52:16
+
+
 (1)  284/  C1CBC6 : 6704                	beq     .copy3
- AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 122 - 9/11/2026 23:43:16
-
-
 (1)  285/  C1CBC8 : 5341                	subq.w  #1,d1
 (1)  286/  C1CBCA : 6002                	bra     .skip3
 (1)  287/  C1CBCC :                     .copy3:
@@ -7683,10 +7684,10 @@
 (1)  342/  C1CC4C :                     
 (1)  343/  C1CC4C :                     LoadSPRSectorFromSD:
 (1)  344/  C1CC4C : 13C0 0030 0001      	move.b  d0,REG_DIPSW
+ AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 123 - 9/11/2026 23:52:16
+
+
 (1)  345/  C1CC52 :                     	; Not needed ?
- AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 123 - 9/11/2026 23:43:16
-
-
 (1)  346/  C1CC52 : 4A79 0011 C180      	tst.w   CDSectorCount
 (1)  347/  C1CC58 : 6700 00BA           	beq     .exit
 (1)  348/  C1CC5C :                     
@@ -7746,10 +7747,10 @@
 (1)  402/  C1CD16 :                     LoadPCMSectorFromSD:
 (1)  403/  C1CD16 : 13C0 0030 0001      	move.b  d0,REG_DIPSW
 (1)  404/  C1CD1C :                     
+ AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 124 - 9/11/2026 23:52:16
+
+
 (1)  405/  C1CD1C : 48E7 F1E0               movem.l d0/d1/d2/d3/d7/a0-a2,-(sp)
- AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 124 - 9/11/2026 23:43:16
-
-
 (1)  406/  C1CD20 : 4EB9 00C1 C942          jsr     ReqCDSector
 (1)  407/  C1CD26 : 13FC 0001 00FF 016F     move.b  #1,REG_UPLOAD_EN
 (1)  408/  C1CD2E :                     
@@ -7809,10 +7810,10 @@
 (1)  451/  C1CDC8 : 2010                	move.l  (a0),d0            ; 12 AA BB CC DD
 (1)  452/  C1CDCA : 2600                	move.l  d0,d3              ; 4
 (1)  453/  C1CDCC : 4843                	swap    d3                 ; 4  CC DD AA BB
+ AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 125 - 9/11/2026 23:52:16
+
+
 (1)  454/  C1CDCE : E198                	rol.l   #8,d0              ; 24 BB CC DD AA
- AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 125 - 9/11/2026 23:43:16
-
-
 (1)  455/  C1CDD0 : 32C0                	move.w  d0,(a1)+           ; 8  xx AA
 (1)  456/  C1CDD2 : 32C3                	move.w  d3,(a1)+           ; 8  xx BB
 (1)  457/  C1CDD4 : 4840                	swap    d0                 ; 4  DD AA BB CC
@@ -7872,10 +7873,10 @@
 (1)  502/  C1CE62 : 4EB9 00C1 C8D2          jsr     IncMSF
 (1)  503/  C1CE68 : 4CDF 078B               movem.l (sp)+,d0/d1/d3/d7/a0-a2
 (1)  504/  C1CE6C :                     .exit:
+ AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 126 - 9/11/2026 23:52:16
+
+
 (1)  505/  C1CE6C : 4E75                    rts
- AS V1.42 Beta [Bld 311] - Source File main.asm(sectors.asm) - Page 126 - 9/11/2026 23:43:16
-
-
 (1)  506/  C1CE6E :                     
 (1)  507/  C1CE6E :                     
 (1)  508/  C1CE6E :                     GetBMPSector:
@@ -7935,10 +7936,10 @@
 (1)   26/  C1CED0 :                     ; d0.w: command, track
 (1)   27/  C1CED0 :                     CDDACommand:
 (1)   28/  C1CED0 : =>UNDEFINED             IFNDEF MAMEDEBUG
+ AS V1.42 Beta [Bld 311] - Source File main.asm(cdda.asm) - Page 127 - 9/11/2026 23:52:16
+
+
 (1)   29/  C1CED0 : 0800 0009               btst.l  #9,d0
- AS V1.42 Beta [Bld 311] - Source File main.asm(cdda.asm) - Page 127 - 9/11/2026 23:43:16
-
-
 (1)   30/  C1CED4 : 6606                    bne     .ok              ; Command is pause or resume: ok
 (1)   31/  C1CED6 : 4A00                    tst.b   d0
 (1)   32/  C1CED8 : 6602                    bne     .ok              ; Command is play with track # > 0: ok
@@ -7998,10 +7999,10 @@
 (1)    8/  C1CF34 :                     ; any later version.
 (1)    9/  C1CF34 :                     ;
 (1)   10/  C1CF34 :                     ; This program is distributed in the hope that it will be useful,
+ AS V1.42 Beta [Bld 311] - Source File main.asm(splash.asm) - Page 128 - 9/11/2026 23:52:16
+
+
 (1)   11/  C1CF34 :                     ; but WITHOUT ANY WARRANTY; without even the implied warranty of
- AS V1.42 Beta [Bld 311] - Source File main.asm(splash.asm) - Page 128 - 9/11/2026 23:43:16
-
-
 (1)   12/  C1CF34 :                     ; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 (1)   13/  C1CF34 :                     ; GNU General Public License for more details.
 (1)   14/  C1CF34 :                     ;
@@ -8061,10 +8062,10 @@
 (1)   66/  C1CFC2 :                     
 (1)   67/  C1CFC2 : 43F9 0040 0000          lea     PALETTES,a1         ; Copied from original routine
 (1)   68/  C1CFC8 : 3E3C 007F               move.w  #128-1,d7           ; Copied from original routine, load 16 palettes
+ AS V1.42 Beta [Bld 311] - Source File main.asm(splash.asm) - Page 129 - 9/11/2026 23:52:16
+
+
 (1)   69/  C1CFCC :                     .ldpal:
- AS V1.42 Beta [Bld 311] - Source File main.asm(splash.asm) - Page 129 - 9/11/2026 23:43:16
-
-
 (1)   70/  C1CFCC : 22D8                    move.l  (a0)+,(a1)+
 (1)   71/  C1CFCE : 51CF FFFC               dbf     d7,.ldpal
 (1)   72/  C1CFD2 : 4A39 0011 C191          tst.b   SettingBootAnim
@@ -8124,10 +8125,10 @@
            C1D096 : 00C1 00B8         
 (1)  111/  C1D09A : 0004 0120 0000 0017     dc.w $0004, $0120, $0000, $0017, $0150, $00B8, $00A0, $00B8, $48+147, $00B8
            C1D0A2 : 0150 00B8 00A0 00B8
+ AS V1.42 Beta [Bld 311] - Source File main.asm(splash.asm) - Page 130 - 9/11/2026 23:52:16
+
+
            C1D0AA : 00DB 00B8         
- AS V1.42 Beta [Bld 311] - Source File main.asm(splash.asm) - Page 130 - 9/11/2026 23:43:16
-
-
 (1)  112/  C1D0AE : FFFF 0120 0000 001B     dc.w $FFFF, $0120, $0000, $001B, $0150, $00B8, $00A0, $00B8, $00D8, $00B8
            C1D0B6 : 0150 00B8 00A0 00B8
            C1D0BE : 00D8 00B8         
@@ -8187,10 +8188,10 @@
 (1)   48/  C1D118 :                     
 (1)   49/  C1D118 : (MACRO)[144]            MCUCMD  MCU_CMD_STORESAVE
 (1)   49/  C1D118 : 163C 000C               move.b  #MCU_CMD_STORESAVE,d3
+ AS V1.42 Beta [Bld 311] - Source File main.asm(sdips.asm) - Page 131 - 9/11/2026 23:52:16
+
+
 (1)   49/  C1D11C : 4EB9 00C1 C76E          jsr     MCUCommand
- AS V1.42 Beta [Bld 311] - Source File main.asm(sdips.asm) - Page 131 - 9/11/2026 23:43:16
-
-
 (1)   50/  C1D122 : 6500 0096               bcs     .fail
 (1)   51/  C1D126 :                         ; Read 4 words from the MCU (see doc)
 (1)   52/  C1D126 : 4EB9 00C1 C872          jsr     MCURead4Words
@@ -8250,10 +8251,10 @@
 (1)  102/  C1D1BC :                     ; Must be called just after IPL before passing control to game so we get HEADER_NGH set correctly
 (1)  103/  C1D1BC :                     LoadSDIPs:
 (1)  104/  C1D1BC :                         ; Ask MCU for SDIP files list
+ AS V1.42 Beta [Bld 311] - Source File main.asm(sdips.asm) - Page 132 - 9/11/2026 23:52:16
+
+
 (1)  105/  C1D1BC : 41F9 0011 C194          lea     MCUCmdParams,a0
- AS V1.42 Beta [Bld 311] - Source File main.asm(sdips.asm) - Page 132 - 9/11/2026 23:43:16
-
-
 (1)  106/  C1D1C2 : 10FC 0001               move.b  #1,(a0)+           ; Subcommand 1: List SDIP files with matching NGH
 (1)  107/  C1D1C6 : 3038 0108               move.w  HEADER_NGH,d0
 (1)  108/  C1D1CA : 1140 0001               move.b  d0,1(a0)
@@ -8313,10 +8314,10 @@
 (1)  158/  C1D250 :                     ; Builds a list of the settings to facilitate display as a menu
 (1)  159/  C1D250 :                     ; Each entry is 4 bytes:
 (1)  160/  C1D250 :                     ; Byte, xxTTCCCC T=Type(0:normal, 1:count, 2:timer) C=Count(max-1)
+ AS V1.42 Beta [Bld 311] - Source File main.asm(sdips.asm) - Page 133 - 9/11/2026 23:52:16
+
+
 (1)  161/  C1D250 :                     ; Byte, 12-char string index
- AS V1.42 Beta [Bld 311] - Source File main.asm(sdips.asm) - Page 133 - 9/11/2026 23:43:16
-
-
 (1)  162/  C1D250 :                     ; Byte, padding
 (1)  163/  C1D250 :                     ; Byte, setting index (not address !) in BIOS_GAME_DIP (0~13), used to map menu cursor position to setting address
 (1)  164/  C1D250 :                     InitSDIPList:
@@ -8376,10 +8377,10 @@
 (1)  218/  C1D2C4 : 12C2                    move.b  d2,(a1)+       ; Store string index
 (1)  219/  C1D2C6 : 32C3                    move.w  d3,(a1)+       ; Store BIOS_GAME_DIP index
 (1)  220/  C1D2C8 : 5202                    addq.b  #1,d2          ; Consumed 1 string
+ AS V1.42 Beta [Bld 311] - Source File main.asm(sdips.asm) - Page 134 - 9/11/2026 23:52:16
+
+
 (1)  221/  C1D2CA : 5204                    addq.b  #1,d4          ; One more entry used
- AS V1.42 Beta [Bld 311] - Source File main.asm(sdips.asm) - Page 134 - 9/11/2026 23:43:16
-
-
 (1)  222/  C1D2CC :                     SDIPUnused:
 (1)  223/  C1D2CC : 5203                    addq.b  #1,d3
 (1)  224/  C1D2CE : 4E75                    rts
@@ -8439,10 +8440,10 @@
 (1)  278/  C1D338 :                     .mmax:
 (1)  279/  C1D338 : E158                    rol.w   #8,d0
 (1)  280/  C1D33A : 4E75                    rts
+ AS V1.42 Beta [Bld 311] - Source File main.asm(sdips.asm) - Page 135 - 9/11/2026 23:52:16
+
+
 (1)  281/  C1D33C :                     
- AS V1.42 Beta [Bld 311] - Source File main.asm(sdips.asm) - Page 135 - 9/11/2026 23:43:16
-
-
 (1)  282/  C1D33C :                     
 (1)  283/  C1D33C :                     JT_SDIPDec:
 (1)  284/  C1D33C : 00C1 D348               dc.l    SDIPDecByte
@@ -8502,10 +8503,10 @@
 (1)  338/  C1D39E : 1032 0002               move.b  2(a2,d0),d0    ; Skip over the two time (word) values: d1=2 -> +4, d1=3 -> +5...
 (1)  339/  C1D3A2 : 4E75                    rts
 (1)  340/  C1D3A4 :                     .time:
+ AS V1.42 Beta [Bld 311] - Source File main.asm(sdips.asm) - Page 136 - 9/11/2026 23:52:16
+
+
 (1)  341/  C1D3A4 : D000                    add.b   d0,d0
- AS V1.42 Beta [Bld 311] - Source File main.asm(sdips.asm) - Page 136 - 9/11/2026 23:43:16
-
-
 (1)  342/  C1D3A6 : 3032 0000               move.w  0(a2,d0),d0    ; Read a time (word) value at d1=0 -> +0 or d1=1 -> +2
 (1)  343/  C1D3AA : 4E75                    rts
 (1)  344/  C1D3AC :                     
@@ -8565,10 +8566,10 @@
 (1)   18/  C1D3F2 :                     ; Boston, MA 02110-1301, USA.
 (1)   19/  C1D3F2 :                     
 (1)   20/  C1D3F2 :                     SystemIOCustom:
+ AS V1.42 Beta [Bld 311] - Source File main.asm(cheats.asm) - Page 137 - 9/11/2026 23:52:16
+
+
 (1)   21/  C1D3F2 :                         ; Check for start+select
- AS V1.42 Beta [Bld 311] - Source File main.asm(cheats.asm) - Page 137 - 9/11/2026 23:43:16
-
-
 (1)   22/  C1D3F2 :                         ; If so: set a flag to bring up the In-Game Menu
 (1)   23/  C1D3F2 :                         ; Do NOT set up the IGM in SYSTEM_IO, because the game will then be able to mess with the fix during the current frame
 (1)   24/  C1D3F2 :                         ; In SYSTEM_INT1, check if the IGM flag is set. If so, set up the IGM:
@@ -8628,10 +8629,10 @@
 (1)   78/  C1D472 : 2639 0011 C202          move.l  CheatsBitmap,d3
 (1)   79/  C1D478 :                     
 (1)   80/  C1D478 :                     .process:
+ AS V1.42 Beta [Bld 311] - Source File main.asm(cheats.asm) - Page 138 - 9/11/2026 23:52:16
+
+
 (1)   81/  C1D478 : E29B                    ror.l   #1,d3                   ; RORing allows easy reset of the one-off cheats
- AS V1.42 Beta [Bld 311] - Source File main.asm(cheats.asm) - Page 138 - 9/11/2026 23:43:16
-
-
 (1)   82/  C1D47A : 643C                    bcc     .skipcheat
 (1)   83/  C1D47C : 4A07                    tst.b   d7
 (1)   84/  C1D47E : 6738                    beq     .skipcheat              ; No more cheats to parse
@@ -8691,10 +8692,10 @@
 (1)  138/  C1D4E2 :                     .action:
 (1)  139/  C1D4E2 : 1018                    move.b  (a0)+,d0    ; Type byte
 (1)  140/  C1D4E4 : 1200                    move.b  d0,d1
+ AS V1.42 Beta [Bld 311] - Source File main.asm(cheats.asm) - Page 139 - 9/11/2026 23:52:16
+
+
 (1)  141/  C1D4E6 : 0240 0003               andi.w  #3,d0       ; Get opcode
- AS V1.42 Beta [Bld 311] - Source File main.asm(cheats.asm) - Page 139 - 9/11/2026 23:43:16
-
-
 (1)  142/  C1D4EA : E548                	lsl.w   #2,d0       ; JTOpCodes has 4-byte entries
 (1)  143/  C1D4EC : 43F9 00C1 D516          lea     JTOpCodes,a1
 (1)  144/  C1D4F2 : 2271 0000           	move.l  0(a1,d0),a1
@@ -8754,10 +8755,10 @@
 (1)  198/  C1D54C : 4E75                    rts
 (1)  199/  C1D54E :                     
 (1)  200/  C1D54E :                     Opcode3:
+ AS V1.42 Beta [Bld 311] - Source File main.asm(cheats.asm) - Page 140 - 9/11/2026 23:52:16
+
+
 (1)  201/  C1D54E :                         ; Mask (clear) and set
- AS V1.42 Beta [Bld 311] - Source File main.asm(cheats.asm) - Page 140 - 9/11/2026 23:43:16
-
-
 (1)  202/  C1D54E : 4A01                    tst.b   d1
 (1)  203/  C1D550 : 6716                    beq     .done
 (1)  204/  C1D552 : 7400                    moveq.l #0,d2
@@ -8817,10 +8818,10 @@
 (1)   39/  C1D5EE :                     
 (1)   40/  C1D5EE : 4EB9 00C1 D6BC          jsr     WaitCDCKLow
 (1)   41/  C1D5F4 : 6574                    bcs     .abort
+ AS V1.42 Beta [Bld 311] - Source File main.asm(front.asm) - Page 141 - 9/11/2026 23:52:16
+
+
 (1)   42/  C1D5F6 : 13FC 0003 00FF 0165     move.b  #3,REG_CDDCTRL  ; HOCK high, bus input
- AS V1.42 Beta [Bld 311] - Source File main.asm(front.asm) - Page 141 - 9/11/2026 23:43:16
-
-
 (1)   43/  C1D5FE : 0200 000F               andi.b  #15,d0
 (1)   44/  C1D602 : 10C0                    move.b  d0,(a0)+
 (1)   45/  C1D604 : 4EB9 00C1 D6DE          jsr     WaitCDCKHigh
@@ -8880,10 +8881,10 @@
 (1)   98/  C1D686 :                     SendCDDNibble:
 (1)   99/  C1D686 : 0200 000F               andi.b  #15,d0
 (1)  100/  C1D68A : 13C0 00FF 0163          move.b  d0,REG_CDDOUTPUT
+ AS V1.42 Beta [Bld 311] - Source File main.asm(front.asm) - Page 142 - 9/11/2026 23:52:16
+
+
 (1)  101/  C1D690 : 13FC 0000 00FF 0165     move.b  #0,REG_CDDCTRL  ; HOCK low
- AS V1.42 Beta [Bld 311] - Source File main.asm(front.asm) - Page 142 - 9/11/2026 23:43:16
-
-
 (1)  102/  C1D698 : 13FC 0002 00FF 0165     move.b  #2,REG_CDDCTRL  ; HOCK low
 (1)  103/  C1D6A0 : 6100 001A               bsr.w   WaitCDCKLow
 (1)  104/  C1D6A4 : 6514                    bcs     .abort
@@ -8943,10 +8944,10 @@
      232/  C1E300 :                     	INCLUDE "util.asm"
 (1)    1/  C1E300 :                     ; Copyright (C) 2020 Sean Gonsalves
 (1)    2/  C1E300 :                     ;
+ AS V1.42 Beta [Bld 311] - Source File main.asm(util.asm) - Page 143 - 9/11/2026 23:52:16
+
+
 (1)    3/  C1E300 :                     ; This file is part of Neo CD SD Loader.
- AS V1.42 Beta [Bld 311] - Source File main.asm(util.asm) - Page 143 - 9/11/2026 23:43:16
-
-
 (1)    4/  C1E300 :                     ;
 (1)    5/  C1E300 :                     ; This program is free software; you can redistribute it and/or modify
 (1)    6/  C1E300 :                     ; it under the terms of the GNU General Public License as published by
@@ -9006,10 +9007,10 @@
 (1)   60/  C1E370 : 20C0                	move.l  d0,(a0)+
 (1)   61/  C1E372 : 51CF FFF6           	dbra    d7,.lp
 (1)   62/  C1E376 : 4279 0010 D004      	clr.w   TotalFileCount
+ AS V1.42 Beta [Bld 311] - Source File main.asm(util.asm) - Page 144 - 9/11/2026 23:52:16
+
+
 (1)   63/  C1E37C : 4E75                	rts
- AS V1.42 Beta [Bld 311] - Source File main.asm(util.asm) - Page 144 - 9/11/2026 23:43:16
-
-
 (1)   64/  C1E37E :                     
 (1)   65/  C1E37E :                     
 (1)   66/  C1E37E :                     ; Hex digit to ASCII char
@@ -9069,10 +9070,10 @@
 (1)  120/  C1E3E4 : 4E71                	nop
 (1)  121/  C1E3E6 :                     .set_z:
 (1)  122/  C1E3E6 : 4E71                	nop
+ AS V1.42 Beta [Bld 311] - Source File main.asm(util.asm) - Page 145 - 9/11/2026 23:52:16
+
+
 (1)  123/  C1E3E8 : 4E71                	nop
- AS V1.42 Beta [Bld 311] - Source File main.asm(util.asm) - Page 145 - 9/11/2026 23:43:16
-
-
 (1)  124/  C1E3EA : 33C1 003C 0002      	move.w  d1,REG_VRAMRW
 (1)  125/  C1E3F0 : 5347                	subq.w  #1,d7
 (1)  126/  C1E3F2 : 66F2                	bne     .set_z
@@ -9132,10 +9133,10 @@
 (1)  177/  C1E45A : 5347                    subq.w  #1,d7
 (1)  178/  C1E45C : 66EA                    bne     .col
 (1)  179/  C1E45E : 5242                    addq.w  #1,d2
+ AS V1.42 Beta [Bld 311] - Source File main.asm(util.asm) - Page 146 - 9/11/2026 23:52:16
+
+
 (1)  180/  C1E460 : 5341                    subq.w  #1,d1
- AS V1.42 Beta [Bld 311] - Source File main.asm(util.asm) - Page 146 - 9/11/2026 23:43:16
-
-
 (1)  181/  C1E462 : 66E0                    bne     .row
 (1)  182/  C1E464 : (MACRO)[150]        	ENIRQ
 (1)  182/  C1E464 : 33FC 0007 003C 000C         move.w  #7,REG_IRQACK
@@ -9195,10 +9196,10 @@
 (1)  222/  C1E4D4 : EE48                    lsr.w   #7,d0
 (1)  223/  C1E4D6 : B07C 00F8               cmp.w   #$F8,d0
 (1)  224/  C1E4DA : 66F2                    bne     WaitVBL
+ AS V1.42 Beta [Bld 311] - Source File main.asm(util.asm) - Page 147 - 9/11/2026 23:52:16
+
+
 (1)  225/  C1E4DC : 4E75                    rts
- AS V1.42 Beta [Bld 311] - Source File main.asm(util.asm) - Page 147 - 9/11/2026 23:43:16
-
-
 (1)  226/  C1E4DE :                     
 (1)  227/  C1E4DE :                     ; Sets carry on error
 (1)  228/  C1E4DE :                     InitSD:
@@ -9258,10 +9259,10 @@
 (1)   29/  C1E528 :                     WriteFix:
 (1)   30/  C1E528 : 13C0 0030 0001      	move.b  d0,REG_DIPSW
 (1)   31/  C1E52E : 48E7 7F40               movem.l d1-d7/a1,-(sp)
+ AS V1.42 Beta [Bld 311] - Source File main.asm(print.asm) - Page 148 - 9/11/2026 23:52:16
+
+
 (1)   32/  C1E532 : 3239 0011 C18A      	move.w  FixWriteConfig,d1
- AS V1.42 Beta [Bld 311] - Source File main.asm(print.asm) - Page 148 - 9/11/2026 23:43:16
-
-
 (1)   33/  C1E538 : 33FC 0020 003C 0004 	move.w  #32,REG_VRAMMOD
 (1)   34/  C1E540 : 4E71                    nop
 (1)   35/  C1E542 : 4E71                    nop
@@ -9321,10 +9322,10 @@
 (1)   89/  C1E5CA : 1631 2000               move.b  0(a1,d2),d3
 (1)   90/  C1E5CE : 33C3 003C 0002      	move.w  d3,REG_VRAMRW
 (1)   91/  C1E5D4 : 4E71                	nop
+ AS V1.42 Beta [Bld 311] - Source File main.asm(print.asm) - Page 149 - 9/11/2026 23:52:16
+
+
 (1)   92/  C1E5D6 : 4E71                	nop
- AS V1.42 Beta [Bld 311] - Source File main.asm(print.asm) - Page 149 - 9/11/2026 23:43:16
-
-
 (1)   93/  C1E5D8 : 1631 2001               move.b  1(a1,d2),d3
 (1)   94/  C1E5DC : 33C3 003C 0002      	move.w  d3,REG_VRAMRW
 (1)   95/  C1E5E2 : 6000 FF68               bra     .write
@@ -9384,10 +9385,10 @@
 (1)  149/  C1E66A : 66E0                	bne     .writebyte
 (1)  150/  C1E66C : 6000 FEDE               bra     .write
 (1)  151/  C1E670 :                         
+ AS V1.42 Beta [Bld 311] - Source File main.asm(print.asm) - Page 150 - 9/11/2026 23:52:16
+
+
 (1)  152/  C1E670 : =>UNDEFINED             IFDEF DEBUGBUILD
- AS V1.42 Beta [Bld 311] - Source File main.asm(print.asm) - Page 150 - 9/11/2026 23:43:16
-
-
 (1)  153/  C1E670 :                     WriteWord:
 (1)  154/  C1E670 :                     	move.w  #32,REG_VRAMMOD
 (1)  155/  C1E670 :                     	move.w  FixWriteConfig,d1
@@ -9447,10 +9448,10 @@
 (1)  209/  C1E6B8 :                         ; Alias
 (1)  210/  C1E6B8 : 7000                    moveq.l #0,d0
 (1)  211/  C1E6BA : 1001                    move.b  d1,d0
+ AS V1.42 Beta [Bld 311] - Source File main.asm(print.asm) - Page 151 - 9/11/2026 23:52:16
+
+
 (1)  212/  C1E6BC : 0400 0080               subi.b  #128,d0
- AS V1.42 Beta [Bld 311] - Source File main.asm(print.asm) - Page 151 - 9/11/2026 23:43:16
-
-
 (1)  213/  C1E6C0 : E948                    lsl.w   #4,d0
 (1)  214/  C1E6C2 : 43F2 0000               lea     0(a2,d0),a1
 (1)  215/  C1E6C6 :                     .awrite:
@@ -9510,10 +9511,10 @@
 (1)   12/  C1E724 :                     ; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 (1)   13/  C1E724 :                     ; GNU General Public License for more details.
 (1)   14/  C1E724 :                     ;
+ AS V1.42 Beta [Bld 311] - Source File main.asm(debug.asm) - Page 152 - 9/11/2026 23:52:16
+
+
 (1)   15/  C1E724 :                     ; You should have received a copy of the GNU General Public License
- AS V1.42 Beta [Bld 311] - Source File main.asm(debug.asm) - Page 152 - 9/11/2026 23:43:16
-
-
 (1)   16/  C1E724 :                     ; along with this program; see the file COPYING.  If not, write to
 (1)   17/  C1E724 :                     ; the Free Software Foundation, Inc., 51 Franklin Street,
 (1)   18/  C1E724 :                     ; Boston, MA 02110-1301, USA.
@@ -9573,10 +9574,10 @@
 (1)   72/  C1E724 :                     	move.w  #FIXMAP+3+(6*32),d0
 (1)   73/  C1E724 :                     	jsr     WriteFix
 (1)   74/  C1E724 :                     	move.b  d0,REG_DIPSW
+ AS V1.42 Beta [Bld 311] - Source File main.asm(debug.asm) - Page 153 - 9/11/2026 23:52:16
+
+
 (1)   75/  C1E724 :                     	rts
- AS V1.42 Beta [Bld 311] - Source File main.asm(debug.asm) - Page 153 - 9/11/2026 23:43:16
-
-
 (1)   76/  C1E724 :                     
 (1)   77/  C1E724 :                     DebugDispCDSectors:
 (1)   78/  C1E724 :                         ; Display number of CD sectors to load at 6,5
@@ -9636,10 +9637,10 @@
 (1)  132/  C1E7A6 :                     MemoryViewer:
 (1)  133/  C1E7A6 : 13C0 0030 0001      	move.b  d0,REG_DIPSW
 (1)  134/  C1E7AC :                     
+ AS V1.42 Beta [Bld 311] - Source File main.asm(debug.asm) - Page 154 - 9/11/2026 23:52:16
+
+
 (1)  135/  C1E7AC : 41F9 0040 0060      	lea     (2*16*3)+PALETTES,a0	; Set up palette 3 for text
- AS V1.42 Beta [Bld 311] - Source File main.asm(debug.asm) - Page 154 - 9/11/2026 23:43:16
-
-
 (1)  136/  C1E7B2 : 30FC 8000           	move.w  #BLACK,(a0)+
 (1)  137/  C1E7B6 : 30FC 7FFF           	move.w  #WHITE,(a0)+
 (1)  138/  C1E7BA : 30BC 8000           	move.w  #BLACK,(a0)
@@ -9699,10 +9700,10 @@
 (1)  192/  C1E840 :                     	bne     .debug_game_list
 (1)  193/  C1E840 :                     	move.w  #DEBUGFILECOUNT,TotalFileCount
 (1)  194/  C1E840 :                     
+ AS V1.42 Beta [Bld 311] - Source File main.asm(debug.asm) - Page 155 - 9/11/2026 23:52:16
+
+
 (1)  195/  C1E840 :                     	; DEBUG - Load embedded BMP data for custom bg
- AS V1.42 Beta [Bld 311] - Source File main.asm(debug.asm) - Page 155 - 9/11/2026 23:43:16
-
-
 (1)  196/  C1E840 :                     	lea     DebugCustomBgData,a0
 (1)  197/  C1E840 :                         ; Check BM magic at 00
 (1)  198/  C1E840 :                         cmp.w   #$424D,$0(a0)
@@ -9762,10 +9763,10 @@
 (1)  252/  C1E840 :                         move.b  #1,REG_DISBLSPR
 (1)  253/  C1E840 :                         move.b  #1,REG_UPLOAD_EN
 (1)  254/  C1E840 :                         move.b  d0,REG_UPMAPSPR
+ AS V1.42 Beta [Bld 311] - Source File main.asm(debug.asm) - Page 156 - 9/11/2026 23:52:16
+
+
 (1)  255/  C1E840 :                         move.b  #0,REG_TRANSAREA
- AS V1.42 Beta [Bld 311] - Source File main.asm(debug.asm) - Page 156 - 9/11/2026 23:43:16
-
-
 (1)  256/  C1E840 :                     
 (1)  257/  C1E840 :                         ; Load pixels
 (1)  258/  C1E840 :                         lea     LUTIndexToBitplane,a0
@@ -9825,10 +9826,10 @@
 (1)  312/  C1E840 :                         move.l  d2,-64(a1)
 (1)  313/  C1E840 :                         
 (1)  314/  C1E840 :                         lea     128*14(a1),a1
+ AS V1.42 Beta [Bld 311] - Source File main.asm(debug.asm) - Page 157 - 9/11/2026 23:52:16
+
+
 (1)  315/  C1E840 :                     
- AS V1.42 Beta [Bld 311] - Source File main.asm(debug.asm) - Page 157 - 9/11/2026 23:43:16
-
-
 (1)  316/  C1E840 :                         subq.w  #1,d6
 (1)  317/  C1E840 :                         bne     .sixteenpixelsrow
 (1)  318/  C1E840 :                     
@@ -9888,10 +9889,10 @@
 (1)  372/  C1E8AC : 6544                    bcs     .timeout
 (1)  373/  C1E8AE : E19C                	rol.l   #8,d4              ; CCDDAABB
 (1)  374/  C1E8B0 : 33C4 00C1 E000      	move.w  d4,CPLDREG_DATA    ; Write to MCU, lower byte of CPLDREG_DATA
+ AS V1.42 Beta [Bld 311] - Source File main.asm(debug.asm) - Page 158 - 9/11/2026 23:52:16
+
+
 (1)  375/  C1E8B6 : 4EB9 00C1 C7D6          jsr     MCUWaitAck
- AS V1.42 Beta [Bld 311] - Source File main.asm(debug.asm) - Page 158 - 9/11/2026 23:43:16
-
-
 (1)  376/  C1E8BC : 6534                    bcs     .timeout
 (1)  377/  C1E8BE : E19C                	rol.l   #8,d4              ; DDAABBCC
 (1)  378/  C1E8C0 : 33C4 00C1 E000      	move.w  d4,CPLDREG_DATA    ; Write to MCU, lower byte of CPLDREG_DATA
@@ -9951,10 +9952,10 @@
 (1)   27/  C1E920 :                     ErrAddr:
 (1)   28/  C1E920 : 23EF 000A 0011 C186     move.l  10(a7),PCERROR      ; Store PC from stack frame, 2(a7) is the address value that caused the error
 (1)   29/  C1E928 : 48E7 FFFE               movem.l d0-d7/a0-a6,-(a7)   ; Store registers
+ AS V1.42 Beta [Bld 311] - Source File main.asm(exceptions.asm) - Page 159 - 9/11/2026 23:52:16
+
+
 (1)   30/  C1E92C : 33FC 100F 0040 1FFE     move.w  #BLUE,BACKDROP
- AS V1.42 Beta [Bld 311] - Source File main.asm(exceptions.asm) - Page 159 - 9/11/2026 23:43:16
-
-
 (1)   31/  C1E934 : 41F9 00C1 F62C          lea     FixStrErrAddr,a0
 (1)   32/  C1E93A : 4EF9 00C1 E9A0          jmp     DispExc
 (1)   33/  C1E940 :                         
@@ -10014,10 +10015,10 @@
 (1)   85/  C1EA0C : 41F9 00C1 F675          lea     FixStrDRegsDump,a0
 (1)   86/  C1EA12 : 303C 7086           	move.w  #FIXMAP+6+(4*32),d0
 (1)   87/  C1EA16 : 4EB9 00C1 E528      	jsr     WriteFix
+ AS V1.42 Beta [Bld 311] - Source File main.asm(exceptions.asm) - Page 160 - 9/11/2026 23:52:16
+
+
 (1)   88/  C1EA1C :                     
- AS V1.42 Beta [Bld 311] - Source File main.asm(exceptions.asm) - Page 160 - 9/11/2026 23:43:16
-
-
 (1)   89/  C1EA1C : 41F9 0011 C140          lea     FixValueList,a0
 (1)   90/  C1EA22 : 1E3C 0007               move.b  #7,d7
 (1)   91/  C1EA26 :                     .loadARegs:
@@ -10077,10 +10078,10 @@
 (1)  145/  C1EADA :                     ;	move.w  #WHITE,(a0)+
 (1)  146/  C1EADA :                     ;	move.w  #BLACK,(a0)
 (1)  147/  C1EADA :                     ;
+ AS V1.42 Beta [Bld 311] - Source File main.asm(exceptions.asm) - Page 161 - 9/11/2026 23:52:16
+
+
 (1)  148/  C1EADA :                     ;	move.b  d0,REG_DIPSW
- AS V1.42 Beta [Bld 311] - Source File main.asm(exceptions.asm) - Page 161 - 9/11/2026 23:43:16
-
-
 (1)  149/  C1EADA :                     ;
 (1)  150/  C1EADA :                     ;	jsr     ClearFix
 (1)  151/  C1EADA :                     ;
@@ -10140,10 +10141,10 @@
 (1)   20/  C1EAF2 :                     	PADDING OFF
 (1)   21/  C1EAF2 :                     
 (1)   22/  C1EAF2 :                     ; See print.asm for special char codes
+ AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 162 - 9/11/2026 23:52:16
+
+
 (1)   23/  C1EAF2 : =>FALSE                 IF 0
- AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 162 - 9/11/2026 23:43:16
-
-
 (1)   24/  C1EAF2 :                     StrDebugSSVRAM:
 (1)   25/  C1EAF2 :                         dc.b "VRAM...    ",0
 (1)   26/  C1EAF2 :                     StrDebugSSPal:
@@ -10203,10 +10204,10 @@
 (1)   66/  C1EB8D :                     StrSDIP:
 (1)   67/  C1EB8D : 0101 0053 4F46 5420     dc.b 1,1,0,"SOFT DIPS",1,0,11
            C1EB95 : 4449 5053 0100 0B
+ AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 163 - 9/11/2026 23:52:16
+
+
 (1)   68/  C1EB9C : 452F 443A 4D75 6461     dc.b "E/D:Mudar B:Sair C:Padrao",0
- AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 163 - 9/11/2026 23:43:16
-
-
            C1EBA4 : 7220 423A 5361 6972
            C1EBAC : 2043 3A50 6164 7261
            C1EBB4 : 6F00               
@@ -10266,10 +10267,10 @@
            C1ECF1 : 2064 6164 6F73 0100
            C1ECF9 : 04               
 (1)   96/  C1ECFA : 4174 7561 6C69 7A61 	dc.b "Atualizar firmware",1,0,5
+ AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 164 - 9/11/2026 23:52:16
+
+
            C1ED02 : 7220 6669 726D 7761
- AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 164 - 9/11/2026 23:43:16
-
-
            C1ED0A : 7265 0100 05      
 (1)   97/  C1ED0F : 536F 6272 6501 0008 	dc.b "Sobre",1,0,8
 (1)   98/  C1ED17 : BA3A 5365 6C65 632E     dc.b $BA,":Selec.    ",$BB,":Sair",0
@@ -10329,10 +10330,10 @@
 (1)  122/  C1EE54 : C1AF A6AF A7AF A801     dc.b $C1,$AF,$A6,$AF,$A7,$AF,$A8,1,0,1
            C1EE5C : 0001               
 (1)  123/  C1EE5E : AFB6 AFB7 AFB8 0100     dc.b $AF,$B6,$AF,$B7,$AF,$B8,1,0,2
+ AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 165 - 9/11/2026 23:52:16
+
+
            C1EE66 : 02               
- AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 165 - 9/11/2026 23:43:16
-
-
 (1)  124/  C1EE67 : AFC6 AFC7 AFC8 00       dc.b $AF,$C6,$AF,$C7,$AF,$C8,0
 (1)  125/  C1EE6E :                     
 (1)  126/  C1EE6E :                     
@@ -10392,10 +10393,10 @@
 (1)  161/  C1EF32 :                     FileNameClear:
 (1)  162/  C1EF32 : 2020 2020 2020 2020     dc.b "                ",1,0,1   ; This must match the max file name length
            C1EF3A : 2020 2020 2020 2020
+ AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 166 - 9/11/2026 23:52:16
+
+
            C1EF42 : 0100 01            
- AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 166 - 9/11/2026 23:43:16
-
-
 (1)  163/  C1EF45 : 2020 2020 2020 2020     dc.b "                 ",0      ; This must match the max file name length+1
            C1EF4D : 2020 2020 2020 2020
            C1EF55 : 2000               
@@ -10455,10 +10456,10 @@
            C1F08F : 3F01 0005         
 (1)  185/  C1F093 : BA3A 5369 6D20 20BB     dc.b $BA,":Sim  ",$BB,":Nao",0
            C1F09B : 3A4E 616F 00      
+ AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 167 - 9/11/2026 23:52:16
+
+
 (1)  186/  C1F0A0 :                     
- AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 167 - 9/11/2026 23:43:16
-
-
 (1)  187/  C1F0A0 :                     FixStrLoadOK:
 (1)  188/  C1F0A0 : 5361 7665 2063 6172     dc.b "Save carregado !",1,0,2
            C1F0A8 : 7265 6761 646F 2021
@@ -10518,10 +10519,10 @@
            C1F18D : 2020 2020 2001 0006
 (1)  222/  C1F195 : 4465 6275 6720 4449     dc.b "Debug DIP 2: ","        ",1,0,7
            C1F19D : 5020 323A 2020 2020
+ AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 168 - 9/11/2026 23:52:16
+
+
            C1F1A5 : 2020 2020 2001 0007
- AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 168 - 9/11/2026 23:43:16
-
-
 (1)  223/  C1F1AD : 4D6F 646F 2044 6576     dc.b "Modo Dev:    ","        ",1,0,9
            C1F1B5 : 3A20 2020 2020 2020
            C1F1BD : 2020 2020 2001 0009
@@ -10581,10 +10582,10 @@
            C1F2D9 : 6F67 6F73 206E 616F
            C1F2E1 : 2066 6F72 616D 0100
            C1F2E9 : 03               
+ AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 169 - 9/11/2026 23:52:16
+
+
 (1)  260/  C1F2EA : 7072 6F6A 6574 6164     dc.b "projetados p/ suportar",1,0,4
- AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 169 - 9/11/2026 23:43:16
-
-
            C1F2F2 : 6F73 2070 2F20 7375
            C1F2FA : 706F 7274 6172 0100
            C1F302 : 04               
@@ -10644,10 +10645,10 @@
 (1)  287/  C1F42B :                     
 (1)  288/  C1F42B :                     StrMsgBoxNoUpdate:
 (1)  289/  C1F42B : 5345 4D20 4152 5155     dc.b "SEM ARQUIVO DE UPDATE",1,0,2
+ AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 170 - 9/11/2026 23:52:16
+
+
            C1F433 : 4956 4F20 4445 2055
- AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 170 - 9/11/2026 23:43:16
-
-
            C1F43B : 5044 4154 4501 0002
 (1)  290/  C1F443 : 5665 7269 6669 7175     dc.b "Verifique se um",1,0,3
            C1F44B : 6520 7365 2075 6D01
@@ -10707,10 +10708,10 @@
 (1)  322/  C1F540 : 8384 8593 9495          dc.b $83,$84,$85,$93,$94,$95
 (1)  323/  C1F546 :                     FixMapFlagEU:
 (1)  324/  C1F546 : 8687 8896 9798          dc.b $86,$87,$88,$96,$97,$98
+ AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 171 - 9/11/2026 23:52:16
+
+
 (1)  325/  C1F54C :                     FixMapFlagBR:
- AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 171 - 9/11/2026 23:43:16
-
-
 (1)  326/  C1F54C : 898A 8B99 9A9B          dc.b $89,$8A,$8B,$99,$9A,$9B
 (1)  327/  C1F552 :                     ;FixStrDebugPictos:
 (1)  328/  C1F552 :                     ;    dc.b $8C,$8D,$8E,$8F,1,0,1
@@ -10770,10 +10771,10 @@
 (1)  365/  C1F614 :                         dc.b $01,7, "Entry #3 9012345678901234",0,0,0,0,0
 (1)  366/  C1F614 :                         dc.b $01,8, "Entry #4 9012345678901234",0,0,0,0,0
 (1)  367/  C1F614 :                         dc.b $03,9, "Entry #5 A Long One 01234",0,0,0,0,0
+ AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 172 - 9/11/2026 23:52:16
+
+
 (1)  368/  C1F614 :                         dc.b $01,10,"Entry #6 9012345678901234",0,0,0,0,0
- AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 172 - 9/11/2026 23:43:16
-
-
 (1)  369/  C1F614 :                         dc.b $01,11,"Entry #7 9012345678901234",0,0,0,0,0
 (1)  370/  C1F614 :                         dc.b $01,12,"Entry #8 9012345678901234",0,0,0,0,0
 (1)  371/  C1F614 :                         dc.b $01,13,"Entry #9 9012345678901234",0,0,0,0,0
@@ -10833,10 +10834,10 @@
 (1)  425/  C1F614 :                     FixStrCDSecCnt:
 (1)  426/  C1F614 :                     	dc.b "CD SECTORS  ",$F0,0
 (1)  427/  C1F614 :                     FixStrDebug:
+ AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 173 - 9/11/2026 23:52:16
+
+
 (1)  428/  C1F614 :                         dc.b "MCU comm test",1,0,2
- AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 173 - 9/11/2026 23:43:16
-
-
 (1)  429/  C1F614 :                     	dc.b "   Next:",$F0,1,0,3
 (1)  430/  C1F614 :                     	dc.b "   Pass:",$F1,1,0,4
 (1)  431/  C1F614 :                     	dc.b "  Wrong:",$F2,1,0,5
@@ -10896,10 +10897,10 @@
 (1)  477/  C1F6E1 :                     FixStrStackDump:
 (1)  478/  C1F6E1 : 2053 503A F001 0001     dc.b " SP:",$F0,1,0,1
 (1)  479/  C1F6E9 : 202B 303A F120 2B34     dc.b " +0:",$F1," +4:",$F2,1,0,2
+ AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 174 - 9/11/2026 23:52:16
+
+
            C1F6F1 : 3AF2 0100 02      
- AS V1.42 Beta [Bld 311] - Source File main.asm(strings.asm) - Page 174 - 9/11/2026 23:43:16
-
-
 (1)  480/  C1F6F6 : 202B 383A F320 2B43     dc.b " +8:",$F3," +C:",$F4,1,0,3
            C1F6FE : 3AF4 0100 03      
 (1)  481/  C1F703 : 2B31 303A F52B 3134     dc.b "+10:",$F5,"+14:",$F6,1,0,4
@@ -10955,7 +10956,7 @@
      274/  C7FFFE :                     	ORG $C7FFFE
      275/  C7FFFE : 600D                    dc.w $600D                  ; "GOOD" magic word
      276/  C80000 :                     
- AS V1.42 Beta [Bld 311] - Source File main.asm - Page 175 - 9/11/2026 23:43:16
+ AS V1.42 Beta [Bld 311] - Source File main.asm - Page 175 - 9/11/2026 23:52:16
 
 
   Symbol Table (* = unused):
@@ -11018,7 +11019,7 @@
  CHECKACK.ACK :              C1C8CC C |  CHECKCDVALID :              C0F29A - |
  CLEARFILELIST :             C1E35E C |  CLEARFILELIST.LP :          C1E36A C |
  CLEARFIX :                  C1E300 C |  CLEARFIX.CLEAR :            C1E314 C |
- AS V1.42 Beta [Bld 311] - Source File main.asm - Page 176 - 9/11/2026 23:43:16
+ AS V1.42 Beta [Bld 311] - Source File main.asm - Page 176 - 9/11/2026 23:52:16
 
 
  CLEARFIXTOP :               C1E32A C |  CLEARFIXTOP.COL :           C1E340 C |
@@ -11081,7 +11082,7 @@
  DRAWKEYBOARD.LOWERCASE :    C1ABE8 C |  DRAWKEYBOARD.ROW :          C1ABFA C |
  DRAWPROGRESSANIMATION :     C0ED80 - |  DRAWSDIP :                  C1C0C0 C |
  DRAWSDIP.DONE :             C1C154 C |  DRAWSDIP.DRAWLP :           C1C0F8 C |
- AS V1.42 Beta [Bld 311] - Source File main.asm - Page 177 - 9/11/2026 23:43:16
+ AS V1.42 Beta [Bld 311] - Source File main.asm - Page 177 - 9/11/2026 23:52:16
 
 
  DRAWSDIP.FIRSTPAGE :        C1C0E0 C |  DRAWSDIPCURSOR :            C1C054 C |
@@ -11144,7 +11145,7 @@
  FRONTIGMVBLINSERT :         C1D56A C | *FULLPMMU :                       1 - |
  GETBMPSECTOR :              C1CE6E C |  GETBMPSECTOR.ERR :          C1CEB4 C |
  GETBMPSECTOR.NOTIMEOUT :    C1CE90 C |  GETCDSECTORBYTESHEAD :      C1CAD8 C |
- AS V1.42 Beta [Bld 311] - Source File main.asm - Page 178 - 9/11/2026 23:43:16
+ AS V1.42 Beta [Bld 311] - Source File main.asm - Page 178 - 9/11/2026 23:52:16
 
 
  GETCDSECTORBYTESHEAD.DONE : C1CB44 C |
@@ -11207,7 +11208,7 @@
  INSTALLCHEATS.VBLCOPY :     C1D4B0 C |  INSTALLCHEATS.VBLTYPE :     C1D4AE C |
  INSTALLCHEATS.ZERO :        C1D4C4 C |  INSTALLPALETTES :           C1CFBC C |
  INSTALLPALETTES.LDPAL :     C1CFCC C |  INSTALLPALETTES.NEWANIM :   C1CFDC C |
- AS V1.42 Beta [Bld 311] - Source File main.asm - Page 179 - 9/11/2026 23:43:16
+ AS V1.42 Beta [Bld 311] - Source File main.asm - Page 179 - 9/11/2026 23:52:16
 
 
 *INSUPMODE :                      1 - | *INTWIDTH :                      40 - |
@@ -11228,8 +11229,8 @@
  LETTERCOUNT :               10D00E C |  LETTERCURSOR :              10D007 C |
  LETTERCURSORPREV :          10D008 C |  LETTERGAMECOUNT :           10D006 C |
  LETTERLUT :                 C1F56D C |  LISTNAMESCRATCH :           10D013 C |
-*LISTON :                         1 - |  LIST_CURSOR_COL :                0 - |
- LIST_NAME_COL :                  1 - |  LIST_NAME_WIDTH :               12 - |
+*LISTON :                         1 - |  LIST_CURSOR_COL :                2 - |
+ LIST_NAME_COL :                  3 - |  LIST_NAME_WIDTH :               12 - |
  LIST_START_ROW :                 4 - |  LOADANIMSLOWDOWN :          11C296 C |
  LOADCDSECTORFROMSD :        C1CE3E C |  LOADCDSECTORFROMSD.EXIT :   C1CE6C C |
  LOADCUSTOMBG :              C19B04 C |  LOADCUSTOMBGSILENT :        C19B1C C |
@@ -11270,7 +11271,7 @@
  LOADSETTINGS.OK1 :          C1C328 C |  LOADSETTINGS.OK2 :          C1C33E C |
  LOADSPRSECTORFROMSD :       C1CC4C C |  LOADSPRSECTORFROMSD.DONE :  C1CCFE C |
  LOADSPRSECTORFROMSD.EXIT :  C1CD14 C |
- AS V1.42 Beta [Bld 311] - Source File main.asm - Page 180 - 9/11/2026 23:43:16
+ AS V1.42 Beta [Bld 311] - Source File main.asm - Page 180 - 9/11/2026 23:52:16
 
 
  LOADSPRSECTORFROMSD.FULLSECTOR :                                    C1CCE4 C |
@@ -11333,7 +11334,7 @@
  NO_B.NO_LEFT :              C1B27C C |  NO_B.NO_RIGHT :             C1B296 C |
  NO_B.NO_UP :                C1B22A C |  OPCODE0 :                   C1D526 C |
  OPCODE0.DONE :              C1D530 C |  OPCODE1 :                   C1D532 C |
- AS V1.42 Beta [Bld 311] - Source File main.asm - Page 181 - 9/11/2026 23:43:16
+ AS V1.42 Beta [Bld 311] - Source File main.asm - Page 181 - 9/11/2026 23:52:16
 
 
  OPCODE2 :                   C1D540 C |  OPCODE2.DONE :              C1D54C C |
@@ -11396,7 +11397,7 @@
  SCREEN_ABOUT :                   C - |  SCREEN_IDLE :                    0 - |
  SCREEN_LOAD_SAVE :               9 - |  SCREEN_MAIN :                    1 - |
  SCREEN_MENU :                    7 - |  SCREEN_MSGBOX :                  F - |
- AS V1.42 Beta [Bld 311] - Source File main.asm - Page 182 - 9/11/2026 23:43:16
+ AS V1.42 Beta [Bld 311] - Source File main.asm - Page 182 - 9/11/2026 23:52:16
 
 
  SCREEN_SETTINGS :                A - |  SCREEN_SSAVER :                  D - |
@@ -11459,7 +11460,7 @@
  SOFTDIPSPTRS :              C1BC14 C | *SOUND_STOP :                D00046 - |
  SPLASHINIT :                C1CF34 C |  SPLASHINIT.NEWANIM :        C1CF54 C |
  SPLASHLETTERCURVE :         C1CF82 C |  SPLASHLETTERCURVE.NEWANIM : C1CF92 C |
- AS V1.42 Beta [Bld 311] - Source File main.asm - Page 183 - 9/11/2026 23:43:16
+ AS V1.42 Beta [Bld 311] - Source File main.asm - Page 183 - 9/11/2026 23:52:16
 
 
  SPLASHMAPSPRITE :           C1CF9A C |  SPLASHMAPSPRITE.NSPR0 :     C1CFB2 C |
@@ -11496,7 +11497,7 @@
 *SYS_LSP_1ST :               C004C8 - | *SYS_MESS_OUT :              C004CE - |
 *SYS_READ_CALENDAR :         C0045C - | *SYS_RETURN :                C00444 - |
  TARGET :                         1 - | *TILE_CURSOR :                   58 - |
-*TIME :                  "23:43:16" - |  TIMEOUTSTAGE :              11C1B5 C |
+*TIME :                  "23:52:16" - |  TIMEOUTSTAGE :              11C1B5 C |
  TIMEOUT_ACK :                2F3FE - |  TIMEOUT_EXEC :               BD038 - |
  TOGGLETRAY :                C1D66C C |  TOGGLETRAY.CLOSETRAY :      C1D67E C |
  TOTALFILECOUNT :            10D004 C | *TRUE :                           1 - |
@@ -11522,7 +11523,7 @@
  VBLPROCMAIN.NO_B :          C1A578 C |  VBLPROCMAIN.NO_C :          C1A59A C |
  VBLPROCMAIN.NO_D :          C1A5BE C |  VBLPROCMAIN.NO_LEFT :       C1A4CA C |
  VBLPROCMAIN.NO_RIGHT :      C1A50C C |  VBLPROCMAIN.READDATA :      C1A410 C |
- AS V1.42 Beta [Bld 311] - Source File main.asm - Page 184 - 9/11/2026 23:43:16
+ AS V1.42 Beta [Bld 311] - Source File main.asm - Page 184 - 9/11/2026 23:52:16
 
 
  VBLPROCMAIN.RIGHT :         C1A4F6 C |  VBLPROCMAIN.RIGHT_DONE :    C1A4FC C |
@@ -11585,7 +11586,7 @@
  WRITEFIXDICT :              C1E690 C |  WRITEFIXDICT.AWRITE :       C1E6C6 C |
  WRITEFIXDICT.CHAR :         C1E6D6 C |  WRITEFIXDICT.DONE :         C1E6F4 C |
  WRITEFIXDICT.PAD :          C1E6E4 C |  WRITEFIXDICT.STREND :       C1E6E0 C |
- AS V1.42 Beta [Bld 311] - Source File main.asm - Page 185 - 9/11/2026 23:43:16
+ AS V1.42 Beta [Bld 311] - Source File main.asm - Page 185 - 9/11/2026 23:52:16
 
 
  WRITEFIXDICT.WRITE :        C1E6B0 C |  YELLOW :                      6FF0 - |
@@ -11593,7 +11594,7 @@
    1130 symbols
     127 unused symbols
 
- AS V1.42 Beta [Bld 311] - Source File main.asm - Page 186 - 9/11/2026 23:43:16
+ AS V1.42 Beta [Bld 311] - Source File main.asm - Page 186 - 9/11/2026 23:52:16
 
 
   Defined Macros:
@@ -11605,7 +11606,7 @@ TESTCHANGE                            | TESTREPEAT
 
       6 macros
 
- AS V1.42 Beta [Bld 311] - Source File main.asm - Page 187 - 9/11/2026 23:43:16
+ AS V1.42 Beta [Bld 311] - Source File main.asm - Page 187 - 9/11/2026 23:52:16
 
 
   Defined Structures/Unions:
@@ -11616,7 +11617,7 @@ FILEENTRY
   2      (I8) FILENAME
  1C      (I8) RESERVED
 1 structure
- AS V1.42 Beta [Bld 311] - Source File main.asm - Page 188 - 9/11/2026 23:43:16
+ AS V1.42 Beta [Bld 311] - Source File main.asm - Page 188 - 9/11/2026 23:52:16
 
 
   Defined Functions:
@@ -11624,7 +11625,7 @@ FILEENTRY
 
 FIXPOS                                |
 
- AS V1.42 Beta [Bld 311] - Source File main.asm - Page 189 - 9/11/2026 23:43:16
+ AS V1.42 Beta [Bld 311] - Source File main.asm - Page 189 - 9/11/2026 23:52:16
 
 
   Code Pages:
@@ -11636,8 +11637,8 @@ STANDARD (0 changed characters)
 
 0.30 seconds assembly time
 
-   9534 lines source file
-  10045 lines incl. macro expansions
+   9535 lines source file
+  10046 lines incl. macro expansions
       5 passes
       0 errors
       1 warning
