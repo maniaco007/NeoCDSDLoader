@@ -76,6 +76,13 @@ BG_BOX_W_TILES  equ 8                 ; 128px wide
 BG_BOX_H_TILES  equ 8                 ; 128px tall
 BG_BOX_X        equ 176               ; Left edge, screen pixel X
 BG_BOX_Y        equ 48                ; Top edge, screen pixel Y
+; Experiment: same 128x128 pixel data/palette, physically smaller on screen
+; via the sprite shrink register (SCB2), on the theory that quantization/
+; dithering noise reads as less noticeable at a smaller on-screen size.
+; $0FFF was "no shrink" (full size); this project has no other partial-
+; shrink reference value to go by, so this is a first guess to check
+; visually on hardware, not a precise percentage - expect to retune it.
+BG_BOX_SHRINK   equ $0CCC              ; Moderate shrink test (was $0FFF = full size)
 
 TIMEOUT_ACK     equ 193534            ; 5.167us, ~1s
 TIMEOUT_EXEC    equ 774200            ; 5.167us, ~4s

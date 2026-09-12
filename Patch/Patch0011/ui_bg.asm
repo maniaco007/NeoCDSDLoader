@@ -65,7 +65,7 @@ SetupBGSprites:
 .bgdone:
 
 	move.w  #SPR_BG,d0
-	move.w  #$0FFF,d1				; No shrink
+	move.w  #BG_BOX_SHRINK,d1		; Slightly shrunk - see equ.asm comment
 	move.w  #BG_BOX_W_TILES,d7		; Box width, in tiles
 	jsr     SetSprZ
 	move.w  #SPR_BG,d0
