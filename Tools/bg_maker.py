@@ -18,16 +18,18 @@ Usage:
 If output.bmp is omitted, writes "bg.bmp" next to the input image.
 
 Options:
-    --fit {cover,blur,contain}  How to fit the image into 128x128 (default: cover)
-                            cover   = fill the whole frame, cropping overflow -
-                                      good default now that the target is a
-                                      near-square cover-art box, since most
-                                      box art is already close to square
+    --fit {stretch,cover,blur,contain}  How to fit the image into 128x128
+                                        (default: stretch)
+                            stretch = resize straight to 128x128, ignoring
+                                      aspect ratio - whole image visible,
+                                      nothing cropped, no padding; may look
+                                      squashed/stretched if the source isn't
+                                      already close to square
+                            cover   = fill the whole frame, cropping overflow
                             blur    = whole image visible (like contain), but the
                                       side gaps are filled with a blurred/darkened
                                       cover-cropped version of the same image
-                                      instead of a flat color - better for
-                                      screenshots or posters that aren't square
+                                      instead of a flat color
                             contain = fit the whole image, padding with --pad-color
     --pad-color RRGGBB      Padding color for --fit contain (default: 000000)
     --no-dither             Disable dithering during 16-color quantization
@@ -47,6 +49,12 @@ import sys
 from PIL import Image, ImageEnhance, ImageFilter
 
 TARGET_W, TARGET_H = 128, 128
+
+
+def fit_stretch(img: Image.Image) -> Image.Image:
+    # Straight resize to fill the frame, ignoring aspect ratio - whole image
+    # visible, nothing cropped, no padding/blur fill needed.
+    return img.resize((TARGET_W, TARGET_H), Image.LANCZOS)
 
 
 def fit_cover(img: Image.Image, size=(TARGET_W, TARGET_H)) -> Image.Image:
@@ -155,7 +163,9 @@ def convert(input_path: str, output_path: str, fit: str, pad_color: str,
             dither: bool, colors: int):
     img = Image.open(input_path).convert("RGB")
 
-    if fit == "cover":
+    if fit == "stretch":
+        img = fit_stretch(img)
+    elif fit == "cover":
         img = fit_cover(img)
     elif fit == "blur":
         img = fit_blur(img)
@@ -179,7 +189,7 @@ def main():
     parser.add_argument("input", help="Source image (jpg/png/bmp/etc.)")
     parser.add_argument("output", nargs="?", default=None,
                          help="Output path (default: bg.bmp next to input)")
-    parser.add_argument("--fit", choices=["cover", "blur", "contain"], default="cover")
+    parser.add_argument("--fit", choices=["stretch", "cover", "blur", "contain"], default="stretch")
     parser.add_argument("--pad-color", default="000000", help="RRGGBB hex, used with --fit contain")
     parser.add_argument("--no-dither", action="store_true")
     parser.add_argument("--colors", type=int, default=16, choices=range(2, 17), metavar="[2-16]")
