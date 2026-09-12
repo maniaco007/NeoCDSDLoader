@@ -102,6 +102,22 @@ def fit_blur(img: Image.Image) -> Image.Image:
     return canvas
 
 
+_HW_4BIT_LUT = [((v >> 4) * 17) for v in range(256)]  # matches ui_bg.asm's "lsr.b #4" truncation exactly
+
+
+def round_to_hardware_colorspace(img: Image.Image) -> Image.Image:
+    """The console's palette RAM only keeps the upper 4 bits of each R/G/B
+    channel (see the palette-conversion code in ui_bg.asm), so it can only
+    ever show 16 levels per channel (4096 colors total), not the full 24-bit
+    range. Rounding to that space *before* picking the 16-color palette
+    lets PIL choose colors from what will actually be displayed, instead of
+    optimizing in full color space and then having the hardware truncate
+    them afterwards to something else - which is what was producing the
+    poor-looking result."""
+    lut = _HW_4BIT_LUT * 3  # same LUT for R, G, B bands
+    return img.point(lut)
+
+
 def write_4bpp_bmp(img: Image.Image, out_path: str, colors: int):
     """img must already be exactly TARGET_W x TARGET_H, mode 'P' with a
     palette of <= `colors` entries (unused palette slots are zero-filled up
@@ -172,6 +188,8 @@ def convert(input_path: str, output_path: str, fit: str, pad_color: str,
     else:
         pad_rgb = tuple(int(pad_color[i:i + 2], 16) for i in (0, 2, 4))
         img = fit_contain(img, pad_rgb)
+
+    img = round_to_hardware_colorspace(img)
 
     quantized = img.quantize(
         colors=colors,
