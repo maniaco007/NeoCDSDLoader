@@ -61,18 +61,20 @@ MAX_FILENAME    equ 25+1              ; Max length of file name, null included
 ; from the MCU); this is just how many chars of it are actually drawn per
 ; row so the list column doesn't run under the cover box.
 LIST_NAME_WIDTH equ 18                ; Visible chars per row (name scrolls to reveal the rest)
-LIST_CURSOR_COL equ 1                 ; Fix column (x) for the cursor arrow
-LIST_NAME_COL   equ 2                 ; Fix column (x) for the file name text
+; Shifted 1 column left from the original 1/2 - the rightmost character of
+; each row was getting clipped by CRT horizontal overscan.
+LIST_CURSOR_COL equ 0                 ; Fix column (x) for the cursor arrow
+LIST_NAME_COL   equ 1                 ; Fix column (x) for the file name text
 
 ; Cover-art box geometry, in 16px sprite tiles / screen pixels (320x224
-; visible). Box is BG_BOX_W_TILES x BG_BOX_H_TILES, centered vertically in
-; the right-hand column of the screen, between the letters bar (bottom
-; ~Y62, SPR_LETTERS row in ui_main_setup.asm) and the footer text (top
-; ~Y208, fix row 26) so it doesn't overlap either.
+; visible). Box is BG_BOX_W_TILES x BG_BOX_H_TILES, on the right-hand side
+; of the screen, above the footer text (~Y208, fix row 26) with a clear
+; gap - Y72 only left 8px (one fix row) of clearance and was overlapping
+; the footer text on real hardware.
 BG_BOX_W_TILES  equ 8                 ; 128px wide
 BG_BOX_H_TILES  equ 8                 ; 128px tall
 BG_BOX_X        equ 176               ; Left edge, screen pixel X
-BG_BOX_Y        equ 72                ; Top edge, screen pixel Y (centered in the 62-208 gap)
+BG_BOX_Y        equ 48                ; Top edge, screen pixel Y
 
 TIMEOUT_ACK     equ 193534            ; 5.167us, ~1s
 TIMEOUT_EXEC    equ 774200            ; 5.167us, ~4s

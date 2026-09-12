@@ -93,10 +93,12 @@ SetupMain:
 	jsr     InitSD
 	bcs     .setup_interface   ; SD card error, skip loading game list
 
-    ; Check if there's already a custom bg loaded
+    ; BACKDROP is always solid black now (small cover box, not a full-screen
+    ; background) - just reassert that in case we exited from screen saver
+    ; (which changes it), no per-game color to "restore" anymore.
+    move.w  #BLACK,BACKDROP
     tst.b   CustomBGLoaded
     beq     .notloaded
-    move.w  CustomBGBackdrop,BACKDROP   ; Restore custom BG backdrop color in case we exited from screen saver
     bra     .nocustombg
 .notloaded:
 	; Check if there's a custom bg file available

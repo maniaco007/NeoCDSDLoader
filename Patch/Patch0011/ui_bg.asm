@@ -210,18 +210,11 @@ LoadCustomBGSilent:
     move.b  (a0)+,d0    ; Skip A
     subq.w  #1,d7
     bne     .convertpal
-    ; Stash color #0 in CustomBGBackdrop for now - BACKDROP itself is a single
-    ; register that affects the whole screen immediately, so it must NOT be
-    ; written yet: the old buffer is still on screen and will be until the
-    ; decode below fully succeeds. It gets applied at the same instant as the
-    ; buffer flip, further down.
-    lea     (PALETTES+(2*16*16)),a3     ; Palette #16 (buffer 0)
-    tst.b   BGDecodeBuffer
-    beq     .pal_buf0b
-    addi.l  #2*16,a3                    ; Palette #17 (buffer 1)
-.pal_buf0b:
-    move.w  (a3),d0
-    move.w  d0,CustomBGBackdrop
+    ; BACKDROP itself is intentionally left alone here: with the cover art
+    ; now a small fixed box instead of a full-screen background, the area
+    ; around it should just stay solid black regardless of whichever
+    ; game's palette color #0 happens to be - not flicker to a different
+    ; color every time the selection changes.
 
     ; Load and convert pixels - straight into the inactive buffer, currently
     ; not displayed by any sprite, so no need to hide anything while this runs
@@ -318,7 +311,6 @@ LoadCustomBGSilent:
     
     st.b    CustomBGLoaded
     move.b  BGDecodeBuffer,BGActiveBuffer   ; Flip: SetupBGSprites now shows this freshly-filled buffer
-    move.w  CustomBGBackdrop,BACKDROP       ; Same instant: only now does the backdrop color change
 
 CustomBGFail:
     move.b  d0,REG_UPUNMAPSPR
