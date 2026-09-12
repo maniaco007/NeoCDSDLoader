@@ -88,10 +88,6 @@ FixStrLoadingList:
     dc.b $14,"Aguarde...        ",$15,1,0,3
     dc.b $03,[18]$17,$04,0
 
-; Special tiles for compact "START+SELECT" text in pictos tileset
-FixStrIGMShortcut:
-    dc.b $AF,$A0,$AF,$A1,$AF,$A2,$AF,$A3,$AF,$A4,$AF,$A5,":Menu no Jogo",0
-
 FixStrMenu:
     dc.b "Configuracoes",1,0,1
     dc.b "Menu de saves",1,0,2
@@ -310,16 +306,15 @@ FixStrClear:
 FixStrLongwordVal:
 	dc.b "",$F0,0
 
-FixStrPressTop:
-    dc.b $BA,":Jogar",1,0,1
-    dc.b $BC,":Opcoes",1,0,2
-    dc.b $BD,":Menu CD",0
+; Compact single-line action hints for the main menu footer (top-loader has
+; no eject button, so 3 actions fit on one line; front-loader adds Abrir/
+; Fechar and spills onto a second line via the 1,0,1 relocate).
+FixStrFooterActionsTop:
+    dc.b $BA,":Jogar  ",$BC,":Opcoes  ",$BD,":Menu CD",0
 
-FixStrPressFront:
-    dc.b $BA,":Jogar",1,0,1
-    dc.b $BB,":Abrir/Fechar",1,0,2
-    dc.b $BC,":Opcoes",1,0,3
-    dc.b $BD,":Menu CD",0
+FixStrFooterActionsFront:
+    dc.b $BA,":Jogar   ",$BB,":Abrir/Fechar",1,0,1
+    dc.b $BC,":Opcoes  ",$BD,":Menu CD",0
 
 FixMapFlagJP:
     dc.b $80,$81,$82,$90,$91,$92
@@ -344,8 +339,6 @@ FixStrNoFiles:
     dc.b "Nenhum jogo encontrado",0
 FixStrNoCard:
     dc.b "Nenhum cartao inserido",0
-FixStrVersion:
-    dc.b "VER \{VERSION_MAJ}.\{VERSION_MIN_TENS}\{VERSION_MIN_ONES}",0
 
 FixStrError:
     dc.b "NEO CD SD LOADER",1,0,2

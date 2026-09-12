@@ -17,11 +17,12 @@
 ; the Free Software Foundation, Inc., 51 Franklin Street,
 ; Boston, MA 02110-1301, USA.
 
-; Points the background sprite's tilemap (SPR_BG, 20x16 tiles) at either the
-; custom bg tile range (double-buffered, see BGActiveBuffer) or the default
-; repeating pattern, depending on CustomBGLoaded. Also (re)applies the
-; sprite's Z/Y/X. Safe to call again after the menu is already up, e.g. once
-; a per-game bg.bmp has just been loaded by LoadGameBG.
+; Points the background sprite's tilemap (SPR_BG, BG_BOX_W_TILES x
+; BG_BOX_H_TILES tiles - the cover-art box, right side of the menu screen)
+; at either the custom bg tile range (double-buffered, see BGActiveBuffer)
+; or the default repeating pattern, depending on CustomBGLoaded. Also
+; (re)applies the sprite's Z/Y/X. Safe to call again after the menu is
+; already up, e.g. once a per-game bg.bmp has just been loaded by LoadGameBG.
 SetupBGSprites:
 	tst.b   CustomBGLoaded
 	beq     .defaultbg
@@ -31,14 +32,14 @@ SetupBGSprites:
 	move.w  #$1000,d3               ; Palette #16 (buffer 0)
 	tst.b   BGActiveBuffer
 	beq     .buf0
-	addi.w  #(20*14),d0             ; Buffer 1: tiles start right after buffer 0's 280 tiles
+	addi.w  #(BG_BOX_W_TILES*BG_BOX_H_TILES),d0  ; Buffer 1: tiles start right after buffer 0's
 	addi.w  #$0100,d3               ; Buffer 1: palette #17
 .buf0:
 	move.w  #SCB1+(SPR_BG*2*32),d2	; Tile map
-	move.w  #20,d7					; 20 sprites wide
+	move.w  #BG_BOX_W_TILES,d7		; Box width, in tiles
 .setup_c_map:
 	move.w  d2,REG_VRAMADDR
-	move.w  #14,d6					; 14 tiles high
+	move.w  #BG_BOX_H_TILES,d6		; Box height, in tiles
 .setup_c_tiles:
 	nop
 	move.w  d0,REG_VRAMRW	     	; Tile number
@@ -57,10 +58,10 @@ SetupBGSprites:
 	move.w  #1,REG_VRAMMOD
 	lea     bg_pal_map,a0
 	move.w  #SCB1+(SPR_BG*2*32),d2	; Tile map
-	move.w  #20,d7					; 20 sprites wide
+	move.w  #BG_BOX_W_TILES,d7		; Box width, in tiles
 .setup_d_map:
 	move.w  d2,REG_VRAMADDR
-	move.w  #16,d6					; 16 tiles high
+	move.w  #BG_BOX_H_TILES,d6		; Box height, in tiles
 .setup_d_tiles:
 	nop
 	move.w  #$0040,REG_VRAMRW		; Tile number
@@ -77,15 +78,15 @@ SetupBGSprites:
 
 	move.w  #SPR_BG,d0
 	move.w  #$0FFF,d1				; No shrink
-	move.w  #20,d7					; 20 sprites wide
+	move.w  #BG_BOX_W_TILES,d7		; Box width, in tiles
 	jsr     SetSprZ
 	move.w  #SPR_BG,d0
-	move.w  #((496-0)<<7)+16,d1		; Top Y, 16 tiles high
-	move.w  #20,d7					; 20 sprites wide
+	move.w  #((496-BG_BOX_Y)<<7)+BG_BOX_H_TILES,d1	; Box top Y, centered vertically
+	move.w  #BG_BOX_W_TILES,d7		; Box width, in tiles
 	jsr     SetSprY
 	move.w  #SPR_BG,d0
-	move.w  #0,d1					; Left X
-	move.w  #20,d7					; 20 sprites wide
+	move.w  #BG_BOX_X,d1			; Box left X, right-hand column
+	move.w  #BG_BOX_W_TILES,d7		; Box width, in tiles
 	jsr     SetSprX
 	rts
 
@@ -172,11 +173,11 @@ LoadCustomBGSilent:
     ; Check "BM" magic at 00
     cmp.w   #$424D,$0(a0)
     bne     CustomBGFail
-    ; Check 320px width at $12
-    cmp.l   #$40010000,$12(a0)
+    ; Check BG_BOX_W_TILES*16px (128px) width at $12
+    cmp.l   #$80000000,$12(a0)
     bne     CustomBGFail
-    ; Check 224px height at $16
-    cmp.l   #$E0000000,$16(a0)
+    ; Check BG_BOX_H_TILES*16px (128px) height at $16
+    cmp.l   #$80000000,$16(a0)
     bne     CustomBGFail
     ; Check 4bpp at $1C
     cmp.w   #$0400,$1C(a0)
@@ -243,13 +244,13 @@ LoadCustomBGSilent:
     lea     LUTIndexToBitplane,a0
     ; Start at bottom left pixel of bottom left tile
     ; Pen and paper required !
-    lea     ($E00000+(256*128)+(128*14)-4),a4
+    lea     ($E00000+(256*128)+(128*BG_BOX_H_TILES)-4),a4
     tst.b   BGDecodeBuffer
     beq     .tile_buf0
-    addi.l  #(20*14*128),a4             ; Buffer 1: tiles start right after buffer 0's 280 tiles
+    addi.l  #(BG_BOX_W_TILES*BG_BOX_H_TILES*128),a4  ; Buffer 1: tiles start right after buffer 0's
 .tile_buf0:
 
-    move.l  #14,d4      ; Height in tiles
+    move.l  #BG_BOX_H_TILES,d4      ; Height in tiles
 .fullheight:
     move.l  a4,a3       ; Restore base address
     subi.l  #128,a4     ; -1 tile (go to tile row above)
@@ -259,7 +260,7 @@ LoadCustomBGSilent:
     move.l  a3,a1       ; Restore base address
     subi.l  #4,a3       ; -1 row (go to pixel row above)
 
-    moveq.l #20,d6      ; Width in tiles
+    moveq.l #BG_BOX_W_TILES,d6      ; Width in tiles
 .sixteenpixelsrow:
 
     ; Load left 8 pixels
@@ -315,8 +316,8 @@ LoadCustomBGSilent:
     subq.b  #1,d7
     bne     .rowb
     move.l  d2,-64(a1)      ; Right column
-    
-    lea     128*14(a1),a1   ; Next tile to the right
+
+    lea     128*BG_BOX_H_TILES(a1),a1   ; Next tile to the right
 
     subq.w  #1,d6           ; Done one tile pixel row
     bne     .sixteenpixelsrow

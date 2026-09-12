@@ -51,14 +51,14 @@ SetupMain:
 
 	; RefreshFlags bits use in ui_main:
 	; 0: Redraw file list
-	; 1: Redraw letter cursor
+	; 1: -                       (was "Redraw letter cursor" - bar removed)
 	; 2: Redraw file cursor
 	; 3: Redraw current file name for scrolling
 	; 4: Show msgbox about game count exceeding MAX_FILES
 	; 5: -
 	; 6: -
 	; 7: -
-    move.b  #%00000111,RefreshFlags
+    move.b  #%00000101,RefreshFlags
 
     jsr     WaitVBL                 ; Wait for vblank to hide dirty things
 
@@ -213,92 +213,9 @@ SetupMain:
 
     jsr     SetupBGSprites
 
-	; Setup sprites for logo
-	lea     map_logo,a0
-	move.w  #SPR_LOGO,d3
-	jsr     AutoMap
-	move.w  #SPR_LOGO,d0
-	move.w  #$0FFF,d1
-	move.w  #7,d7
-	jsr     SetSprZ
-	move.w  #SPR_LOGO,d0
-	move.w  #((496-14)<<7)+2,d1
-	move.w  #7,d7
-	jsr     SetSprY
-	move.w  #SPR_LOGO,d0
-	move.w  #32,d1
-	move.w  #7,d7
-	jsr     SetSprX
-	
-	; Setup sprites for first letters
-	move.b  #27,d7
-	move.w  #1,REG_VRAMMOD
-	move.w  #SPR_LETTERS*2*32,d0
-	move.l  ActiveLetters,d1
-	move.w  #$0060,d2  ; Top tile for '#'
-.setletters:
-    lsr.l   #1,d1
-    bcs     .enabled
-	addq.w  #2,d2      ; Skip 2 tiles
-	subq.b  #1,d7
-	bne     .setletters
-	bra     .setdone
-.enabled:
-    move.w  d0,REG_VRAMADDR
-	nop
-	nop
-	move.w  d2,REG_VRAMRW
-	nop
-	addq.w  #1,d2
-	move.w  #$0B00,REG_VRAMRW 		; Palette
-	nop
-	addi.w  #2*32,d0
-	move.w  d2,REG_VRAMRW
-	nop
-	addq.w  #1,d2
-	move.w  #$0B00,REG_VRAMRW
-    bra     .setletters
-.setdone:
-
-	move.b  LetterCount,d7
-	beq     .noletters
-    move.w  #SPR_LETTERS,d0
-	move.w  #$0FFF,d1
-	moveq.l #0,d7
-	move.b  LetterCount,d7
-	jsr     SetSprZ
-	move.w  #SPR_LETTERS,d0
-
-	moveq.l #0,d7
-	move.b  LetterCount,d7
-	move.w  #SPR_LETTERS+$8200,REG_VRAMADDR
-	move.w  #((496-46)<<7)+2,d0
-.setlettersy
-	move.w  d0,REG_VRAMRW
-	nop
-	subq.b  #1,d7
-	bne     .setlettersy
-
-	moveq.l #0,d7
-	move.b  LetterCount,d7
-	; Horizontally align
-	moveq.l #0,d0
-	move.b  d7,d0
-	mulu.w  #600,d0
-	lsr.l   #6,d0      ; .6 Fixed point to int
-    addi.w  #-320,d0   ; Display width
-    neg     d0
-    lsr.w   #1,d0      ; /2
-	move.w  d0,d1
-    lsl.w   #6,d1      ; Int to .6 fixed point
-    move.w  d1,LettersXPos
-    lsl.w   #7,d0      ; Position for VRAM X data
-	move.w  #SPR_LETTERS+$8400,REG_VRAMADDR
-.setlettersx
-	move.w  d0,REG_VRAMRW
-	addi.w  #600<<1,d0
-	subq.b  #1,d7
-	bne     .setlettersx
+	; Letters bar is gone (no on-screen A-Z strip anymore), but ActiveLetters/
+	; LetterCount/LetterCursor still drive CNT_LEFT/CNT_RIGHT letter-jump
+	; navigation in VBLProcMain (JumpToLetter) - no sprites to set up here.
 
     ; Restore cursors to last valid ones
 	tst.b   CursorsValid
@@ -307,80 +224,20 @@ SetupMain:
 	move.b  LastMenuShift,MenuShift
 	move.b  LastLetterCursor,LetterCursor
 .invalid:
-	jsr     SetLetterCursorX
 
-	; Setup sprites for left/right arrows
-	lea     map_arrows,a0
-	move.w  #SPR_ARROW_L,d3
-	jsr     AutoMap
-
-	move.w  #SPR_ARROW_L,d0
-	move.w  #$0FFF,d1
-	move.w  #2,d7
-	jsr     SetSprZ
-
-	move.w  #SPR_ARROW_L,d0
-	move.w  #((496-46)<<7)+2,d1
-	move.w  #1,d7
-	jsr     SetSprY
-
-	move.w  #SPR_ARROW_R,d0
-	move.w  #((496-46)<<7)+2,d1
-	move.w  #1,d7
-	jsr     SetSprY
-
-    move.w  LettersXPos,d1
-    subi.w  #600,d1
-    lsr.w   #6,d1           ; Remove fractional part
-	move.w  #SPR_ARROW_L,d0
-	move.w  #1,d7
-	jsr     SetSprX
-
-    moveq.l #0,d1
-	move.b  LetterCount,d1
-    mulu    #600,d1
-    add.w   LettersXPos,d1
-    lsr.w   #6,d1           ; Remove fractional part
-	move.w  #SPR_ARROW_R,d0
-	move.w  #1,d7
-	jsr     SetSprX
-.noletters:
-
-	; Setup sprite for letter cursor
-	move.w  #SPR_LETTER_CUR*2*32,REG_VRAMADDR	; Sprite map
-	nop
-	nop
-	move.w  #TILE_CURSOR,REG_VRAMRW	; Tile #
-	nop
-	nop
-	move.w  #$0904,REG_VRAMRW 		; Palette and auto-anim
-	nop
-	nop
-	move.w  #TILE_CURSOR+4,REG_VRAMRW	; Tile #
-	nop
-	nop
-	move.w  #$0904,REG_VRAMRW 		; Palette and auto-anim
-	move.w  #SPR_LETTER_CUR,d0
-	move.w  #$0FFF,d1
-	move.w  #1,d7
-	jsr     SetSprZ
-	move.w  #SPR_LETTER_CUR,d0
-	move.w  #((496-47)<<7)+2,d1
-	move.w  #1,d7
-	jsr     SetSprY
-	; X position will be set during next v-blank
-
-	; Draw button press instructions
+	; Draw footer: compact action-button hints (left, bottom rows) and the
+	; region flag (right, bottom rows) - the header logo/instructions and
+	; the old START+SELECT/version footer are gone; this replaces them.
 	move.w  #$0500,FixWriteConfig
-	move.w  #FIXMAP+4+(20*32),d0
+	move.w  #FIXMAP+26+(LIST_NAME_COL*32),d0
 	IF TARGET==1
-    lea     FixStrPressFront,a0
+    lea     FixStrFooterActionsFront,a0
 	ELSE
-    lea     FixStrPressTop,a0
+    lea     FixStrFooterActionsTop,a0
 	ENDIF
 	jsr     WriteFix
 
-	; Draw nationality flag
+	; Draw nationality flag (footer, right-hand side)
 	lea     FlagLUT,a0
 	moveq.l #0,d0
 	move.b  SettingCountry,d0
@@ -388,7 +245,7 @@ SetupMain:
 	add.w   d0,d0
 	movea.l (a0,d0),a0
 	move.w  #$1500,d0
-	move.w  #FIXMAP+4+(34*32),REG_VRAMADDR
+	move.w  #FIXMAP+26+(34*32),REG_VRAMADDR
 	move.w  #32,REG_VRAMMOD    ; 20
 	nop                        ; 4
 	nop                        ; 4
@@ -404,7 +261,7 @@ SetupMain:
 	move.w  d0,REG_VRAMRW
 	nop
 	nop
-	move.w  #FIXMAP+5+(34*32),REG_VRAMADDR
+	move.w  #FIXMAP+27+(34*32),REG_VRAMADDR
 	nop
 	nop
 	move.b  (a0)+,d0
@@ -418,44 +275,55 @@ SetupMain:
 	move.b  (a0),d0
 	move.w  d0,REG_VRAMRW
 
-	; Draw IGM shortcut reminder
-    lea     FixStrIGMShortcut,a0
-	move.w  #FIXMAP+27+(4*32),d0
-	jsr     WriteFix
-
-	; Draw patch version
-    lea     FixStrVersion,a0
-	move.w  #FIXMAP+27+(29*32),d0
-	jsr     WriteFix
-                                     
     jsr     BuildFileList
 
 	move.w  #SCREEN_MAIN,CurrentScreen
 	rts
 
 
-; Sets LetterCursorX (sprite position) according to LetterCursor (letter index)
-SetLetterCursorX:
-    moveq.l #0,d0
-    move.b  LetterCursor,d0
-    mulu    #600,d0
-    add.w   LettersXPos,d0
-	move.w  d0,LetterCursorX
-	rts
-
-
+; Builds the (always full, unfiltered) visible game list: MenuIndexList[i]=i
+; for every game in FileList, in the order the MCU returned them. There's no
+; on-screen letter bar anymore to filter by, so the list always shows every
+; game - CNT_LEFT/CNT_RIGHT (JumpToLetter in ui_main_vbl.asm) just move the
+; cursor to the next/prev letter's first match within this same full list,
+; they don't change what's in it. Called once from SetupMain after the game
+; list is fetched.
 BuildFileList:
-    ; Build file list for a given letter
+	clr.b   LetterGameCount     ; Reset entry count (== TotalFileCount below)
 
-	clr.b   LetterGameCount     ; Reset entry count
+	moveq.l #0,d6
+	move.w  TotalFileCount,d6
+	beq     .done                ; No files
+	move.b  d6,LetterGameCount    ; Fits a byte: TotalFileCount capped to MAX_FILES
 
-    tst.b   LetterCount
-    beq     .done
-	; Look up selected letter
+	lea     MenuIndexList,a0
+	moveq.l #0,d0
+.fill:
+	move.b  d0,(a0)+
+	addq.w  #1,d0
+	subq.w  #1,d6
+	bne     .fill
+.done:
+
+	bset.b  #0,RefreshFlags 	; File list needs refresh
+	tst.b   CursorsValid
+	bne     .keepcursor
+	clr.b   FileCursor          ; Reset file cursor to top
+	clr.b   MenuShift
+	bset.b  #2,RefreshFlags     ; File cursor needs refresh
+	rts
+.keepcursor:
+    clr.b   CursorsValid
+    rts
+
+
+; Resolves LetterCursor (index into the active-letters bitmap) to the actual
+; letter character (or 0 for the numbers/"#" bucket), same lookup BuildFileList
+; used to do per-filter. d1 = resolved match char (0 = numbers bucket).
+ResolveLetterCursor:
 	moveq.l #0,d2
 	move.b  LetterCursor,d0
 	move.l  ActiveLetters,d1
-	;move.l  #27,d7
 .countbits:
     lsr.l   #1,d1
     bcc     .zero               ; Unused letter
@@ -468,64 +336,7 @@ BuildFileList:
 .found:
 	lea     MenuLetterList,a0
 	move.b  0(a0,d2),d1
-
-	; Search game names starting with selected letter and build index list
-	moveq.l #MAX_MENU_LIST,d7
-	moveq.l #0,d6
-	lea     LetterLUT,a0
-	lea     FileList,a1
-	lea     MenuIndexList,a2
-	moveq.l #0,d0
-.disp:
-	tst.b   (a1)+
-	beq     .done               ; Reached last file in GameList
-	addq.l  #1,a1               ; Skip file number byte for now
-	tst.b   d1
-	bne     .letter
-	; Match any number
-	cmp.b   #'9',(a1)
-	bhi     .skip
-	bra     .number
-.letter:
-    ; Match letter, case insensitive
-    move.b  (a1),d0
-    cmp.b   #'@',d0             ; Check if this is really a letter
-    blo     .skip
-    cmp.b   #'z',d0
-    bhi     .skip
-    subi.b  #'@',d0
-	move.b  0(a0,d0),d0         ; Convert to lower case
-	addi.b  #'@',d0
-	cmp.b   d0,d1
-	bne     .skip
-.number:
-	; Entry matches !
-    move.b  d6,(a2)+            ; Add index to list
-	addq.b  #1,LetterGameCount
-
-	subq.w  #1,d7
-	beq     .done			    ; Max files per letter reached, stop here
-.skip:
-
-	addq.w  #1,d6
-	cmp.w   #MAX_FILES,d6
-    beq     .done               ; Reached end of GameList
-
-    lea     30(a1),a1			; Next entry (32-2)
-	bra     .disp
-.done:
-
-	bset.b  #0,RefreshFlags 	; File list needs refresh
-	bset.b  #1,RefreshFlags 	; Letter cursor needs refresh
-	tst.b   CursorsValid
-	bne     .keepcursor
-	clr.b   FileCursor          ; Reset file cursor to top
-	clr.b   MenuShift
-	bset.b  #2,RefreshFlags     ; File cursor needs refresh
 	rts
-.keepcursor:
-    clr.b   CursorsValid
-    rts
 
 
 FlagLUT:
@@ -533,9 +344,3 @@ FlagLUT:
     dc.l    FixMapFlagUS
     dc.l    FixMapFlagEU
     dc.l    FixMapFlagBR
-
-
-map_arrows:
-    dc.w $0101
-    dc.w $B096, $B097
-    dc.w $B098, $B099

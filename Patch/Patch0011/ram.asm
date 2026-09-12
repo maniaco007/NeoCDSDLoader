@@ -48,18 +48,21 @@ FIXMAPBUFFER_SIZE equ IGM_WIDTH * IGM_HEIGHT
 FileCursor		ds.b 1 	; File cursor position
 FileCursorPrev	ds.b 1 	;
 MenuShift		ds.b 1 	; File list starting position, for scrolling
-RefreshFlags	ds.b 1 	; Bit0:Refresh file list, Bit1:Refresh letter cursor, Bit2:Refresh file cursor, Bit6:Card was removed, Bit7:Reset main menu
+RefreshFlags	ds.b 1 	; Bit0:Refresh file list, Bit2:Refresh file cursor, Bit6:Card was removed, Bit7:Reset main menu
 TotalFileCount	ds.w 1 	; Total count
 LetterGameCount	ds.b 1 	; File count in selected letter category
 LetterCursor	ds.b 1  ; Used as index in MenuLetterList
 LetterCursorPrev	ds.b 1
-LetterCursorX	ds.w 1  ; Used as 10.6 fixed point
 ActiveLetters   ds.l 1  ; Bitmap of the enabled letters in the menu, bits 26~0 used, # is LSB
 LetterCount     ds.b 1  ; Number of active letters, equivalent to ActiveLetters set bit count
-LettersXPos     ds.w 1  ; Leftmost X position of active letters group, for centering
+                        ; UITemp is accessed with move.w elsewhere - force it back onto an even
+                        ; address (removing the old word-sized LetterCursorX/LettersXPos above
+                        ; shifted everything after them by an odd number of bytes).
+	ALIGN 2
 UITemp          ds.b 1  ; General purpose
 ScrollTimer     ds.b 1  ; Scrolling speed timer
 ScrollX         ds.b 1  ; Scrolling shift (in chars)
+ListNameScratch ds.b LIST_NAME_WIDTH+1 ; Truncated-copy scratch for DrawFileList (cover box column)
 
 DebugDIP1       ds.b 1
 DebugDIP2       ds.b 1

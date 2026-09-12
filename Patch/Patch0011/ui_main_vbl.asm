@@ -46,47 +46,15 @@ VBLProcMain:
 	move.b  #0,UITemp           ; Reset timer
 .norefresh0:
 
-	btst.b  #1,RefreshFlags
-	beq     .norefresh1
-	move.w  #320,d1             ; Out of visible display
-	tst.b   LetterCount
-	beq     .hidecursor
-	move.w  LetterCursorX,d1
-    lsr.w   #6,d1               ; Remove fractional part
-.hidecursor:
-	move.w  #SPR_LETTER_CUR,d0
-	move.w  #1,d7
-	jsr     SetSprX
-	bclr.b  #1,RefreshFlags
-.norefresh1:
-
 	btst.b  #2,RefreshFlags
 	beq     .norefresh_cur
-	; Erase previous cursor
-	moveq.l #0,d0
-	move.b  FileCursorPrev,d0
-	add.w   #FIXMAP+11+(7*32),d0
-	move.w  d0,REG_VRAMADDR
-	nop
-	nop
-	move.w  #$0520,REG_VRAMRW	; Space, palette 0, bank 5
-	tst.b   LetterGameCount
-	beq     .norefresh_cur      ; No files in list, don't draw cursor
-	; Draw new cursor
-	moveq.l #0,d0
-	move.b  FileCursor,d0
-	move.b  d0,FileCursorPrev
-	addi.w  #FIXMAP+11+(7*32),d0
-	move.w  d0,REG_VRAMADDR
-	nop
-	nop
-	move.w  #$05<<8+CHAR_ARROW_RIGHT,REG_VRAMRW	; Palette 0, bank 5
-	move.b  #0,UITemp           ; Reset timer  
-	tst.b   ScrollX
-	beq     .noredraw
-	; Force redraw list to restore currently scrolling filename to start
+	; Selection is shown as a highlighted row (see DrawFileList), not a
+	; separate arrow tile, so a cursor move just needs a full list redraw -
+	; it repaints every row in its correct color, including the old and new
+	; selected rows.
+	move.b  FileCursor,FileCursorPrev
 	jsr     DrawFileList
-.noredraw:
+	move.b  #0,UITemp           ; Reset timer
 	bclr.b  #2,RefreshFlags
 .norefresh_cur:
 
@@ -96,15 +64,15 @@ VBLProcMain:
 	moveq.l #0,d0
 	move.l  d0,d1
 	move.b  FileCursor,d0
-	addi.w  #FIXMAP+11+(8*32),d0
-	; Display MAX_FILENAME-1 chars starting from (GUBuffer+ScrollX)
+	addi.w  #FIXMAP+11+(LIST_NAME_COL*32),d0
+	; Display LIST_NAME_WIDTH chars starting from (GUBuffer+ScrollX)
 	move.w  #32,REG_VRAMMOD
 	lea     GUBuffer,a0
 	move.b  ScrollX,d1
 	add.l   d1,a0
-	move.w  FixWriteConfig,d1
+	move.w  #$2500,d1           ; Highlight palette - this is always the selected row
     move.w  d0,REG_VRAMADDR
-    moveq.l #MAX_FILENAME-1,d7
+    moveq.l #LIST_NAME_WIDTH,d7
 .write:
     move.b  (a0)+,d1
     tst.b   d1
@@ -201,7 +169,9 @@ VBLProcMain:
 	jsr     LoadGameBG
 .nobgload:
 
-	; Handle input to move letter cursor
+	; Handle input to jump the cursor to the next/prev letter's first game -
+	; no visible letter bar anymore, but esquerda/direita still work as a
+	; quick-jump within the one, always-full game list (see JumpToLetter).
 	TESTREPEAT CNT_LEFT
     beq     .no_left
     tst.b   LetterCursor
@@ -211,15 +181,13 @@ VBLProcMain:
 	move.b  LetterCount,d0
     subq.b  #1,d0
     move.b  d0,LetterCursor
-    jsr     SetLetterCursorX
 	bra     .left_done
 .left:
     subq.b  #1,LetterCursor
-	subi.w  #600,LetterCursorX  ; Move left 9.375px
 .left_done:
     move.b  #SFX_MOVE,d0
     jsr     PlaySFX
-    jsr     BuildFileList
+    jsr     JumpToLetter
 .no_left:
 
 	TESTREPEAT CNT_RIGHT
@@ -230,15 +198,13 @@ VBLProcMain:
     bne     .right
     ; Warp back to leftmost letter
 	move.b  #0,LetterCursor
-    move.w  LettersXPos,LetterCursorX
 	bra     .right_done
 .right:
     addq.b  #1,LetterCursor
-	addi.w  #600,LetterCursorX  ; Move right 9.375px
 .right_done:
     move.b  #SFX_MOVE,d0
     jsr     PlaySFX
-    jsr     BuildFileList
+    jsr     JumpToLetter
 .no_right:
 
     ; Handle input for selection of game from list
@@ -295,6 +261,77 @@ VBLProcMain:
 	jmp     StartGameCD
 
 .idle:
+	rts
+
+
+; After LetterCursor has been moved (CNT_LEFT/CNT_RIGHT above), jump
+; FileCursor/MenuShift so the first game matching that letter becomes
+; selected and scrolled into view - without hiding any other game from the
+; (always full) list, unlike the old per-letter BuildFileList filter this
+; replaces. Match logic mirrors what BuildFileList used to do per-entry.
+JumpToLetter:
+	tst.b   LetterCount
+	beq     .done                ; No letters available, nothing to jump to
+	jsr     ResolveLetterCursor  ; d1 = target char (0 = numbers bucket)
+
+	lea     LetterLUT,a0
+	lea     FileList,a1
+	moveq.l #0,d6                ; Scan position, becomes the match's position
+.scan:
+	tst.b   (a1)+
+	beq     .done                ; Reached end of GameList, no match (shouldn't happen)
+	addq.l  #1,a1                ; Skip flag and file number bytes
+	tst.b   d1
+	bne     .letter
+	; Match any number
+	cmp.b   #'9',(a1)
+	bhi     .skip
+	bra     .found
+.letter:
+	; Match letter, case insensitive
+	move.b  (a1),d0
+	cmp.b   #'@',d0
+	blo     .skip
+	cmp.b   #'z',d0
+	bhi     .skip
+	subi.b  #'@',d0
+	move.b  0(a0,d0),d0         ; Convert to lower case
+	addi.b  #'@',d0
+	cmp.b   d0,d1
+	bne     .skip
+.found:
+	; d6 = match's position in FileList == its position in MenuIndexList
+	; (identity mapping now that the list is unfiltered). Put it at the top
+	; of the visible window, clamped so the window doesn't scroll past the
+	; end of the list.
+	moveq.l #0,d5
+	move.w  TotalFileCount,d5
+	cmp.w   #MAX_MENU_LINES,d5
+	bhi     .canscroll
+	moveq.l #0,d5                ; Whole list fits on screen, MenuShift always 0
+	bra     .haveshift
+.canscroll:
+	subi.w  #MAX_MENU_LINES,d5   ; d5 = highest valid MenuShift
+.haveshift:
+	move.w  d6,d4                ; d4 = desired MenuShift = match position
+	cmp.w   d5,d4
+	bls     .noclamp
+	move.w  d5,d4
+.noclamp:
+	move.b  d4,MenuShift
+	move.w  d6,d0
+	sub.w   d4,d0
+	move.b  d0,FileCursor
+	bset.b  #0,RefreshFlags      ; Redraw list (MenuShift may have changed)
+	bset.b  #2,RefreshFlags      ; Redraw cursor
+	rts
+.skip:
+	addq.w  #1,d6
+	cmp.w   #MAX_FILES,d6
+	beq     .done                ; Reached end of GameList
+	lea     30(a1),a1            ; Next entry (32-2)
+	bra     .scan
+.done:
 	rts
 
 

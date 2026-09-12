@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """
-bg_maker.py - Converts any image into a bg.bmp for NeoSDLoader's custom
-menu background feature (root bg.bmp, and per-game bg.bmp).
+bg_maker.py - Converts any image into a bg.bmp for NeoSDLoader's cover-art
+box feature (root bg.bmp, and per-game bg.bmp).
 
 Output format (required by LoadCustomBG / LoadCustomBGSilent in
 Patch/Patch0011/ui_bg.asm):
-    - 320x224 pixels
+    - 128x128 pixels (the menu's fixed cover-art box, see BG_BOX_W_TILES /
+      BG_BOX_H_TILES in Patch/Patch0011/equ.asm)
     - 4 bits per pixel (16-color indexed palette)
     - Uncompressed (BI_RGB)
     - Standard 40-byte BITMAPINFOHEADER, bottom-up row order
@@ -17,13 +18,16 @@ Usage:
 If output.bmp is omitted, writes "bg.bmp" next to the input image.
 
 Options:
-    --fit {blur,cover,contain}  How to fit the image into 320x224 (default: blur)
+    --fit {cover,blur,contain}  How to fit the image into 128x128 (default: cover)
+                            cover   = fill the whole frame, cropping overflow -
+                                      good default now that the target is a
+                                      near-square cover-art box, since most
+                                      box art is already close to square
                             blur    = whole image visible (like contain), but the
                                       side gaps are filled with a blurred/darkened
                                       cover-cropped version of the same image
-                                      instead of a flat color - good default for
-                                      box art / posters that aren't 320x224-ish
-                            cover   = fill the whole frame, cropping overflow
+                                      instead of a flat color - better for
+                                      screenshots or posters that aren't square
                             contain = fit the whole image, padding with --pad-color
     --pad-color RRGGBB      Padding color for --fit contain (default: 000000)
     --no-dither             Disable dithering during 16-color quantization
@@ -32,7 +36,7 @@ Options:
 Examples:
     python bg_maker.py cover.jpg
     python bg_maker.py cover.jpg "D:\\SD\\SomeGame\\bg.bmp"
-    python bg_maker.py screenshot.png --fit cover
+    python bg_maker.py screenshot.png --fit blur
     python bg_maker.py poster.jpg --fit contain --pad-color 101018
 """
 import argparse
@@ -42,7 +46,7 @@ import sys
 
 from PIL import Image, ImageEnhance, ImageFilter
 
-TARGET_W, TARGET_H = 320, 224
+TARGET_W, TARGET_H = 128, 128
 
 
 def fit_cover(img: Image.Image, size=(TARGET_W, TARGET_H)) -> Image.Image:
@@ -106,7 +110,7 @@ def write_4bpp_bmp(img: Image.Image, out_path: str, colors: int):
         r, g, b = pal[i * 3 : i * 3 + 3] if i * 3 + 3 <= len(pal) else (0, 0, 0)
         palette_entries.append((r, g, b))
 
-    row_bytes = (TARGET_W * 4 + 7) // 8  # 160, already a multiple of 4
+    row_bytes = (TARGET_W * 4 + 7) // 8  # 64, already a multiple of 4
     pixels = img.load()
     rows = []
     for y in range(TARGET_H):
@@ -161,7 +165,7 @@ def convert(input_path: str, output_path: str, fit: str, pad_color: str,
 
     quantized = img.quantize(
         colors=colors,
-        method=Image.MEDIANCUT,
+        method=Image.MAXCOVERAGE,
         dither=Image.FLOYDSTEINBERG if dither else Image.NONE,
     )
 
@@ -175,7 +179,7 @@ def main():
     parser.add_argument("input", help="Source image (jpg/png/bmp/etc.)")
     parser.add_argument("output", nargs="?", default=None,
                          help="Output path (default: bg.bmp next to input)")
-    parser.add_argument("--fit", choices=["blur", "cover", "contain"], default="blur")
+    parser.add_argument("--fit", choices=["cover", "blur", "contain"], default="cover")
     parser.add_argument("--pad-color", default="000000", help="RRGGBB hex, used with --fit contain")
     parser.add_argument("--no-dither", action="store_true")
     parser.add_argument("--colors", type=int, default=16, choices=range(2, 17), metavar="[2-16]")

@@ -100,11 +100,11 @@ DrawFileList:
 
     ; Erase previously drawn list
 	move.w  #32,REG_VRAMMOD         ; Line by line
-	move.w  #FIXMAP+11+(8*32),d0
+	move.w  #FIXMAP+11+(LIST_NAME_COL*32),d0
 	move.w  #MAX_MENU_LINES,d7
 .cl_line:
 	move.w  d0,REG_VRAMADDR
-	move.w  #MAX_FILENAME,d6
+	move.w  #LIST_NAME_WIDTH,d6
 .cl_char:
 	move.w  #$0520,REG_VRAMRW	; Space, palette 0, bank 5
 	nop
@@ -124,7 +124,7 @@ DrawFileList:
 	bne     .cardpresent
     lea     FixStrNoCard,a0
 .cardpresent:
-	move.w  #FIXMAP+12+(8*32),d0
+	move.w  #FIXMAP+12+(LIST_NAME_COL*32),d0
 	jsr     WriteFix
 	bset.b  #2,RefreshFlags     ; Force update to hide cursor
 	rts
@@ -137,10 +137,19 @@ DrawFileList:
 	move.b  d0,d6
 	add.l   #MenuIndexList,d0
 	movea.l d0,a1
-	move.w  #FIXMAP+11+(8*32),d2
+	move.w  #FIXMAP+11+(LIST_NAME_COL*32),d2
+	moveq.l #0,d3               ; Row position within the visible page (0-based)
 .disp:
     cmp.b   LetterGameCount,d6
     beq     .done               ; Reached end of MenuIndexList
+    ; Highlight the currently selected row instead of drawing an arrow -
+    ; palette #2 (same one FixStrLoadingBG/List already use, so it's a
+    ; proven-visible color) instead of the normal palette #0 menu text.
+    move.w  #$0500,FixWriteConfig
+    cmp.b   FileCursor,d3
+    bne     .notselected
+    move.w  #$2500,FixWriteConfig
+.notselected:
     ; Get file name pointer from index
 	moveq.l #0,d0
     move.b  (a1)+,d0
@@ -148,12 +157,30 @@ DrawFileList:
 	add.l   #FileList+2,d0      ; Skip flag and file number bytes
 	movea.l d0,a0
 
+    ; Copy up to LIST_NAME_WIDTH chars into a scratch buffer and force a null
+    ; terminator there, so a name longer than the cover-box column doesn't
+    ; get drawn on top of it (WriteFix itself just writes until the null in
+    ; the source string, with no width limit of its own).
+    movem.l a0/a1,-(sp)
+    lea     ListNameScratch,a1
+    moveq.l #LIST_NAME_WIDTH,d1
+.trunc:
+    move.b  (a0)+,(a1)+
+    beq     .truncdone
+    subq.w  #1,d1
+    bne     .trunc
+    move.b  #0,(a1)                ; Force terminator if name was longer
+.truncdone:
+    movem.l (sp)+,a0/a1
+    lea     ListNameScratch,a0
+
     ; Write file name
 	move.w  d2,d0
 	jsr     WriteFix
 	addq.w  #1,d2				; Next FIX line
 
     addq.w  #1,d6
+    addq.w  #1,d3
 
 	subq.w  #1,d7
 	bne     .disp			    ; Max lines reached, stop
