@@ -64,8 +64,8 @@ import sys
 import numpy as np
 from PIL import Image, ImageEnhance, ImageFilter
 
-TARGET_W, TARGET_H = 128, 128
-BG_BOX_W_TILES, BG_BOX_H_TILES = 8, 8
+TARGET_W, TARGET_H = 224, 224
+BG_BOX_W_TILES, BG_BOX_H_TILES = 14, 14
 TILE_PX_W, TILE_PX_H = TARGET_W // BG_BOX_W_TILES, TARGET_H // BG_BOX_H_TILES
 TILE_COUNT = BG_BOX_W_TILES * BG_BOX_H_TILES
 
@@ -380,6 +380,11 @@ def convert(input_path: str, output_path: str, fit: str, pad_color: str,
     else:
         pad_rgb = tuple(int(pad_color[i:i + 2], 16) for i in (0, 2, 4))
         img = fit_contain(img, pad_rgb)
+
+    # A mild sharpen before quantizing helps edges/text read as crisp rather
+    # than "washed out" once color gets reduced down to 16-per-palette -
+    # costs nothing on the hardware side, purely a source-image tweak.
+    img = img.filter(ImageFilter.UnsharpMask(radius=2, percent=60, threshold=2))
 
     img = round_to_hardware_colorspace(img)
 

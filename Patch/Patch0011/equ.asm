@@ -68,21 +68,27 @@ LIST_CURSOR_COL equ 2                 ; Fix column (x) for the cursor arrow
 LIST_NAME_COL   equ 3                 ; Fix column (x) for the file name text
 
 ; Cover-art box geometry, in 16px sprite tiles / screen pixels (320x224
-; visible). Box is BG_BOX_W_TILES x BG_BOX_H_TILES, on the right-hand side
-; of the screen, above the footer text (~Y208, fix row 26) with a clear
-; gap - Y72 only left 8px (one fix row) of clearance and was overlapping
-; the footer text on real hardware.
-BG_BOX_W_TILES  equ 8                 ; 128px wide
-BG_BOX_H_TILES  equ 8                 ; 128px tall
+; visible). Box is BG_BOX_W_TILES x BG_BOX_H_TILES *of source data/tiles*,
+; compressed back down to roughly the same on-screen footprint via
+; BG_BOX_SHRINK (see below) - more tiles = finer captured detail
+; ("supersampling"), at the cost of more CD-sector-emulated data to load
+; per game switch. 14x14 (196 tiles, 224x224px of source data) was picked
+; as "aggressive but still well clear of" the old 320x224 full-screen
+; background's load time (this is about half of that, in bytes/sectors),
+; up from the original 8x8/128x128. On-screen position: above the footer
+; text (~Y208, fix row 26) with a clear gap.
+BG_BOX_W_TILES  equ 14
+BG_BOX_H_TILES  equ 14
 BG_BOX_X        equ 176               ; Left edge, screen pixel X
 BG_BOX_Y        equ 48                ; Top edge, screen pixel Y
-; Experiment: same 128x128 pixel data/palette, physically smaller on screen
-; via the sprite shrink register (SCB2), on the theory that quantization/
-; dithering noise reads as less noticeable at a smaller on-screen size.
-; $0FFF was "no shrink" (full size); this project has no other partial-
-; shrink reference value to go by, so this is a first guess to check
-; visually on hardware, not a precise percentage - expect to retune it.
-BG_BOX_SHRINK   equ $0CCC              ; Moderate shrink test (was $0FFF = full size)
+; Same idea as before (physically smaller on screen than the raw source
+; tile count would otherwise draw), just scaled down further now that the
+; source is 14x14 tiles instead of 8x8 - roughly (8/14) of the previous
+; $0CCC shrink factor. Exact bit format still isn't documented anywhere in
+; this project, so this is a first guess to check visually, not a
+; computed percentage - expect to retune position/shrink together once
+; the real result is visible on hardware.
+BG_BOX_SHRINK   equ $0777
 
 ; Neo Geo sprites pick their palette bank per TILE, not per pixel, so a cover
 ; image can use several 16-color palettes across its 8x8 tile grid (one per

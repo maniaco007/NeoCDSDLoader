@@ -167,11 +167,11 @@ LoadCustomBGSilent:
     ; Check "BM" magic at 00
     cmp.w   #$424D,$0(a0)
     bne     CustomBGFail
-    ; Check BG_BOX_W_TILES*16px (128px) width at $12
-    cmp.l   #$80000000,$12(a0)
+    ; Check BG_BOX_W_TILES*16px (224px) width at $12
+    cmp.l   #$E0000000,$12(a0)
     bne     CustomBGFail
-    ; Check BG_BOX_H_TILES*16px (128px) height at $16
-    cmp.l   #$80000000,$16(a0)
+    ; Check BG_BOX_H_TILES*16px (224px) height at $16
+    cmp.l   #$E0000000,$16(a0)
     bne     CustomBGFail
     ; Check 4bpp at $1C
     cmp.w   #$0400,$1C(a0)
@@ -325,7 +325,7 @@ LoadCustomBGSilent:
     beq     .tilemap_buf0
     lea     TilePaletteMap1,a1
 .tilemap_buf0:
-    moveq.l #(BG_BOX_W_TILES*BG_BOX_H_TILES)-1,d7
+    move.w  #(BG_BOX_W_TILES*BG_BOX_H_TILES)-1,d7  ; Exceeds moveq's range at 14x14
 .readtilemap:
     move.b  (a2)+,(a1)+
     cmp.l   #CDSectorBuffer+CD_SECTOR_SIZE,a2
