@@ -68,27 +68,25 @@ LIST_CURSOR_COL equ 2                 ; Fix column (x) for the cursor arrow
 LIST_NAME_COL   equ 3                 ; Fix column (x) for the file name text
 
 ; Cover-art box geometry, in 16px sprite tiles / screen pixels (320x224
-; visible). Box is BG_BOX_W_TILES x BG_BOX_H_TILES *of source data/tiles*,
-; compressed back down to roughly the same on-screen footprint via
-; BG_BOX_SHRINK (see below) - more tiles = finer captured detail
-; ("supersampling"), at the cost of more CD-sector-emulated data to load
-; per game switch. 14x14 (196 tiles, 224x224px of source data) was picked
-; as "aggressive but still well clear of" the old 320x224 full-screen
-; background's load time (this is about half of that, in bytes/sectors),
-; up from the original 8x8/128x128. On-screen position: above the footer
-; text (~Y208, fix row 26) with a clear gap.
-BG_BOX_W_TILES  equ 14
-BG_BOX_H_TILES  equ 14
+; visible). Box is BG_BOX_W_TILES x BG_BOX_H_TILES, shown at NATIVE size
+; (no hardware shrink - see BG_BOX_SHRINK below). The earlier "capture more
+; detail via more tiles, then hardware-shrink back down" experiment (up to
+; 14x14) made things look worse, not better: the original full-screen
+; bg.bmp (320x224, shown 1:1 with zero shrink) always looked fine, while
+; the shrunk box didn't, even with strictly better color-quantization code
+; behind it. The Neo Geo sprite shrink registers most likely just decimate
+; pixels rather than filter/blend them, so asking hardware to compress a
+; lot of captured detail into a small area adds aliasing noise on top of
+; the unavoidable 16-colors-per-tile limit, instead of helping. Back to
+; 8x8 (128px), the size already confirmed to fit well against the footer/
+; list without overlap - all the color-side improvements (multi-palette,
+; spatially-aware clustering, hardware-colorspace-aware quantization,
+; sharpening) are independent of this and still apply.
+BG_BOX_W_TILES  equ 8
+BG_BOX_H_TILES  equ 8
 BG_BOX_X        equ 176               ; Left edge, screen pixel X
 BG_BOX_Y        equ 48                ; Top edge, screen pixel Y
-; Same idea as before (physically smaller on screen than the raw source
-; tile count would otherwise draw), just scaled down further now that the
-; source is 14x14 tiles instead of 8x8 - roughly (8/14) of the previous
-; $0CCC shrink factor. Exact bit format still isn't documented anywhere in
-; this project, so this is a first guess to check visually, not a
-; computed percentage - expect to retune position/shrink together once
-; the real result is visible on hardware.
-BG_BOX_SHRINK   equ $0777
+BG_BOX_SHRINK   equ $0FFF             ; No shrink - shown at native pixel size
 
 ; Neo Geo sprites pick their palette bank per TILE, not per pixel, so a cover
 ; image can use several 16-color palettes across its 8x8 tile grid (one per

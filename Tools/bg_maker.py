@@ -64,8 +64,8 @@ import sys
 import numpy as np
 from PIL import Image, ImageEnhance, ImageFilter
 
-TARGET_W, TARGET_H = 224, 224
-BG_BOX_W_TILES, BG_BOX_H_TILES = 14, 14
+TARGET_W, TARGET_H = 128, 128
+BG_BOX_W_TILES, BG_BOX_H_TILES = 8, 8
 TILE_PX_W, TILE_PX_H = TARGET_W // BG_BOX_W_TILES, TARGET_H // BG_BOX_H_TILES
 TILE_COUNT = BG_BOX_W_TILES * BG_BOX_H_TILES
 
